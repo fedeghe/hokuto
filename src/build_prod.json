@@ -3,6 +3,6 @@
         "rm -rf dist",
         "mkdir dist"
     ],
-    "src/Uizzi.js": "dist -plugins=malta-js-uglify...malta-header-comment[name:\"src/head.txt\"] -options=placeholderMode:\"func\"",
+    "src/hokuto.js": "dist -plugins=malta-js-uglify...malta-header-comment[name:\"src/head.txt\"] -options=placeholderMode:\"func\"",
     "src/sample/requiremini.json": true
 }

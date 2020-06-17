@@ -3,6 +3,6 @@
         "rm -rf dist",
         "mkdir dist"
     ],
-    "src/Uizzi.js": "dist -options=placeholderMode:\"func\"",
+    "src/hokuto.js": "dist -options=placeholderMode:\"func\"",
     "src/sample/require.json": true
 }

@@ -6,5 +6,5 @@
     "src/sample/index.html": "sample -plugins=malta-dev-srv[folder:\"sample\"]...malta-browser-refresh[files:\"*\"] -options=placeholderMode:\"func\"",
     "src/sample/style.less": "sample -plugins=malta-less",
     "src/sample/index.js": "sample -options=placeholderMode:\"func\"",
-    "src/Uizzi.js": "sample -plugins=malta-header-comment[name:\"src/head.txt\"] -options=placeholderMode:\"func\""
+    "src/hokuto.js": "sample -plugins=malta-header-comment[name:\"src/head.txt\"] -options=placeholderMode:\"func\""
 }

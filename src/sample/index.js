@@ -40,7 +40,7 @@
                     node = self.node,
                     renderDelayedNumber = function (text, secs) {
                         setTimeout(function () {
-                            Uizzi.render({
+                            hokuto.render({
                                 target: node,
                                 tag: 'li',
                                 text: text
@@ -57,5 +57,5 @@
             }
         }]
     };
-    Uizzi.render(config);
+    hokuto.render(config);
 })();

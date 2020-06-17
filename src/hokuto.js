@@ -1,4 +1,4 @@
-var Uizzi = (function () {
+var hokuto = (function () {
     // only IE
     maltaF('./../node_modules/balle/source/index.js');
 
