@@ -1,0 +1,21 @@
+{
+    "name": "Uizzi",
+    "version": "0.0.1",
+    "main": "index.js",
+    "license": "MIT",
+    "dependencies": {
+        "balle": "^1.0.39",
+        "malta": "^4.1.19",
+        "malta-browser-refresh": "^1.2.5",
+        "malta-dev-srv": "^1.1.6",
+        "malta-header-comment": "^1.0.8",
+        "malta-js-uglify": "^1.0.7",
+        "malta-less": "^1.0.10",
+        "malta-millijs": "^1.0.4"
+    },
+    "scripts": {
+        "dev": "malta src/build_dev.json",
+        "mini": "malta src/build_minidev.json",
+        "prod": "malta src/build_prod.json"
+    }
+}

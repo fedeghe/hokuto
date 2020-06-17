@@ -1,0 +1,3 @@
+maltaV('PACKAGE.name') maltaV('PACKAGE.version') __SIZE__
+build #__BUILDNUM__ on __DATE__
+with Malta __VERSION__
