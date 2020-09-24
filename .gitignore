@@ -1,6 +1,5 @@
 
 /node_modules
-/dist
 /sample
 .printVersion
 .buildNum.json
