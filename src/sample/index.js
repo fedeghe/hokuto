@@ -26,7 +26,7 @@
                     this.done();
                     setTimeout(function () {
                         self.render();
-                    }, 1000);
+                    }, 125);
                 }
             }],
             cb: function () {

@@ -5,13 +5,13 @@
     "license": "MIT",
     "dependencies": {
         "balle": "^1.0.39",
-        "malta": "^4.1.19",
-        "malta-browser-refresh": "^1.2.5",
-        "malta-dev-srv": "^1.1.6",
-        "malta-header-comment": "^1.0.8",
-        "malta-js-uglify": "^1.0.7",
-        "malta-less": "^1.0.10",
-        "malta-millijs": "^1.0.4"
+        "malta": "^4.1.25",
+        "malta-browser-refresh": "^1.2.9",
+        "malta-dev-srv": "^1.1.7",
+        "malta-header-comment": "^1.0.10",
+        "malta-js-uglify": "^1.0.13",
+        "malta-less": "^1.0.12",
+        "malta-millijs": "^1.0.5"
     },
     "scripts": {
         "dev": "malta src/build_dev.json",
