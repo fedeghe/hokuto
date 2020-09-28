@@ -14,14 +14,14 @@
                                 return new Array(10).fill().map(function (_, j) {
                                     return {
                                         tag: 'td',
-                                        html: `[${i}, ${j}]`,
+                                        html: '[' + i + ', '+ j + ']',
                                         cb: function () {
                                             var self = this;
-                                            clearTimeout(self.data.to)
-                                            self.data.to  = setTimeout(function () {
-                                                self.config.html = ~~(10*Math.random())
+                                            clearTimeout(self.data.to);
+                                            self.data.to = setTimeout(function () {
+                                                self.config.html = ~~(10*Math.random());
                                                 self.render();
-                                            }, 10)
+                                            }, 10);
                                             self.done();
                                         }
                                     }

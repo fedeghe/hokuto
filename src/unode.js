@@ -37,22 +37,16 @@ Unode.prototype.setChildren = function () {
     if ('children' in this.config) {
         if (typeof this.config.children === 'function') {
             _children = this.config.children.call(this).map(function (child) {
-                return new Unode(Object.assign({}, child, {target: self.node}))
-            })
+                return new Unode(Object.assign({}, child, {target: self.node}));
+            });
         } else {
             _children = this.config.children.map(function (child) {
-                return new Unode(Object.assign({}, child, {target: self.node}))
-            })
+                return new Unode(Object.assign({}, child, {target: self.node}));
+            });
         }
     }
     this.toSolve = _children.length;
     this.children = _children;
-
-    // this.children = this.toSolve
-    //     ? this.config.children.map(function (child) {
-    //         return new Unode(Object.assign({}, child, {target: self.node}))
-    //     })
-    //     : [];
 };
 
 Unode.prototype.setCbs = function () {

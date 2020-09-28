@@ -34,7 +34,7 @@ var utils = (function () {
     }
     
     function filterHtml(html) {
-        return `${html}`;
+        return '' + html;
     }
 
     function setText(node, text) {
