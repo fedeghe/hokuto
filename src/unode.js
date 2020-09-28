@@ -4,6 +4,7 @@ function Unode(config) {
     this.node = document.createElement(config.tag || 'div');
     this.rendered = false;
     this.toSolve = 0;
+    this.data = {};
     this.resolve = function () {};
     this.reset = function () {};
     this.init();
@@ -11,7 +12,7 @@ function Unode(config) {
 
 Unode.prototype.init = function () {
     this.rendered = false;
-    this.prepareSolve();
+    // this.prepareSolve();
     this.setCall('Text,Html,Style,Attrs,Data,Cbs,Children');
 };
 
@@ -25,17 +26,33 @@ Unode.prototype.cleanup = function () {
     this.node.innerHTML = '';
     this.node.parentNode.removeChild(this.node);
 }
-Unode.prototype.prepareSolve = function () {
-    this.toSolve = 'children' in this.config
-        ? this.config.children.length : 0;
-}
+// Unode.prototype.prepareSolve = function () {
+//     this.toSolve = 'children' in this.config
+//         ? this.config.children.length : 0;
+// }
 Unode.prototype.setChildren = function () {
-    var self = this
-    this.children = this.toSolve
-        ? this.config.children.map(function (child) {
-            return new Unode(Object.assign({}, child, {target: self.node}))
-        })
-        : [];
+    var self = this,
+        _children = [];
+
+    if ('children' in this.config) {
+        if (typeof this.config.children === 'function') {
+            _children = this.config.children.call(this).map(function (child) {
+                return new Unode(Object.assign({}, child, {target: self.node}))
+            })
+        } else {
+            _children = this.config.children.map(function (child) {
+                return new Unode(Object.assign({}, child, {target: self.node}))
+            })
+        }
+    }
+    this.toSolve = _children.length;
+    this.children = _children;
+
+    // this.children = this.toSolve
+    //     ? this.config.children.map(function (child) {
+    //         return new Unode(Object.assign({}, child, {target: self.node}))
+    //     })
+    //     : [];
 };
 
 Unode.prototype.setCbs = function () {
@@ -82,6 +99,7 @@ Unode.prototype.render = function () {
     if (this.rendered) {
         this.cleanup();
         this.init();
+        // console.log('render', +new Date)
         this.render();
     } else {
         this.toSolve > 0

@@ -1,24 +1,396 @@
-'use strict';
-/*
+var hokuto = (function () {
+    // only IE
+    /*
+    [Malta] ./../node_modules/balle/source/index.js
+    */
+    Balle.roll = function (els, name, inst) {
+        els.forEach(function (func) {
+            func(inst[name]);
+        }, inst);
+    };
+    
+    function Balle(executor) {
+        var self = this,
+            done = false;
+        this.status = Balle.STATUSES.PENDING;
+        this.value = null;
+        this.cause = null;
+        this.resolvers = this.resolvers || [];
+        this.rejectors = this.rejectors || [];
+        this.finalizers = this.finalizers || [];
+        executor = executor || function () {};
+    
+        try {
+            executor(
+                // SOLVER
+                function (value) {
+                    if (done || self.status !== Balle.STATUSES.PENDING) return;
+                    done = true;
+                    self.status = Balle.STATUSES.FULFILLED;
+                    self.value = value;
+                    Balle.roll(self.resolvers, 'value', self);
+                    Balle.roll(self.finalizers, 'value', self);
+                },
+                // REJECTOR
+                function (cause) {
+                    if (done || self.status !== Balle.STATUSES.PENDING) return;
+                    done = true;
+                    self.status = Balle.STATUSES.REJECTED;
+                    self.cause = cause;
+                    Balle.roll(self.rejectors, 'cause', self);
+                    Balle.roll(self.finalizers, 'cause', self);
+                }
+            );
+        } catch (e) {
+            return Balle.reject(e.message);
+        }
+        return this;
+    }
+    
+    Balle.prototype.resolve = function (value) {
+        return Balle.call(this, function (res, rej) {
+            return res(value);
+        });
+    };
+    
+    Balle.prototype.reject = function (value) {
+        return Balle.call(this, function (res, rej) {
+            return rej(value);
+        });
+    };
+    
+    Balle.prototype.launch = function (executor) {
+        return Balle.call(this, executor);
+    };
+    
+    Balle.prototype.then = function (res, rej) {
+        switch (this.status) {
+            case Balle.STATUSES.REJECTED:
+                Balle.roll(this.rejectors, 'cause', this);
+                break;
+            case Balle.STATUSES.PENDING:
+                this.resolvers.push(res);
+                rej && this.rejectors.push(rej);
+                break;
+            case Balle.STATUSES.FULFILLED:
+                res(this.value);
+                break;
+            default: break;
+        }
+        return this;
+    };
+    
+    Balle.prototype.catch = function (rej) {
+        switch (this.status) {
+            case Balle.STATUSES.PENDING:
+                this.rejectors.push(rej);
+                break;
+            case Balle.STATUSES.REJECTED:
+                return rej.call(this, this.cause);
+            default: break;
+        }
+        return this;
+    };
+    
+    Balle.prototype.finally = function (cb) {
+        this.finalizers.push(cb);
+        this.status !== Balle.STATUSES.PENDING
+        && Balle.roll(this.finalizers, 'value', this);
+        return this;
+    };
+    
+    /**
+     * STATIC section
+     */
+    Balle.STATUSES = {
+        PENDING: 'PENDING',
+        FULFILLED: 'FULFILLED',
+        REJECTED: 'REJECTED'
+    };
+    
+    Balle._isFunc = function (f) { return typeof f === 'function'; };
+    
+    Balle._isIterable = function (obj) {
+        if (obj == null) { return false; }
+        return Balle._isFunc(obj[Symbol.iterator]);
+    };
+    
+    // factory
+    Balle.one = function (exec) { return new Balle(exec); };
+    
+    Balle.all = function (pros) {
+        if (!Balle._isIterable(pros)) {
+            return Balle.reject('Balle.all acceps an Iterable Promise only');
+        }
+        var results = [],
+            l = pros.length,
+            solN = 0;
+    
+        return new Balle(function (resolve, reject) {
+            pros.forEach(function (pro, i) {
+                pro.status == 'REJECTED'
+                    && reject(pro.cause);
+                pro.then(function (v) {
+                    solN++;
+                    results[i] = v;
+                    solN == l && resolve(results)
+                }).catch(reject)
+            });
+        });
+    };
+    
+    Balle.race = function (pros) {
+        if (!Balle._isIterable(pros)) {
+            return Balle.reject('Balle.race acceps an Iterable Promise only');
+        }
+        return new Balle(function (resolve, reject) {
+            pros.forEach(function (pro) { pro.then(resolve).catch(reject) });
+        });
+    };
+    
+    Balle.chain = function (pros) {
+        if (!Balle._isIterable(pros)) {
+            return Balle.reject('Balle.chain acceps an Iterable Promise only');
+        }
+        var l = pros.length;
+        return new Balle(function (res, rej) {
+            (function chain(index, r) {
+                return index === l
+                    ? res(r)
+                    : pros[index](r)
+                        .then(function (r) {
+                            chain(++index, r);
+                        }).catch(function (r) {
+                            rej(r);
+                        });
+            })(0);
+        });
+    };
+    
+    Balle.reject = function (cause) {
+        return new Balle(function (s, r) { return r(cause); });
+    };
+    
+    Balle.resolve = function (mix) {
+        return new Balle(function (res, rej) {
+            mix instanceof Balle
+                ? mix.then(res).catch(rej)
+                : res(mix);
+        });
+    };
+    
+    (typeof exports === 'object') && (module.exports = Balle);
+    ;
 
-                              ..                          s
-  .uef^"                < .z@8"`                         :8
-:d88E              u.    !@88E           x.    .        .88           u.
-`888E        ...ue888b   '888E   u     .@88k  z88u     :888ooo  ...ue888b
- 888E .z8k   888R Y888r   888E u@8NL  ~"8888 ^8888   -*8888888  888R Y888r
- 888E~?888L  888R I888>   888E`"88*"    8888  888R     8888     888R I888>
- 888E  888E  888R I888>   888E .dN.     8888  888R     8888     888R I888>
- 888E  888E  888R I888>   888E~8888     8888  888R     8888     888R I888>
- 888E  888E u8888cJ888    888E '888&    8888 ,888B .  .8888Lu= u8888cJ888
- 888E  888E  "*888*P"     888E  9888.  "8888Y 8888"   ^%888*    "*888*P"
-m888N= 888>    'Y"      '"888*" 4888"   `Y"   'YP       'Y"       'Y"
- `Y"   888                 ""    ""
-      J88"
-      @%
-    :"
+    /*
+    [Malta] utils.js
+    */
+    
+    
+    var utils = (function () {
+        var _U_ = 'undefined',
+            noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
+        
+        function setStyle(node, styles) {
+            var tmp;
+            if (typeof styles !== _U_) {
+                for (tmp in styles) {
+                    if (tmp === 'float') {
+                        node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
+                    } else {
+                        node.style[tmp] = styles[tmp];
+                    }
+                }
+            }
+        }
+    
+        function setAttrs(node, attrs) {
+            if (typeof attrs !== _U_) {
+                for (var tmp in attrs) {
+                    if (noAttrs.indexOf(tmp) < 0)
+                        node.setAttribute(tmp, attrs[tmp]);
+                }
+            }
+        }
+        function setData(node, data) {
+            if (typeof data !== _U_) {
+                for (var tmp in data) {
+                    node.dataset[tmp] = data[tmp];
+                }
+            }
+        }
+        
+        function filterHtml(html) {
+            return `${html}`;
+        }
+    
+        function setText(node, text) {
+            node.appendChild(document.createTextNode(text))
+        }
+        function setHtml(node, html) {
+            node.innerHTML = filterHtml(html);
+        }
+    
+        function isWnode(n) {
+            return n instanceof Wnode;
+        }
+    
+        return {
+            isWnode: isWnode,
+            setText: setText,
+            setHtml: setHtml,
+            setStyle: setStyle,
+            setAttrs: setAttrs,
+            setData: setData
+        };
+    })();
+    ;
+    
+    /*
+    [Malta] Unode.js
+    */
+    function Unode(config) {
+        this.config = config;
+        this.parent = config.target;
+        this.node = document.createElement(config.tag || 'div');
+        this.rendered = false;
+        this.toSolve = 0;
+        this.data = {};
+        this.resolve = function () {};
+        this.reset = function () {};
+        this.init();
+    }
+    
+    Unode.prototype.init = function () {
+        this.rendered = false;
+        // this.prepareSolve();
+        this.setCall('Text,Html,Style,Attrs,Data,Cbs,Children');
+    };
+    
+    Unode.prototype.setCall = function (fns) {
+        var self = this;
+        fns.split(/,/).forEach(function (f) {
+            self['set' + f]()
+        })
+    }
+    Unode.prototype.cleanup = function () {
+        this.node.innerHTML = '';
+        this.node.parentNode.removeChild(this.node);
+    }
+    // Unode.prototype.prepareSolve = function () {
+    //     this.toSolve = 'children' in this.config
+    //         ? this.config.children.length : 0;
+    // }
+    Unode.prototype.setChildren = function () {
+        var self = this,
+            _children = [];
+    
+        if ('children' in this.config) {
+            if (typeof this.config.children === 'function') {
+                _children = this.config.children.call(this).map(function (child) {
+                    return new Unode(Object.assign({}, child, {target: self.node}))
+                })
+            } else {
+                _children = this.config.children.map(function (child) {
+                    return new Unode(Object.assign({}, child, {target: self.node}))
+                })
+            }
+        }
+        this.toSolve = _children.length;
+        this.children = _children;
+    
+        // this.children = this.toSolve
+        //     ? this.config.children.map(function (child) {
+        //         return new Unode(Object.assign({}, child, {target: self.node}))
+        //     })
+        //     : [];
+    };
+    
+    Unode.prototype.setCbs = function () {
+        this.cb = ('cb' in this.config && typeof this.config.cb === 'function')
+            ? this.config.cb.bind(this)
+            : this.solve.bind(this);
+    };
+    
+    Unode.prototype.setStyle = function () {
+        this.config.style && utils.setStyle(this.node, this.config.style);
+    };
+    
+    Unode.prototype.setAttrs = function () {
+        this.config.attrs && utils.setAttrs(this.node, this.config.attrs);
+    };
+    
+    Unode.prototype.setData = function () {
+        this.config.data && utils.setData(this.node, this.config.data);
+    };
+    
+    Unode.prototype.setText = function () {
+        this.config.text && utils.setText(this.node, this.config.text);
+    };
+    
+    Unode.prototype.setHtml = function () {
+        this.config.html && utils.setHtml(this.node, this.config.html);
+    };
+    
+    Unode.prototype.done =
+    Unode.prototype.solve = function () {
+        this.toSolve--;
+        if (this.toSolve <= 0) {
+            this.parent.appendChild(this.node)
+            this.rendered = true;
+            this.resolve();
+        }
+    };
+    Unode.prototype.render = function () {
+        var self = this,
+            ret = new Balle(function (resolve, reject) {
+                self.resolve = resolve;
+                self.reject = reject;
+            });
+        if (this.rendered) {
+            this.cleanup();
+            this.init();
+            // console.log('render', +new Date)
+            this.render();
+        } else {
+            this.toSolve > 0
+                ? this.children.forEach(function (child) {
+                    child.render().then(function () {
+                        self.node.appendChild(child.node)
+                        self.cb();
+                    });
+                })
+                : this.cb();
+        }
+        return ret;
+    };;
+    
+    /*
+    [Malta] engy.js
+    */
+    var Engy = {};
+    Engy.solve = function(config) {
+        return {
+            then: function (f) {
+                return f(config)
+            }
+        }
+    }
+    
+    ;
 
-version 0.0.2 ~6KB
-build #22 on 24/9/2020
-with Malta 4.1.25
-*/
-var hokuto=function(){function t(e){var n=this,i=!1;this.status=t.STATUSES.PENDING,this.value=null,this.cause=null,this.resolvers=this.resolvers||[],this.rejectors=this.rejectors||[],this.finalizers=this.finalizers||[],e=e||function(){};try{e(function(e){i||n.status!==t.STATUSES.PENDING||(i=!0,n.status=t.STATUSES.FULFILLED,n.value=e,t.roll(n.resolvers,"value",n),t.roll(n.finalizers,"value",n))},function(e){i||n.status!==t.STATUSES.PENDING||(i=!0,n.status=t.STATUSES.REJECTED,n.cause=e,t.roll(n.rejectors,"cause",n),t.roll(n.finalizers,"cause",n))})}catch(e){return t.reject(e.message)}return this}function e(t){this.config=t,this.parent=t.target,this.node=document.createElement(t.tag||"div"),this.rendered=!1,this.toSolve=0,this.resolve=function(){},this.reset=function(){},this.init()}t.roll=function(t,e,n){t.forEach(function(t){t(n[e])},n)},t.prototype.resolve=function(e){return t.call(this,function(t,n){return t(e)})},t.prototype.reject=function(e){return t.call(this,function(t,n){return n(e)})},t.prototype.launch=function(e){return t.call(this,e)},t.prototype.then=function(e,n){switch(this.status){case t.STATUSES.REJECTED:t.roll(this.rejectors,"cause",this);break;case t.STATUSES.PENDING:this.resolvers.push(e),n&&this.rejectors.push(n);break;case t.STATUSES.FULFILLED:e(this.value)}return this},t.prototype.catch=function(e){switch(this.status){case t.STATUSES.PENDING:this.rejectors.push(e);break;case t.STATUSES.REJECTED:return e.call(this,this.cause)}return this},t.prototype.finally=function(e){return this.finalizers.push(e),this.status!==t.STATUSES.PENDING&&t.roll(this.finalizers,"value",this),this},t.STATUSES={PENDING:"PENDING",FULFILLED:"FULFILLED",REJECTED:"REJECTED"},t._isFunc=function(t){return"function"==typeof t},t._isIterable=function(e){return null!=e&&t._isFunc(e[Symbol.iterator])},t.one=function(e){return new t(e)},t.all=function(e){if(!t._isIterable(e))return t.reject("Balle.all acceps an Iterable Promise only");var n=[],i=e.length,o=0;return new t(function(t,r){e.forEach(function(e,s){"REJECTED"==e.status&&r(e.cause),e.then(function(e){o++,n[s]=e,o==i&&t(n)}).catch(r)})})},t.race=function(e){return t._isIterable(e)?new t(function(t,n){e.forEach(function(e){e.then(t).catch(n)})}):t.reject("Balle.race acceps an Iterable Promise only")},t.chain=function(e){if(!t._isIterable(e))return t.reject("Balle.chain acceps an Iterable Promise only");var n=e.length;return new t(function(t,i){!function o(r,s){return r===n?t(s):e[r](s).then(function(t){o(++r,t)}).catch(function(t){i(t)})}(0)})},t.reject=function(e){return new t(function(t,n){return n(e)})},t.resolve=function(e){return new t(function(n,i){e instanceof t?e.then(n).catch(i):n(e)})},"object"==typeof exports&&(module.exports=t);var n=function(){function t(t,e){var n;if(typeof e!==c)for(n in e)"float"===n?t.style[n.replace(/^float$/i,"cssFloat")]=e[n]:t.style[n]=e[n]}function e(t,e){if(typeof e!==c)for(var n in e)u.indexOf(n)<0&&t.setAttribute(n,e[n])}function n(t,e){if(typeof e!==c)for(var n in e)t.dataset[n]=e[n]}function i(t){return t}function o(t,e){t.appendChild(document.createTextNode(e))}function r(t,e){t.innerHTML=i(e)}function s(t){return t instanceof Wnode}var c="undefined",u=["innerHTML","style","dataset","className"];return{isWnode:s,setText:o,setHtml:r,setStyle:t,setAttrs:e,setData:n}}();return e.prototype.init=function(){this.rendered=!1,this.prepareSolve(),this.setCall("Text,Html,Style,Attrs,Data,Cbs,Children")},e.prototype.setCall=function(t){var e=this;t.split(/,/).forEach(function(t){e["set"+t]()})},e.prototype.cleanup=function(){this.node.innerHTML="",this.node.parentNode.removeChild(this.node)},e.prototype.prepareSolve=function(){this.toSolve="children"in this.config?this.config.children.length:0},e.prototype.setChildren=function(){var t=this;this.children=this.toSolve?this.config.children.map(function(n){return new e(Object.assign({},n,{target:t.node}))}):[]},e.prototype.setCbs=function(){this.cb="cb"in this.config&&"function"==typeof this.config.cb?this.config.cb.bind(this):this.solve.bind(this)},e.prototype.setStyle=function(){this.config.style&&n.setStyle(this.node,this.config.style)},e.prototype.setAttrs=function(){this.config.attrs&&n.setAttrs(this.node,this.config.attrs)},e.prototype.setData=function(){this.config.data&&n.setData(this.node,this.config.data)},e.prototype.setText=function(){this.config.text&&n.setText(this.node,this.config.text)},e.prototype.setHtml=function(){this.config.html&&n.setHtml(this.node,this.config.html)},e.prototype.done=e.prototype.solve=function(){--this.toSolve<=0&&(this.parent.appendChild(this.node),this.rendered=!0,this.resolve())},e.prototype.render=function(){var e=this,n=new t(function(t,n){e.resolve=t,e.reject=n});return this.rendered?(this.cleanup(),this.init(),this.render()):this.toSolve>0?this.children.forEach(function(t){t.render().then(function(){e.node.appendChild(t.node),e.cb()})}):this.cb(),n},{}.solve=function(t){return{then:function(e){return e(t)}}},{render:function(t){var n=t.target,i=document.createDocumentFragment();new e(Object.assign({},t,{target:i})).render().then(function(){n.appendChild(i)})},renderWithComponents:function(t){console.log("init",t)}}}();
+    return {
+        render: function (config) {
+            var target = config.target,
+                fragment = document.createDocumentFragment(),
+                wn = new Unode(Object.assign({}, config, {target: fragment}));
+            wn.render().then(function () {
+                target.appendChild(fragment)
+            });
+        },
+        renderWithComponents: function (config) {
+            console.log('init', config)
+            // return Engy.solve(config).then(render)
+        }
+    }
+})();
