@@ -10,6 +10,7 @@ function Unode(config) {
     this.resolve = function () {};
     this.reset = function () {};
     this.init();
+    this.setMethods(); //just once
 }
 
 Unode.prototype.init = function () {
@@ -90,11 +91,11 @@ Unode.prototype.setData = function () {
 };
 
 Unode.prototype.setText = function () {
-    this.config.text && utils.setText(this.node, this.config.text);
+    typeof this.config.text !== 'undefined' && utils.setText(this.node, this.config.text);
 };
 
 Unode.prototype.setHtml = function () {
-    this.config.html && utils.setHtml(this.node, this.config.html);
+    typeof this.config.html !== 'undefined' && utils.setHtml(this.node, this.config.html);
 };
 
 Unode.prototype.done =
