@@ -2,6 +2,11 @@
     var target = document.getElementById('target'),
         config = {
             target: target,
+            method_rndColor: function () {
+                return '#' + [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'].sort(function (a,b) {
+                    return Math.random() > 0.5;
+                }).slice(0,6).join('');
+            },
             children: [{
                 tag: 'table',
                 children: function () {
@@ -15,13 +20,16 @@
                                     return {
                                         tag: 'td',
                                         html: '[' + i + ', '+ j + ']',
+                                        
                                         cb: function () {
                                             var self = this;
                                             clearTimeout(self.data.to);
                                             self.data.to = setTimeout(function () {
                                                 self.config.html = ~~(10*Math.random());
+                                                //self.style.backgroundColor = self.root.rndColor();
+                                                // console.log(self.root)
                                                 self.render();
-                                            }, 10);
+                                            }, 100);
                                             self.done();
                                         }
                                     }

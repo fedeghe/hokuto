@@ -43,7 +43,10 @@
                             hokuto.render({
                                 target: node,
                                 tag: 'li',
-                                text: text
+                                text: text,
+                                cb: function () {
+                                    this.done()
+                                }
                             })
                         }, secs)
                     }

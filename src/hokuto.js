@@ -12,7 +12,15 @@ var hokuto = (function () {
         render: function (config) {
             var target = config.target,
                 fragment = document.createDocumentFragment(),
-                wn = new Unode(Object.assign({}, config, {target: fragment}));
+                wn = new Unode(
+                    Object.assign(
+                        {},
+                        config,
+                        {
+                            target: fragment,
+                        }
+                    )
+                );
             wn.render().then(function () {
                 target.appendChild(fragment)
             });

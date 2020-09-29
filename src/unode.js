@@ -5,6 +5,8 @@ function Unode(config) {
     this.rendered = false;
     this.toSolve = 0;
     this.data = {};
+    this.rootNode = 'rootNode' in config ? config.rootNode : this;
+    this.parentNode = 'parentNode' in config ? config.parentNode : this;
     this.resolve = function () {};
     this.reset = function () {};
     this.init();
@@ -21,32 +23,52 @@ Unode.prototype.setCall = function (fns) {
     fns.split(/,/).forEach(function (f) {
         self['set' + f]()
     })
-}
+};
+
 Unode.prototype.cleanup = function () {
     this.node.innerHTML = '';
     this.node.parentNode.removeChild(this.node);
-}
-// Unode.prototype.prepareSolve = function () {
-//     this.toSolve = 'children' in this.config
-//         ? this.config.children.length : 0;
-// }
+};
+
 Unode.prototype.setChildren = function () {
     var self = this,
         _children = [];
 
     if ('children' in this.config) {
+        var common = {
+            target: self.node,
+            rootNode: self.rootNode,
+            parentNode: self
+        };
         if (typeof this.config.children === 'function') {
             _children = this.config.children.call(this).map(function (child) {
-                return new Unode(Object.assign({}, child, {target: self.node}));
+                return new Unode(Object.assign({}, child, common));
             });
         } else {
             _children = this.config.children.map(function (child) {
-                return new Unode(Object.assign({}, child, {target: self.node}));
+                return new Unode(Object.assign({}, child, common));
             });
         }
     }
     this.toSolve = _children.length;
     this.children = _children;
+};
+
+Unode.prototype.setMethods = function () {
+    var self = this,
+        keys = Object.keys(this.config),
+        tmp;
+    keys.forEach(function (k) {
+        tmp = k.match(/^method_(\w*)$/i);
+        if (tmp) {
+            if (!(tmp[1] in self)) {
+                self[tmp[1]] = self.config[tmp[0]].bind(self);
+            } else {
+                console.warn('[WARNING] : method `' + tmp[0] + ' cant be added, would override existing element.' )
+            }
+        }
+    });
+    return this;
 };
 
 Unode.prototype.setCbs = function () {
