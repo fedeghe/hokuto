@@ -44,9 +44,6 @@
                                 target: node,
                                 tag: 'li',
                                 text: text,
-                                cb: function () {
-                                    this.done()
-                                }
                             })
                         }, secs)
                     }
