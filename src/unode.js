@@ -4,7 +4,8 @@ function Unode(config) {
     this.node = document.createElement(config.tag || 'div');
     this.rendered = false;
     this.toSolve = 0;
-    this.data = {};
+    this.data = 'data' in config ? config.data : {};
+    this.dataSet = {};
     this.rootNode = 'rootNode' in config ? config.rootNode : this;
     this.parentNode = 'parentNode' in config ? config.parentNode : this;
     this.resolve = function () {};
@@ -87,7 +88,10 @@ Unode.prototype.setAttrs = function () {
 };
 
 Unode.prototype.setData = function () {
-    this.config.data && utils.setData(this.node, this.config.data);
+    if (this.config.dataSet) {
+        this.dataSet = this.config.dataSet;
+        utils.setDataSet(this.node, this.dataSet);
+    }
 };
 
 Unode.prototype.setText = function () {
