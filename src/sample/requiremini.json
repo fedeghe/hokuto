@@ -5,6 +5,6 @@
     ],
     "src/sample/index.html": "sample -plugins=malta-dev-srv[folder:\"sample\"]...malta-browser-refresh[files:\"*\"] -options=placeholderMode:\"func\"",
     "src/sample/style.less": "sample -plugins=malta-less",
-    "src/sample/index.js": "sample -plugins=malta-js-uglify -options=placeholderMode:\"func\"",
+    "src/sample/*.js": "sample -plugins=malta-js-uglify -options=placeholderMode:\"func\"",
     "src/hokuto.js": "sample -plugins=malta-js-uglify...malta-header-comment[name:\"src/head.txt\"] -options=placeholderMode:\"func\""
 }

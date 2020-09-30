@@ -24,6 +24,7 @@ var hokuto = (function () {
             wn.render().then(function () {
                 target.appendChild(fragment)
             });
+            return wn;
         },
         renderWithComponents: function (config) {
             console.log('init', config)
