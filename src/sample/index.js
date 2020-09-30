@@ -35,23 +35,23 @@
             }
         }, {
             tag: 'ul',
+            method_renderDelayedNumber : function (node, text, secs) {
+                setTimeout(function () {
+                    hokuto.render({
+                        target: node,
+                        tag: 'li',
+                        text: text,
+                    })
+                }, secs)
+            },
             cb: function () {
                 var self = this,
-                    node = self.node,
-                    renderDelayedNumber = function (text, secs) {
-                        setTimeout(function () {
-                            hokuto.render({
-                                target: node,
-                                tag: 'li',
-                                text: text,
-                            })
-                        }, secs)
-                    }
+                    node = self.node;
                 setTimeout(function () {
-                    renderDelayedNumber('three', 500)
-                    renderDelayedNumber('two', 1000)
-                    renderDelayedNumber('one', 1500)
-                    renderDelayedNumber('woops!... there is zero!', 2000)
+                    self.renderDelayedNumber(node, 'three', 500)
+                    self.renderDelayedNumber(node, 'two', 1000)
+                    self.renderDelayedNumber(node, 'one', 1500)
+                    self.renderDelayedNumber(node, 'woops!... there is zero!', 2000)
                 }, 3000)
                 self.done();
             }

@@ -116,7 +116,6 @@ Unode.prototype.render = function () {
     if (this.rendered) {
         this.cleanup();
         this.init();
-        // console.log('render', +new Date)
         this.render();
     } else {
         this.toSolve > 0
