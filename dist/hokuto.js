@@ -261,14 +261,14 @@ var hokuto = (function () {
         this.parentNode = 'parentNode' in config ? config.parentNode : this;
         this.resolve = function () {};
         this.reset = function () {};
-        this.init();
         this.setMethods(); //just once
+        this.init();
     }
     
     Unode.prototype.init = function () {
         this.rendered = false;
         // this.prepareSolve();
-        this.setCall('Text,Html,Style,Attrs,Data,Cbs,Children');
+        this.setCall('Text,Html,Style,Attrs,Data,Children,Cbs');
     };
     
     Unode.prototype.setCall = function (fns) {
@@ -330,26 +330,37 @@ var hokuto = (function () {
             : this.solve.bind(this);
     };
     
-    Unode.prototype.setStyle = function () {
+    Unode.prototype.setStyle = function (style) {
+        if (style) {
+            this.config.style = Object.assign(this.config.style, style)
+        }
         this.config.style && utils.setStyle(this.node, this.config.style);
     };
     
-    Unode.prototype.setAttrs = function () {
+    Unode.prototype.setAttrs = function (attrs) {
+        if (attrs) {
+            this.config.attrs = Object.assign(this.config.attrs, attrs)
+        }
         this.config.attrs && utils.setAttrs(this.node, this.config.attrs);
     };
     
-    Unode.prototype.setData = function () {
+    Unode.prototype.setData = function (data) {
+        if (data) {
+            this.config.dataSet = Object.assign(this.config.dataSet, data)
+        }
         if (this.config.dataSet) {
             this.dataSet = this.config.dataSet;
             utils.setDataSet(this.node, this.dataSet);
         }
     };
     
-    Unode.prototype.setText = function () {
+    Unode.prototype.setText = function (text) {
+        if (typeof text !== 'undefined') this.config.text = text;
         typeof this.config.text !== 'undefined' && utils.setText(this.node, this.config.text);
     };
     
-    Unode.prototype.setHtml = function () {
+    Unode.prototype.setHtml = function (html) {
+        if (typeof html !== 'undefined') this.config.html = html;
         typeof this.config.html !== 'undefined' && utils.setHtml(this.node, this.config.html);
     };
     
@@ -368,20 +379,27 @@ var hokuto = (function () {
                 self.resolve = resolve;
                 self.reject = reject;
             });
-        if (this.rendered) {
-            this.cleanup();
-            this.init();
-            this.render();
-        } else {
-            this.toSolve > 0
-                ? this.children.forEach(function (child) {
+        // if (this.rendered) {
+            // this.cleanup();
+            // this.init();
+            this.rendered = false
+            // this.render();
+        // } else {
+            if (this.toSolve > 0) {
+                this.children.forEach(function (child) {
                     child.render().then(function () {
                         self.node.appendChild(child.node)
                         self.cb();
                     });
-                })
-                : this.cb();
-        }
+                });
+            } else {
+                this.rendered = true;
+                this.cb();
+            }
+            
+                
+                
+        // }
         return ret;
     };;
     

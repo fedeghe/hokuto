@@ -7,34 +7,30 @@
                     return Math.random() > 0.5 ? 1 : -1;
                 }).slice(0,6).join('');
             },
-            method_rndColor2: function () {
+            method_rndRGB: function () {
                 return [
                     'red', 'green', 'blue'
                 ][Math.floor(Math.random() * 3)]
             },
-            
-            method_rndGreen: function () {
-                return '#00' + [0,1,2,3,4,5].sort(function (a,b) {
-                    return Math.random() > 0.5 ? 1 : -1;
-                }).slice(0,2).join('')+'00';
+            method_rnd: function () {
+                return ~~(10 * Math.random())
             },
             
             children: [{
                 tag: 'table',
-                style: {
-                    width:'100%'
-                },
                 data: {
-                    rows: 50,
-                    cols: 50
+                    rows: 100,
+                    cols: 7
                 },
                 children: function () {
                     // console.log('table ctx', this);
+                    
                     return new Array(this.data.rows).fill().map(function (_, i) {
                         return {
                             tag: 'tr',
                             children: function () {
                                 // console.log('tr ctx', this);
+                                var self = this
                                 return new Array(this.parentNode.data.cols).fill().map(function (_, j) {
                                     return {
                                         tag: 'td',
@@ -45,20 +41,28 @@
                                             textAlign: 'center',
                                             fontSize:'18px'
                                         },
-                                        // html: '[' + i + ', '+ j + ']',
+                                        html: self.rootNode.rnd(),
+                                        
                                         cb: function () {
+                                            // console.log('td', this)
                                             // perfMonitor.startProfile('a');
                                             var self = this;
+                                            self.done();
                                             clearTimeout(self.data.to);
                                             self.data.to = setTimeout(function () {
-                                                self.config.html = ~~(10 * Math.random());
+                                                
+                                                self.setHtml(self.rootNode.rnd());
                                                 // self.node.style.backgroundColor = self.rootNode.rndColor2();
+                                                self.setStyle({
+                                                    // backgroundColor: self.rootNode.rndRGB(),
+                                                    color: self.rootNode.rndRGB()
+                                                });
                                                 self.render();
-                                            }, 100);
+                                            }, 0);
                                             // }, 100 + ~~(Math.random()*500));
-                                            self.done();
                                             // perfMonitor.endProfile('a');
                                         }
+                                        
                                     }
                                 })          
                             }
