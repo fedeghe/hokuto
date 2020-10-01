@@ -128,26 +128,17 @@ Unode.prototype.render = function () {
             self.resolve = resolve;
             self.reject = reject;
         });
-    // if (this.rendered) {
-        // this.cleanup();
-        // this.init();
+
         this.rendered = false
-        // this.render();
-    // } else {
-        if (this.toSolve > 0) {
-            this.children.forEach(function (child) {
-                child.render().then(function () {
-                    self.node.appendChild(child.node)
-                    self.cb();
-                });
-            });
-        } else {
-            this.rendered = true;
-            this.cb();
-        }
         
-            
-            
-    // }
+        this.toSolve > 0
+        ? this.children.forEach(function (child) {
+            child.render().then(function () {
+                self.node.appendChild(child.node);
+                self.cb();
+            });
+        })
+        : this.rendered = true, this.cb();
+        
     return ret;
 };
