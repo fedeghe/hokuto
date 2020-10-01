@@ -48,8 +48,7 @@
                                             // perfMonitor.startProfile('a');
                                             var self = this;
                                             self.done();
-                                            clearTimeout(self.data.to);
-                                            self.data.to = setTimeout(function () {
+                                            var id = requestAnimationFrame(function () {
                                                 
                                                 self.setHtml(self.rootNode.rnd());
                                                 // self.node.style.backgroundColor = self.rootNode.rndColor2();
@@ -58,11 +57,9 @@
                                                     color: self.rootNode.rndRGB()
                                                 });
                                                 self.render();
-                                            }, 0);
-                                            // }, 100 + ~~(Math.random()*500));
-                                            // perfMonitor.endProfile('a');
+                                                cancelAnimationFrame(id)
+                                            });
                                         }
-                                        
                                     }
                                 })          
                             }
