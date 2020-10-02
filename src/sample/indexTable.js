@@ -13,14 +13,14 @@
                 ][Math.floor(Math.random() * 3)]
             },
             method_rnd: function () {
-                return ~~(10 * Math.random())
+                return 1e3*Math.random().toFixed(3)
             },
             
             children: [{
                 tag: 'table',
                 data: {
-                    rows: 100,
-                    cols: 7
+                    rows: 3, // 100,
+                    cols: 3  // 7
                 },
                 children: function () {
                     // console.log('table ctx', this);
@@ -36,29 +36,48 @@
                                         tag: 'td',
                                         style:{
                                             minWidth:'20px',
-                                            width:'20px',
+                                            width:'60px',
                                             height:'20px',
                                             textAlign: 'center',
                                             fontSize:'18px'
                                         },
                                         html: self.rootNode.rnd(),
-                                        
+                                        onClick: function (e) {
+                                            var self = this
+                                            console.log(this.node.innerHTML)
+                                            self.setHtml(self.rootNode.rnd());
+                                            self.setStyle({
+                                                backgroundColor: self.rootNode.rndColor(),
+                                                color: self.rootNode.rndRGB()
+                                            });
+                                            console.log(e);
+                                            this.killEvent(e);
+                                            this.render();
+                                        },
                                         cb: function () {
-                                            // console.log('td', this)
-                                            // perfMonitor.startProfile('a');
                                             var self = this;
                                             self.done();
-                                            var id = requestAnimationFrame(function () {
+
+                                            // var id = requestAnimationFrame(function () {
+                                            //     self.setHtml(self.rootNode.rnd());
+                                            //     self.setStyle({
+                                            //         backgroundColor: self.rootNode.rndColor(),
+                                            //         color: self.rootNode.rndRGB()
+                                            //     });
+                                            //     cancelAnimationFrame(id)
+                                            //     self.render();
+                                            // });
+
+                                            // setTimeout(function () {
                                                 
-                                                self.setHtml(self.rootNode.rnd());
-                                                // self.node.style.backgroundColor = self.rootNode.rndColor2();
-                                                self.setStyle({
-                                                    // backgroundColor: self.rootNode.rndRGB(),
-                                                    color: self.rootNode.rndRGB()
-                                                });
-                                                self.render();
-                                                cancelAnimationFrame(id)
-                                            });
+                                            //     self.setHtml(self.rootNode.rnd());
+                                            //     // self.node.style.backgroundColor = self.rootNode.rndColor2();
+                                            //     self.setStyle({
+                                            //         backgroundColor: self.rootNode.rndColor(),
+                                            //         color: self.rootNode.rndRGB()
+                                            //     });
+                                            //     self.render();
+                                            // }, 15)
                                         }
                                     }
                                 })          
@@ -68,6 +87,8 @@
                 }
             }]
         };
-    hokuto.render(config)
+    hokuto.render(config).then(function (t) {
+        console.log(t)
+    })
     
 })();

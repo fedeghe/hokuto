@@ -1,10 +1,572 @@
-'use strict';
-/*
+var hokuto = (function () {
+    // only IE
+    /*
+    [Malta] ./../node_modules/balle/source/index.js
+    */
+    Balle.roll = function (els, name, inst) {
+        els.forEach(function (func) {
+            func(inst[name]);
+        }, inst);
+    };
+    
+    function Balle(executor) {
+        var self = this,
+            done = false;
+        this.status = Balle.STATUSES.PENDING;
+        this.value = null;
+        this.cause = null;
+        this.resolvers = this.resolvers || [];
+        this.rejectors = this.rejectors || [];
+        this.finalizers = this.finalizers || [];
+        executor = executor || function () {};
+    
+        try {
+            executor(
+                // SOLVER
+                function (value) {
+                    if (done || self.status !== Balle.STATUSES.PENDING) return;
+                    done = true;
+                    self.status = Balle.STATUSES.FULFILLED;
+                    self.value = value;
+                    Balle.roll(self.resolvers, 'value', self);
+                    Balle.roll(self.finalizers, 'value', self);
+                },
+                // REJECTOR
+                function (cause) {
+                    if (done || self.status !== Balle.STATUSES.PENDING) return;
+                    done = true;
+                    self.status = Balle.STATUSES.REJECTED;
+                    self.cause = cause;
+                    Balle.roll(self.rejectors, 'cause', self);
+                    Balle.roll(self.finalizers, 'cause', self);
+                }
+            );
+        } catch (e) {
+            return Balle.reject(e.message);
+        }
+        return this;
+    }
+    
+    Balle.prototype.resolve = function (value) {
+        return Balle.call(this, function (res, rej) {
+            return res(value);
+        });
+    };
+    
+    Balle.prototype.reject = function (value) {
+        return Balle.call(this, function (res, rej) {
+            return rej(value);
+        });
+    };
+    
+    Balle.prototype.launch = function (executor) {
+        return Balle.call(this, executor);
+    };
+    
+    Balle.prototype.then = function (res, rej) {
+        switch (this.status) {
+            case Balle.STATUSES.REJECTED:
+                Balle.roll(this.rejectors, 'cause', this);
+                break;
+            case Balle.STATUSES.PENDING:
+                this.resolvers.push(res);
+                rej && this.rejectors.push(rej);
+                break;
+            case Balle.STATUSES.FULFILLED:
+                res(this.value);
+                break;
+            default: break;
+        }
+        return this;
+    };
+    
+    Balle.prototype.catch = function (rej) {
+        switch (this.status) {
+            case Balle.STATUSES.PENDING:
+                this.rejectors.push(rej);
+                break;
+            case Balle.STATUSES.REJECTED:
+                return rej.call(this, this.cause);
+            default: break;
+        }
+        return this;
+    };
+    
+    Balle.prototype.finally = function (cb) {
+        this.finalizers.push(cb);
+        this.status !== Balle.STATUSES.PENDING
+        && Balle.roll(this.finalizers, 'value', this);
+        return this;
+    };
+    
+    /**
+     * STATIC section
+     */
+    Balle.STATUSES = {
+        PENDING: 'PENDING',
+        FULFILLED: 'FULFILLED',
+        REJECTED: 'REJECTED'
+    };
+    
+    Balle._isFunc = function (f) { return typeof f === 'function'; };
+    
+    Balle._isIterable = function (obj) {
+        if (obj == null) { return false; }
+        return Balle._isFunc(obj[Symbol.iterator]);
+    };
+    
+    // factory
+    Balle.one = function (exec) { return new Balle(exec); };
+    
+    Balle.all = function (pros) {
+        if (!Balle._isIterable(pros)) {
+            return Balle.reject('Balle.all acceps an Iterable Promise only');
+        }
+        var results = [],
+            l = pros.length,
+            solN = 0;
+    
+        return new Balle(function (resolve, reject) {
+            pros.forEach(function (pro, i) {
+                pro.status == 'REJECTED'
+                    && reject(pro.cause);
+                pro.then(function (v) {
+                    solN++;
+                    results[i] = v;
+                    solN == l && resolve(results)
+                }).catch(reject)
+            });
+        });
+    };
+    
+    Balle.race = function (pros) {
+        if (!Balle._isIterable(pros)) {
+            return Balle.reject('Balle.race acceps an Iterable Promise only');
+        }
+        return new Balle(function (resolve, reject) {
+            pros.forEach(function (pro) { pro.then(resolve).catch(reject) });
+        });
+    };
+    
+    Balle.chain = function (pros) {
+        if (!Balle._isIterable(pros)) {
+            return Balle.reject('Balle.chain acceps an Iterable Promise only');
+        }
+        var l = pros.length;
+        return new Balle(function (res, rej) {
+            (function chain(index, r) {
+                return index === l
+                    ? res(r)
+                    : pros[index](r)
+                        .then(function (r) {
+                            chain(++index, r);
+                        }).catch(function (r) {
+                            rej(r);
+                        });
+            })(0);
+        });
+    };
+    
+    Balle.reject = function (cause) {
+        return new Balle(function (s, r) { return r(cause); });
+    };
+    
+    Balle.resolve = function (mix) {
+        return new Balle(function (res, rej) {
+            mix instanceof Balle
+                ? mix.then(res).catch(rej)
+                : res(mix);
+        });
+    };
+    
+    (typeof exports === 'object') && (module.exports = Balle);
+    ;
 
-HOKUTO
+    /*
+    [Malta] utils.js
+    */
+    
+    
+    var utils = (function (W) {
+        var _U_ = 'undefined',
+            noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
+        
+        function setStyle(node, styles) {
+            var tmp;
+            if (typeof styles !== _U_) {
+                for (tmp in styles) {
+                    if (tmp === 'float') {
+                        node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
+                    } else {
+                        node.style[tmp] = styles[tmp];
+                    }
+                }
+            }
+        }
+    
+        function setAttrs(node, attrs) {
+            if (typeof attrs !== _U_) {
+                for (var tmp in attrs) {
+                    if (noAttrs.indexOf(tmp) < 0)
+                        node.setAttribute(tmp, attrs[tmp]);
+                }
+            }
+        }
+        function setData(node, data) {
+            if (typeof data !== _U_) {
+                for (var tmp in data) {
+                    node.dataset[tmp] = data[tmp];
+                }
+            }
+        }
+        function filterHtml(html) {return '' + html;}
+        function setText(node, text) {node.appendChild(document.createTextNode(text));}
+        function setHtml(node, html) {node.innerHTML = filterHtml(html);}
+        function isUnode(n) {return n instanceof Unode;}
+    
+    
+    
+    
+        
+            var _ = {
+                events: {
+                    getElementDeterminant: function (el) {
+                        var tname = el.tagName;
+                        return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
+                    },
+                    getElementEvent: function (el) {
+                        var tname = el.tagName;
+                        return (tname.match(/input|textarea/i)) ? 'input' : 'change';
+                    }
+                },
+                unhandlers: {}
+            };
+        
+            function saveUnhandler(el, f) {
+                _.unhandlers[el] = _.unhandlers[el] || [];
+                _.unhandlers[el].push(f);
+            }
+            function unhandle(el) {
+                _.unhandlers[el] && _.unhandlers[el].forEach(function (unhandler) {
+                    unhandler();
+                });
+                _.unhandlers = [];
+            }
+            var on= (function () {
+                    function unhandle (el, evnt, cb) {
+                        saveUnhandler(el, function () {
+                            off(el, evnt, cb);
+                        });
+                    }
+                    if ('addEventListener' in W) {
+                        return function (el, evnt, cb) {
+                            el.addEventListener.apply(el, [evnt, cb, false]);
+                            unhandle(el, evnt, cb);
+                        };
+                    } else if ('attachEvent' in W) {
+                        return function (el, evnt, cb) {
+                            el.attachEvent.apply(el, ['on' + evnt, cb]);
+                            unhandle(el, evnt, cb);
+                        };
+                    } else {
+                        return function () {
+                            throw new Error('No straight way to bind an event');
+                        };
+                    }
+                })(),
+                off = (function () {
+                    if ('removeEventListener' in W) {
+                        return function (el, evnt, cb) {
+                            el.removeEventListener(evnt, cb);
+                        };
+                    } else if ('detachEvent' in W) {
+                        return function (el, evnt, cb) {
+                            el.detachEvent.apply(el, ['on' + evnt, cb]);
+                        };
+                    } else {
+                        return function () {
+                            throw new Error('No straight way to unbind an event');
+                        };
+                    }
+                })(),
+        
+                kill = function (e) {
+                    if (!e) {
+                        e = W.event;
+                        e.cancelBubble = true;
+                        e.returnValue = false;
+                    }
+                    'stopPropagation' in e && e.stopPropagation() && e.preventDefault();
+                    return false;
+                },
+        
+                eventTarget = function (e) {
+                    e = e || W.event;
+                    var targetElement = e.currentTarget || (typeof e.target !== _U_) ? e.target : e.srcElement;
+                    if (!targetElement) {
+                        return false;
+                    }
+                    while (targetElement.nodeType === 3 && targetElement.parentNode !== null) {
+                        targetElement = targetElement.parentNode;
+                    }
+                    return targetElement;
+                },
+        
+                ready = (function () {
+                    var cb = [],
+                        i,
+                        l,
+                        readyStateCheckInterval = setInterval(function () {
+                            if (document.readyState === 'complete') {
+                                clearInterval(readyStateCheckInterval);
+                                for (i = 0, l = cb.length; i < l; i++) {
+                                    cb[i].call(this);
+                                }
+                            }
+                        }, 10);
+                    return function (c) {
+                        if (document.readyState === 'complete') {
+                            c.call(this);
+                        } else {
+                            cb.push(c);
+                        }
+                    };
+                })();
+            
+        
+        
+    
+    
+    
+    
+    
+    
+    
+    
+        return {
+            on: on,
+            off: off,
+            kill: kill,
+            eventTaget: eventTarget,
+            ready: ready,
+            isUnode: isUnode,
+            setText: setText,
+            setHtml: setHtml,
+            setStyle: setStyle,
+            setAttrs: setAttrs,
+            setData: setData
+        };
+    })(window);
+    ;
+    
+    /*
+    [Malta] Unode.js
+    */
+    function Unode(config) {
+        this.config = config;
+        this.parent = config.target;
+        this.node = document.createElement(config.tag || 'div');
+        this.rendered = false;
+        this.toSolve = 0;
+        this.data = 'data' in config ? config.data : {};
+        this.dataSet = {};
+        this.rootNode = 'rootNode' in config ? config.rootNode : this;
+        this.parentNode = 'parentNode' in config ? config.parentNode : this;
+        this.resolve = function () {};
+        this.reset = function () {};
+        this.setMethods(); //just once
+        this.init();
+    }
+    
+    Unode.prototype.init = function () {
+        this.rendered = false;
+        // this.prepareSolve();
+        this.setCall('Events,Text,Html,Style,Attrs,Data,Children,Cbs');
+    };
+    
+    Unode.prototype.setCall = function (fns) {
+        var self = this;
+        fns.split(/,/).forEach(function (f) {
+            self['set' + f]()
+        })
+    };
+    
+    Unode.prototype.cleanup = function () {
+        this.node.innerHTML = '';
+        this.node.parentNode.removeChild(this.node);
+    };
+    
+    Unode.prototype.setChildren = function () {
+        var self = this,
+            _children = [];
+    
+        if ('children' in this.config) {
+            var common = {
+                target: self.node,
+                rootNode: self.rootNode,
+                parentNode: self
+            };
+            if (typeof this.config.children === 'function') {
+                _children = this.config.children.call(this).map(function (child) {
+                    return new Unode(Object.assign({}, child, common));
+                });
+            } else {
+                _children = this.config.children.map(function (child) {
+                    return new Unode(Object.assign({}, child, common));
+                });
+            }
+        }
+        this.toSolve = _children.length;
+        this.children = _children;
+    };
+    
+    Unode.prototype.setMethods = function () {
+        var self = this,
+            keys = Object.keys(this.config),
+            tmp;
+        keys.forEach(function (k) {
+            tmp = k.match(/^method_(\w*)$/i);
+            if (tmp) {
+                if (!(tmp[1] in self)) {
+                    self[tmp[1]] = self.config[tmp[0]].bind(self);
+                } else {
+                    console.warn('[WARNING] : method `' + tmp[0] + ' cant be added, would override existing element.' )
+                }
+            }
+        });
+        return this;
+    };
+    
+    Unode.prototype.setCbs = function () {
+        this.cb = ('cb' in this.config && typeof this.config.cb === 'function')
+            ? this.config.cb.bind(this)
+            : this.solve.bind(this);
+    };
+    
+    Unode.prototype.setStyle = function (style) {
+        if (style) {
+            this.config.style = Object.assign(this.config.style, style)
+        }
+        this.config.style && utils.setStyle(this.node, this.config.style);
+    };
+    
+    Unode.prototype.setAttrs = function (attrs) {
+        if (attrs) {
+            this.config.attrs = Object.assign(this.config.attrs, attrs)
+        }
+        this.config.attrs && utils.setAttrs(this.node, this.config.attrs);
+    };
+    
+    Unode.prototype.setData = function (data) {
+        if (data) {
+            this.config.dataSet = Object.assign(this.config.dataSet, data)
+        }
+        if (this.config.dataSet) {
+            this.dataSet = this.config.dataSet;
+            utils.setDataSet(this.node, this.dataSet);
+        }
+    };
+    
+    Unode.prototype.setText = function (text) {
+        if (typeof text !== 'undefined') this.config.text = text;
+        typeof this.config.text !== 'undefined' && utils.setText(this.node, this.config.text);
+    };
+    
+    Unode.prototype.setHtml = function (html) {
+        if (typeof html !== 'undefined') this.config.html = html;
+        typeof this.config.html !== 'undefined' && utils.setHtml(this.node, this.config.html);
+    };
+    
+    
+    Unode.prototype.killEvent = function (e) {
+        utils.kill(e);
+    };
+    Unode.prototype.setEvents = function () {
+        var i,
+            self = this,
+            mat, ev;
+    
+        for (i in self.config) {
+            mat = i.match(/^on([A-Z]{1}[a-z]*)$/);
+            if (mat) {
+                ev = mat[1].toLowerCase();
+                (function (eventName) {
+                    utils.on(self.node, ev, function (e) {
+                        self.config[eventName].call(self, e);
+                    });
+                })(i);
+            }
+        }
+        return this;
+    };
+    
+    Unode.prototype.done =
+    Unode.prototype.solve = function () {
+        this.toSolve--;
+        if (this.toSolve <= 0) {
+            this.parent.appendChild(this.node)
+            this.rendered = true;
+            this.resolve(this);
+        }
+    };
+    Unode.prototype.render = function () {
+        var self = this,
+            ret = new Balle(function (resolve, reject) {
+                self.resolve = resolve;
+                self.reject = reject;
+            });
+    
+            this.rendered = false
+    
+            this.toSolve > 0
+            ? this.children.forEach(function (child) {
+                child.render().then(function () {
+                    self.node.appendChild(child.node);
+                    self.cb();
+                });
+            })
+            : this.rendered = true, this.cb();
+            
+        return ret;
+    };;
+    
+    /*
+    [Malta] engy.js
+    */
+    var Engy = {};
+    Engy.solve = function(config) {
+        return {
+            then: function (f) {
+                return f(config)
+            }
+        }
+    }
+    
+    ;
 
-version 0.0.2 ~6KB
-build #246 on 2/10/2020
-with Malta 4.1.25
-*/
-var hokuto=function(){function t(e){var n=this,i=!1;this.status=t.STATUSES.PENDING,this.value=null,this.cause=null,this.resolvers=this.resolvers||[],this.rejectors=this.rejectors||[],this.finalizers=this.finalizers||[],e=e||function(){};try{e(function(e){i||n.status!==t.STATUSES.PENDING||(i=!0,n.status=t.STATUSES.FULFILLED,n.value=e,t.roll(n.resolvers,"value",n),t.roll(n.finalizers,"value",n))},function(e){i||n.status!==t.STATUSES.PENDING||(i=!0,n.status=t.STATUSES.REJECTED,n.cause=e,t.roll(n.rejectors,"cause",n),t.roll(n.finalizers,"cause",n))})}catch(e){return t.reject(e.message)}return this}function e(t){this.config=t,this.parent=t.target,this.node=document.createElement(t.tag||"div"),this.rendered=!1,this.toSolve=0,this.data="data"in t?t.data:{},this.dataSet={},this.rootNode="rootNode"in t?t.rootNode:this,this.parentNode="parentNode"in t?t.parentNode:this,this.resolve=function(){},this.reset=function(){},this.setMethods(),this.init()}t.roll=function(t,e,n){t.forEach(function(t){t(n[e])},n)},t.prototype.resolve=function(e){return t.call(this,function(t,n){return t(e)})},t.prototype.reject=function(e){return t.call(this,function(t,n){return n(e)})},t.prototype.launch=function(e){return t.call(this,e)},t.prototype.then=function(e,n){switch(this.status){case t.STATUSES.REJECTED:t.roll(this.rejectors,"cause",this);break;case t.STATUSES.PENDING:this.resolvers.push(e),n&&this.rejectors.push(n);break;case t.STATUSES.FULFILLED:e(this.value)}return this},t.prototype.catch=function(e){switch(this.status){case t.STATUSES.PENDING:this.rejectors.push(e);break;case t.STATUSES.REJECTED:return e.call(this,this.cause)}return this},t.prototype.finally=function(e){return this.finalizers.push(e),this.status!==t.STATUSES.PENDING&&t.roll(this.finalizers,"value",this),this},t.STATUSES={PENDING:"PENDING",FULFILLED:"FULFILLED",REJECTED:"REJECTED"},t._isFunc=function(t){return"function"==typeof t},t._isIterable=function(e){return null!=e&&t._isFunc(e[Symbol.iterator])},t.one=function(e){return new t(e)},t.all=function(e){if(!t._isIterable(e))return t.reject("Balle.all acceps an Iterable Promise only");var n=[],i=e.length,o=0;return new t(function(t,s){e.forEach(function(e,r){"REJECTED"==e.status&&s(e.cause),e.then(function(e){o++,n[r]=e,o==i&&t(n)}).catch(s)})})},t.race=function(e){return t._isIterable(e)?new t(function(t,n){e.forEach(function(e){e.then(t).catch(n)})}):t.reject("Balle.race acceps an Iterable Promise only")},t.chain=function(e){if(!t._isIterable(e))return t.reject("Balle.chain acceps an Iterable Promise only");var n=e.length;return new t(function(t,i){!function o(s,r){return s===n?t(r):e[s](r).then(function(t){o(++s,t)}).catch(function(t){i(t)})}(0)})},t.reject=function(e){return new t(function(t,n){return n(e)})},t.resolve=function(e){return new t(function(n,i){e instanceof t?e.then(n).catch(i):n(e)})},"object"==typeof exports&&(module.exports=t);var n=function(){function t(t,e){var n;if(typeof e!==c)for(n in e)"float"===n?t.style[n.replace(/^float$/i,"cssFloat")]=e[n]:t.style[n]=e[n]}function e(t,e){if(typeof e!==c)for(var n in e)a.indexOf(n)<0&&t.setAttribute(n,e[n])}function n(t,e){if(typeof e!==c)for(var n in e)t.dataset[n]=e[n]}function i(t){return""+t}function o(t,e){t.appendChild(document.createTextNode(e))}function s(t,e){t.innerHTML=i(e)}function r(t){return t instanceof Wnode}var c="undefined",a=["innerHTML","style","dataset","className"];return{isWnode:r,setText:o,setHtml:s,setStyle:t,setAttrs:e,setData:n}}();return e.prototype.init=function(){this.rendered=!1,this.setCall("Text,Html,Style,Attrs,Data,Children,Cbs")},e.prototype.setCall=function(t){var e=this;t.split(/,/).forEach(function(t){e["set"+t]()})},e.prototype.cleanup=function(){this.node.innerHTML="",this.node.parentNode.removeChild(this.node)},e.prototype.setChildren=function(){var t=this,n=[];if("children"in this.config){var i={target:t.node,rootNode:t.rootNode,parentNode:t};n="function"==typeof this.config.children?this.config.children.call(this).map(function(t){return new e(Object.assign({},t,i))}):this.config.children.map(function(t){return new e(Object.assign({},t,i))})}this.toSolve=n.length,this.children=n},e.prototype.setMethods=function(){var t,e=this,n=Object.keys(this.config);return n.forEach(function(n){(t=n.match(/^method_(\w*)$/i))&&(t[1]in e?console.warn("[WARNING] : method `"+t[0]+" cant be added, would override existing element."):e[t[1]]=e.config[t[0]].bind(e))}),this},e.prototype.setCbs=function(){this.cb="cb"in this.config&&"function"==typeof this.config.cb?this.config.cb.bind(this):this.solve.bind(this)},e.prototype.setStyle=function(t){t&&(this.config.style=Object.assign(this.config.style,t)),this.config.style&&n.setStyle(this.node,this.config.style)},e.prototype.setAttrs=function(t){t&&(this.config.attrs=Object.assign(this.config.attrs,t)),this.config.attrs&&n.setAttrs(this.node,this.config.attrs)},e.prototype.setData=function(t){t&&(this.config.dataSet=Object.assign(this.config.dataSet,t)),this.config.dataSet&&(this.dataSet=this.config.dataSet,n.setDataSet(this.node,this.dataSet))},e.prototype.setText=function(t){void 0!==t&&(this.config.text=t),void 0!==this.config.text&&n.setText(this.node,this.config.text)},e.prototype.setHtml=function(t){void 0!==t&&(this.config.html=t),void 0!==this.config.html&&n.setHtml(this.node,this.config.html)},e.prototype.done=e.prototype.solve=function(){--this.toSolve<=0&&(this.parent.appendChild(this.node),this.rendered=!0,this.resolve())},e.prototype.render=function(){var e=this,n=new t(function(t,n){e.resolve=t,e.reject=n});return this.rendered=!1,this.toSolve>0?this.children.forEach(function(t){t.render().then(function(){e.node.appendChild(t.node),e.cb()})}):this.rendered=!0,this.cb(),n},{}.solve=function(t){return{then:function(e){return e(t)}}},{render:function(t){var n=t.target,i=document.createDocumentFragment(),o=new e(Object.assign({},t,{target:i}));return o.render().then(function(){n.appendChild(i)}),o},renderWithComponents:function(t){console.log("init",t)}}}();
+    return {
+        render: function (config) {
+            var target = config.target,
+                fragment = document.createDocumentFragment(),
+                wn = new Unode(
+                    Object.assign(
+                        {},
+                        config,
+                        {
+                            target: fragment,
+                        }
+                    )
+                );
+            var n = wn.render().then(function (n) {
+                target.appendChild(fragment)
+                // console.log('solved', n)
+                return n
+            });
+            return n;
+        },
+        renderWithComponents: function (config) {
+            console.log('init', config)
+            // return Engy.solve(config).then(render)
+        }
+    }
+})();

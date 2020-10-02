@@ -17,7 +17,7 @@ function Unode(config) {
 Unode.prototype.init = function () {
     this.rendered = false;
     // this.prepareSolve();
-    this.setCall('Text,Html,Style,Attrs,Data,Children,Cbs');
+    this.setCall('Events,Text,Html,Style,Attrs,Data,Children,Cbs');
 };
 
 Unode.prototype.setCall = function (fns) {
@@ -113,13 +113,36 @@ Unode.prototype.setHtml = function (html) {
     typeof this.config.html !== 'undefined' && utils.setHtml(this.node, this.config.html);
 };
 
+
+Unode.prototype.killEvent = function (e) {
+    utils.kill(e);
+};
+Unode.prototype.setEvents = function () {
+    var i,
+        self = this,
+        mat, ev;
+
+    for (i in self.config) {
+        mat = i.match(/^on([A-Z]{1}[a-z]*)$/);
+        if (mat) {
+            ev = mat[1].toLowerCase();
+            (function (eventName) {
+                utils.on(self.node, ev, function (e) {
+                    self.config[eventName].call(self, e);
+                });
+            })(i);
+        }
+    }
+    return this;
+};
+
 Unode.prototype.done =
 Unode.prototype.solve = function () {
     this.toSolve--;
     if (this.toSolve <= 0) {
         this.parent.appendChild(this.node)
         this.rendered = true;
-        this.resolve();
+        this.resolve(this);
     }
 };
 Unode.prototype.render = function () {
@@ -130,7 +153,7 @@ Unode.prototype.render = function () {
         });
 
         this.rendered = false
-        
+
         this.toSolve > 0
         ? this.children.forEach(function (child) {
             child.render().then(function () {

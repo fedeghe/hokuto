@@ -21,10 +21,12 @@ var hokuto = (function () {
                         }
                     )
                 );
-            wn.render().then(function () {
+            var n = wn.render().then(function (n) {
                 target.appendChild(fragment)
+                // console.log('solved', n)
+                return n
             });
-            return wn;
+            return n;
         },
         renderWithComponents: function (config) {
             console.log('init', config)
