@@ -109,7 +109,8 @@ var utils = (function (W) {
                     e.cancelBubble = true;
                     e.returnValue = false;
                 }
-                'stopPropagation' in e && e.stopPropagation() && e.preventDefault();
+                'stopPropagation' in e && e.stopPropagation();
+                e.preventDefault();
                 return false;
             },
     
@@ -145,16 +146,6 @@ var utils = (function (W) {
                     }
                 };
             })();
-        
-    
-    
-
-
-
-
-
-
-
 
     return {
         on: on,

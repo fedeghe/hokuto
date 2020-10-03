@@ -42,17 +42,25 @@
                                             fontSize:'18px'
                                         },
                                         html: self.rootNode.rnd(),
+                                        onMouseover: function () {
+                                            var self = this;
+                                            // debugger;
+                                            // console.log(this.node.innerHTML)
+                                            self.setStyle({
+                                                backgroundColor: 'white',
+                                            })
+                                        },
                                         onClick: function (e) {
-                                            var self = this
-                                            console.log(this.node.innerHTML)
+                                            var self = this;
+                                            // debugger;
+                                            // console.log(this.node.innerHTML)
                                             self.setHtml(self.rootNode.rnd());
                                             self.setStyle({
                                                 backgroundColor: self.rootNode.rndColor(),
                                                 color: self.rootNode.rndRGB()
                                             });
-                                            console.log(e);
                                             this.killEvent(e);
-                                            this.render();
+                                            // this.render();
                                         },
                                         cb: function () {
                                             var self = this;
