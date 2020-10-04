@@ -18,6 +18,7 @@
             
             children: [{
                 tag: 'table',
+                ref: 'tab1',
                 data: {
                     rows: 3, // 100,
                     cols: 3  // 7
@@ -42,14 +43,19 @@
                                             fontSize:'18px'
                                         },
                                         html: self.rootNode.rnd(),
-                                        onMouseover: function () {
-                                            var self = this;
-                                            // debugger;
-                                            // console.log(this.node.innerHTML)
-                                            self.setStyle({
-                                                backgroundColor: 'white',
-                                            })
-                                        },
+                                        // onMouseover: function () {
+                                        //     var self = this;
+                                        //     // debugger;
+                                        //     // console.log(this.node.innerHTML)
+                                        //     self.setStyle({
+                                        //         backgroundColor: 'gray',
+                                        //     });
+                                        // },
+                                        // onMouseout: function () {
+                                        //     this.setStyle({
+                                        //         backgroundColor: 'black',
+                                        //     });
+                                        // },
                                         onClick: function (e) {
                                             var self = this;
                                             // debugger;
@@ -60,6 +66,11 @@
                                                 color: self.rootNode.rndRGB()
                                             });
                                             this.killEvent(e);
+                                            var table = self.getNode('tab1')
+                                            // console.log(table)
+                                            table.setStyle({
+                                                backgroundColor: self.rootNode.rndColor()
+                                            })
                                             // this.render();
                                         },
                                         cb: function () {

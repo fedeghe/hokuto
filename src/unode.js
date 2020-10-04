@@ -1,5 +1,6 @@
 function Unode(config) {
     this.config = config;
+    this.map = config.map;
     this.parent = config.target;
     this.node = document.createElement(config.tag || 'div');
     this.rendered = false;
@@ -17,7 +18,7 @@ function Unode(config) {
 Unode.prototype.init = function () {
     this.rendered = false;
     // this.prepareSolve();
-    this.setCall('Events,Text,Html,Style,Attrs,Data,Children,Cbs');
+    this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs');
 };
 
 Unode.prototype.setCall = function (fns) {
@@ -40,6 +41,7 @@ Unode.prototype.setChildren = function () {
         var common = {
             target: self.node,
             rootNode: self.rootNode,
+            map: self.map,
             parentNode: self
         };
         if (typeof this.config.children === 'function') {
@@ -73,6 +75,15 @@ Unode.prototype.setMethods = function () {
     return this;
 };
 
+Unode.prototype.getNode = function (id) {
+    return this.map[id];
+};
+Unode.prototype.setRef = function () {
+    if (typeof this.config.ref !== 'undefined') {
+        this.map[this.config.ref] = this
+    }
+};
+
 Unode.prototype.setCbs = function () {
     this.cb = ('cb' in this.config && typeof this.config.cb === 'function')
         ? this.config.cb.bind(this)
@@ -81,21 +92,21 @@ Unode.prototype.setCbs = function () {
 
 Unode.prototype.setStyle = function (style) {
     if (style) {
-        this.config.style = Object.assign(this.config.style, style)
+        this.config.style = Object.assign({}, this.config.style, style)
     }
     this.config.style && utils.setStyle(this.node, this.config.style);
 };
 
 Unode.prototype.setAttrs = function (attrs) {
     if (attrs) {
-        this.config.attrs = Object.assign(this.config.attrs, attrs)
+        this.config.attrs = Object.assign({}, this.config.attrs, attrs)
     }
     this.config.attrs && utils.setAttrs(this.node, this.config.attrs);
 };
 
 Unode.prototype.setData = function (data) {
     if (data) {
-        this.config.dataSet = Object.assign(this.config.dataSet, data)
+        this.config.dataSet = Object.assign({}, this.config.dataSet, data)
     }
     if (this.config.dataSet) {
         this.dataSet = this.config.dataSet;

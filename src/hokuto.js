@@ -18,6 +18,8 @@ var hokuto = (function () {
                         config,
                         {
                             target: fragment,
+                        }, {
+                            map: {}
                         }
                     )
                 );
