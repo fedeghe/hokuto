@@ -20,8 +20,8 @@
                 tag: 'table',
                 ref: 'tab1',
                 data: {
-                    rows: 100, // 100,
-                    cols: 7  // 7
+                    rows: 10, // 100,
+                    cols: 10  // 7
                 },
                 children: function () {
                     // console.log('table ctx', this);
@@ -46,72 +46,41 @@
                                             tab1: self.getNode('tab1')
                                         }},
                                         html: self.rootNode.rnd(),
-                                        // onMouseover: function () {
-                                        //     var self = this;
-                                        //     // debugger;
-                                        //     // console.log(this.node.innerHTML)
-                                        //     self.setStyle({
-                                        //         backgroundColor: 'gray',
-                                        //     });
-                                        // },
-                                        // onMouseout: function () {
-                                        //     this.setStyle({
-                                        //         backgroundColor: 'black',
-                                        //     });
-                                        // },
+                                        onMouseover: function () {
+                                            this.setStyle({
+                                                backgroundColor: 'gray',
+                                            });
+                                        },
+                                        onMouseout: function () {
+                                            this.setStyle({
+                                                backgroundColor: 'black',
+                                            });
+                                        },
                                         onClick: function (e) {
-                                            var self = this;
-                                            // debugger;
-                                            // console.log(this.node.innerHTML)
-                                            self.setHtml(self.rootNode.rnd());
-                                            self.setStyle({
-                                                backgroundColor: self.rootNode.rndColor(),
-                                                color: self.rootNode.rndRGB()
+                                            var table = this.state.tab1,
+                                                rootNode = this.rootNode;
+
+                                            this.setHtml(rootNode.rnd());
+                                            this.setStyle({
+                                                backgroundColor: rootNode.rndColor(),
+                                                color: rootNode.rndRGB()
+                                            });
+                                            table.setStyle({
+                                                backgroundColor: rootNode.rndColor()
                                             });
                                             this.killEvent(e);
-                                            // var table = self.getNode('tab1')
-                                            var table = self.state.tab1
-                                            console.log('table', table)
-                                            table.setStyle({
-                                                backgroundColor: self.rootNode.rndColor()
-                                            })
-                                            // this.render();
                                         },
                                         cb: function () {
                                             var self = this;
-                                            
-
-                                            var id = requestAnimationFrame(function () {
-                                                self.setHtml(self.rootNode.rnd());
-                                                self.setStyle({
-                                                    backgroundColor: self.rootNode.rndColor(),
-                                                    color: self.rootNode.rndRGB()
-                                                });
-                                                cancelAnimationFrame(id)
-                                                self.render();
-                                            });
-
-                                            // setTimeout(function () {
-                                                
+                                            // var id = requestAnimationFrame(function () {
                                             //     self.setHtml(self.rootNode.rnd());
-                                            //     // self.node.style.backgroundColor = self.rootNode.rndColor2();
                                             //     self.setStyle({
                                             //         backgroundColor: self.rootNode.rndColor(),
                                             //         color: self.rootNode.rndRGB()
                                             //     });
+                                            //     cancelAnimationFrame(id)
                                             //     self.render();
-
-                                            // }, 150);
-
-                                            // setInterval(function () {
-                                            //     self.setHtml(self.rootNode.rnd());
-                                            //     // self.node.style.backgroundColor = self.rootNode.rndColor2();
-                                            //     self.setStyle({
-                                            //         backgroundColor: self.rootNode.rndColor(),
-                                            //         color: self.rootNode.rndRGB()
-                                            //     });
-
-                                            // }, 10);
+                                            // });
                                             self.done();
                                         }
                                     }
