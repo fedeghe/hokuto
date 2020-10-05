@@ -20,8 +20,8 @@
                 tag: 'table',
                 ref: 'tab1',
                 data: {
-                    rows: 3, // 100,
-                    cols: 3  // 7
+                    rows: 100, // 100,
+                    cols: 7  // 7
                 },
                 children: function () {
                     // console.log('table ctx', this);
@@ -42,6 +42,9 @@
                                             textAlign: 'center',
                                             fontSize:'18px'
                                         },
+                                        state: function () {return {
+                                            tab1: self.getNode('tab1')
+                                        }},
                                         html: self.rootNode.rnd(),
                                         // onMouseover: function () {
                                         //     var self = this;
@@ -66,8 +69,9 @@
                                                 color: self.rootNode.rndRGB()
                                             });
                                             this.killEvent(e);
-                                            var table = self.getNode('tab1')
-                                            // console.log(table)
+                                            // var table = self.getNode('tab1')
+                                            var table = self.state.tab1
+                                            console.log('table', table)
                                             table.setStyle({
                                                 backgroundColor: self.rootNode.rndColor()
                                             })
@@ -75,17 +79,17 @@
                                         },
                                         cb: function () {
                                             var self = this;
-                                            self.done();
+                                            
 
-                                            // var id = requestAnimationFrame(function () {
-                                            //     self.setHtml(self.rootNode.rnd());
-                                            //     self.setStyle({
-                                            //         backgroundColor: self.rootNode.rndColor(),
-                                            //         color: self.rootNode.rndRGB()
-                                            //     });
-                                            //     cancelAnimationFrame(id)
-                                            //     self.render();
-                                            // });
+                                            var id = requestAnimationFrame(function () {
+                                                self.setHtml(self.rootNode.rnd());
+                                                self.setStyle({
+                                                    backgroundColor: self.rootNode.rndColor(),
+                                                    color: self.rootNode.rndRGB()
+                                                });
+                                                cancelAnimationFrame(id)
+                                                self.render();
+                                            });
 
                                             // setTimeout(function () {
                                                 
@@ -96,7 +100,19 @@
                                             //         color: self.rootNode.rndRGB()
                                             //     });
                                             //     self.render();
-                                            // }, 15)
+
+                                            // }, 150);
+
+                                            // setInterval(function () {
+                                            //     self.setHtml(self.rootNode.rnd());
+                                            //     // self.node.style.backgroundColor = self.rootNode.rndColor2();
+                                            //     self.setStyle({
+                                            //         backgroundColor: self.rootNode.rndColor(),
+                                            //         color: self.rootNode.rndRGB()
+                                            //     });
+
+                                            // }, 10);
+                                            self.done();
                                         }
                                     }
                                 })          

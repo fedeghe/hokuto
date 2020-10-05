@@ -5,16 +5,24 @@ function Unode(config) {
     this.node = document.createElement(config.tag || 'div');
     this.rendered = false;
     this.toSolve = 0;
+    this.state = 'state' in config ? config.state : {};
     this.data = 'data' in config ? config.data : {};
-    this.dataSet = {};
     this.rootNode = 'rootNode' in config ? config.rootNode : this;
     this.parentNode = 'parentNode' in config ? config.parentNode : this;
     this.resolve = function () {};
     this.reset = function () {};
     this.setMethods(); //just once
+    this.prepareState(); //just once
     this.init();
 }
 
+Unode.prototype.prepareState = function () { 
+    var statePassed = 'state' in this.config,
+        state = statePassed ? this.config.state : {};
+    this.state = typeof state === 'function'
+        ? state()
+        : state;
+}
 Unode.prototype.init = function () {
     this.rendered = false;
     // this.prepareSolve();
@@ -106,11 +114,11 @@ Unode.prototype.setAttrs = function (attrs) {
 
 Unode.prototype.setData = function (data) {
     if (data) {
-        this.config.dataSet = Object.assign({}, this.config.dataSet, data)
+        this.config.data = Object.assign({}, this.config.data, data)
     }
-    if (this.config.dataSet) {
-        this.dataSet = this.config.dataSet;
-        utils.setDataSet(this.node, this.dataSet);
+    if (this.config.data) {
+        this.data = this.config.data;
+        utils.setData(this.node, this.data);
     }
 };
 
@@ -145,6 +153,15 @@ Unode.prototype.setEvents = function () {
         }
     }
     return this;
+};
+
+Unode.prototype.setState = function (o){
+    for (var i in o) {
+        if (o.hasOwnProperty(i)) {
+            this.state[i] = o;
+        }
+    }
+
 };
 
 Unode.prototype.done =

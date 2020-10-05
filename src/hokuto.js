@@ -2,6 +2,8 @@ var hokuto = (function () {
     // only IE
     maltaF('./../node_modules/balle/source/index.js');
 
+    maltaF('poly.js');
+    
     maltaF('utils.js');
     
     maltaF('Unode.js');
