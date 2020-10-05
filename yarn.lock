@@ -176,6 +176,11 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
+searchhash@^1.1.12:
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/searchhash/-/searchhash-1.1.12.tgz#3d39ead429c34bf2f6b749b93ad77d6cc50dd690"
+  integrity sha512-eY9rtxiK1MTkbP1CU6Bhl9HHj1EwJbcNynBiFqv0qjLPVN67axLQy8H5w6aCAHI+rJAOK4zgguSVCS2kKtgn9Q==
+
 semver@^5.6.0:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"

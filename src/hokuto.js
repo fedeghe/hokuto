@@ -1,9 +1,10 @@
 var hokuto = (function () {
     // only IE
-    maltaF('./../node_modules/balle/source/index.js');
+    maltaF('_balle.js');
+    maltaF('_searchhash.js');
 
     maltaF('poly.js');
-    
+
     maltaF('utils.js');
     
     maltaF('Unode.js');
@@ -25,12 +26,9 @@ var hokuto = (function () {
                         }
                     )
                 );
-            var n = wn.render().then(function (n) {
-                target.appendChild(fragment)
-                // console.log('solved', n)
-                return n
+            return wn.render().then(function () {
+                target.appendChild(fragment);
             });
-            return n;
         },
         renderWithComponents: function (config) {
             console.log('init', config)

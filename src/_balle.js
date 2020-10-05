@@ -1,0 +1,1 @@
+maltaF('./../node_modules/balle/dist/index.js');
