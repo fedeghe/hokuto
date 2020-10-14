@@ -86,8 +86,15 @@ Unode.prototype.setMethods = function () {
 Unode.prototype.getNode = function (id) {
     return this.map[id];
 };
-Unode.prototype.setRef = function () {
-    if (typeof this.config.ref !== 'undefined') {
+
+Unode.prototype.setRef = function (ref, ctx) {
+    // allow the node to set a ref on itself
+    // or to another node it can reference
+    if (ref) {
+        (ctx || this).map[ref] = ctx || this
+
+    // or incase is in the config, just set it
+    } else if (typeof this.config.ref !== 'undefined') {
         this.map[this.config.ref] = this
     }
 };

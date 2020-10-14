@@ -12,9 +12,9 @@ align-text@^0.1.1, align-text@^0.1.3:
     repeat-string "^1.5.2"
 
 balle@^1.0.39:
-  version "1.0.39"
-  resolved "https://registry.yarnpkg.com/balle/-/balle-1.0.39.tgz#2a150b6da2c2ee2c6e1b57cf289cb68bfbd927b8"
-  integrity sha512-zNXq5RowdrMFj1TTqh7r6JOE9NuPYL4t5cxBB6P478RztqBHn50bywdomswFMqXYrjjWA7ScJmOesOCUOR2bFQ==
+  version "1.0.45"
+  resolved "https://registry.yarnpkg.com/balle/-/balle-1.0.45.tgz#d7113fb0355eb2e44d9503b82388d93f60e3b85c"
+  integrity sha512-WbRkln2R3f89nPZCzmRc3qkGuO7kk0wu2ve1MUhPY7tuCWDoSBnFbiEMA8vZ+Du04fQP8WsXZGH3cYcfVZsNRA==
 
 camelcase@^1.0.2:
   version "1.2.1"
@@ -51,9 +51,9 @@ errno@^0.1.1:
     prr "~1.0.1"
 
 graceful-fs@^4.1.2:
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
-  integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
+  integrity sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
 
 image-size@~0.5.0:
   version "0.5.5"

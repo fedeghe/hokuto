@@ -3,7 +3,12 @@
     "version": "0.0.2",
     "main": "dist/index.js",
     "license": "MIT",
-    "dependencies": {
+    "scripts": {
+        "dev": "malta src/build_dev.json",
+        "mini": "malta src/build_minidev.json",
+        "prod": "malta src/build_prod.json"
+    },
+    "devDependencies": {
         "balle": "^1.0.39",
         "malta": "^4.1.25",
         "malta-browser-refresh": "^1.2.9",
@@ -13,10 +18,5 @@
         "malta-less": "^1.0.12",
         "malta-millijs": "^1.0.5",
         "searchhash": "^1.1.12"
-    },
-    "scripts": {
-        "dev": "malta src/build_dev.json",
-        "mini": "malta src/build_minidev.json",
-        "prod": "malta src/build_prod.json"
     }
 }
