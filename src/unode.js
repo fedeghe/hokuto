@@ -139,10 +139,10 @@ Unode.prototype.setHtml = function (html) {
     typeof this.config.html !== 'undefined' && utils.setHtml(this.node, this.config.html);
 };
 
-
 Unode.prototype.killEvent = function (e) {
     utils.kill(e);
 };
+
 Unode.prototype.setEvents = function () {
     var i,
         self = this,
@@ -168,7 +168,6 @@ Unode.prototype.setState = function (o){
             this.state[i] = o;
         }
     }
-
 };
 
 Unode.prototype.done =
@@ -197,6 +196,5 @@ Unode.prototype.render = function () {
             });
         })
         : this.rendered = true, this.cb();
-        
     return ret;
 };

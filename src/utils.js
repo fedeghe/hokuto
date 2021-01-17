@@ -37,10 +37,6 @@ var utils = (function (W) {
     function setHtml(node, html) {node.innerHTML = filterHtml(html);}
     function isUnode(n) {return n instanceof Unode;}
 
-
-
-
-    
         var _ = {
             events: {
                 getElementDeterminant: function (el) {
@@ -59,13 +55,13 @@ var utils = (function (W) {
             _.unhandlers[el] = _.unhandlers[el] || [];
             _.unhandlers[el].push(f);
         }
-        function unhandle(el) {
-            _.unhandlers[el] && _.unhandlers[el].forEach(function (unhandler) {
-                unhandler();
-            });
-            _.unhandlers = [];
-        }
-        var on= (function () {
+        // function unhandle(el) {
+        //     _.unhandlers[el] && _.unhandlers[el].forEach(function (unhandler) {
+        //         unhandler();
+        //     });
+        //     _.unhandlers = [];
+        // }
+        var on = (function () {
                 function unhandle (el, evnt, cb) {
                     saveUnhandler(el, function () {
                         off(el, evnt, cb);
@@ -87,6 +83,7 @@ var utils = (function (W) {
                     };
                 }
             })(),
+
             off = (function () {
                 if ('removeEventListener' in W) {
                     return function (el, evnt, cb) {
@@ -146,7 +143,6 @@ var utils = (function (W) {
                     }
                 };
             })();
-
     return {
         on: on,
         off: off,
