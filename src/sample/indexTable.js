@@ -21,7 +21,7 @@
                 ref: 'tab1',
                 data: {
                     rows: 10, // 100,
-                    cols: 10  // 7
+                    cols: 20  // 7
                 },
                 children: function () {
                     // console.log('table ctx', this);
@@ -59,7 +59,6 @@
                                         onClick: function (e) {
                                             var table = this.state.tab1,
                                                 rootNode = this.rootNode;
-
                                             this.setHtml(rootNode.rnd());
                                             this.setStyle({
                                                 backgroundColor: rootNode.rndColor(),
@@ -72,6 +71,7 @@
                                         },
                                         cb: function () {
                                             var self = this;
+
                                             // var id = requestAnimationFrame(function () {
                                             //     self.setHtml(self.rootNode.rnd());
                                             //     self.setStyle({
@@ -81,6 +81,7 @@
                                             //     cancelAnimationFrame(id)
                                             //     self.render();
                                             // });
+
                                             self.done();
                                         }
                                     }

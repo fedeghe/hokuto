@@ -1,6 +1,7 @@
 var hokuto = (function () {
     // only IE
     maltaF('_balle.js');
+    
     maltaF('_searchhash.js');
 
     maltaF('poly.js');
