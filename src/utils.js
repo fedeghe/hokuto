@@ -1,5 +1,3 @@
-
-
 var utils = (function (W) {
     var _U_ = 'undefined',
         noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
@@ -68,8 +66,9 @@ var utils = (function (W) {
                     });
                 }
                 if ('addEventListener' in W) {
-                    return function (el, evnt, cb) {
-                        el.addEventListener.apply(el, [evnt, cb, false]);
+                    return function (el, evnt, cb, capture) {
+                        capture = capture || false
+                        el.addEventListener.apply(el, [evnt, cb, capture]);
                         unhandle(el, evnt, cb);
                     };
                 } else if ('attachEvent' in W) {
@@ -110,6 +109,13 @@ var utils = (function (W) {
                 e.preventDefault();
                 return false;
             },
+
+            once = function (el, evnt, cb) {
+                on(el, evnt, function _(e) {
+                    cb.call(el, e)
+                    off(el, evnt, _)
+                })
+            },
     
             eventTarget = function (e) {
                 e = e || W.event;
@@ -147,6 +153,7 @@ var utils = (function (W) {
         on: on,
         off: off,
         kill: kill,
+        once: once,
         eventTaget: eventTarget,
         ready: ready,
         isUnode: isUnode,

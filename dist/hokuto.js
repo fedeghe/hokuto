@@ -87,8 +87,6 @@ var hokuto = (function () {
     /*
     [Malta] utils.js
     */
-    
-    
     var utils = (function (W) {
         var _U_ = 'undefined',
             noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
@@ -157,8 +155,9 @@ var hokuto = (function () {
                         });
                     }
                     if ('addEventListener' in W) {
-                        return function (el, evnt, cb) {
-                            el.addEventListener.apply(el, [evnt, cb, false]);
+                        return function (el, evnt, cb, capture) {
+                            capture = capture || false
+                            el.addEventListener.apply(el, [evnt, cb, capture]);
                             unhandle(el, evnt, cb);
                         };
                     } else if ('attachEvent' in W) {
@@ -199,6 +198,13 @@ var hokuto = (function () {
                     e.preventDefault();
                     return false;
                 },
+    
+                once = function (el, evnt, cb) {
+                    on(el, evnt, function _(e) {
+                        cb.call(el, e)
+                        off(el, evnt, _)
+                    })
+                },
         
                 eventTarget = function (e) {
                     e = e || W.event;
@@ -236,6 +242,7 @@ var hokuto = (function () {
             on: on,
             off: off,
             kill: kill,
+            once: once,
             eventTaget: eventTarget,
             ready: ready,
             isUnode: isUnode,
@@ -278,7 +285,6 @@ var hokuto = (function () {
     }
     Unode.prototype.init = function () {
         this.rendered = false;
-        // this.prepareSolve();
         this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs');
     };
     
@@ -402,11 +408,11 @@ var hokuto = (function () {
             mat, ev;
     
         for (i in self.config) {
-            mat = i.match(/^on([A-Z]{1}[a-z]*)$/);
+            mat = i.match(/^(on(ce)?)([A-Z]{1}[a-z]*)$/);
             if (mat) {
-                ev = mat[1].toLowerCase();
+                ev = mat[3].toLowerCase();
                 (function (eventName) {
-                    utils.on(self.node, ev, function (e) {
+                    utils[mat[1]](self.node, ev, function (e) {
                         self.config[eventName].call(self, e);
                     });
                 })(i);
@@ -432,28 +438,22 @@ var hokuto = (function () {
             this.resolve(this);
         }
     };
+    
     Unode.prototype.render = function () {
         var self = this,
             ret = new Balle(function (resolve, reject) {
                 self.resolve = resolve;
                 self.reject = reject;
             });
-            // console.log(new Date)
             this.rendered = false
-            // console.log(this)
-            // console.log('children', this.children)
             this.toSolve > 0
             ? this.children.forEach(function (child, i) {
-                console.log('child', i)
                 child.render().then(function () {
                     self.node.appendChild(child.node);
-                    console.log('child cb ', i)
                     self.cb();
                 });
             })
             : this.rendered = true, this.cb();
-    
-        console.log(+new Date)
         return ret;
     };;
     

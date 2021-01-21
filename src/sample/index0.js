@@ -4,11 +4,20 @@
     var config = {
         target: target,
         style: {
-            'font-size': '123px'
+            'font-size': '123px',
+            padding:'50px'
+        },
+        
+        onClick: function (e){
+            console.log('on', this, this.node, e)
         },
         children: [{
             tag: 'p',
-            html: 'hello'
+            html: 'hello',
+            onClick: function (e){
+                e.stopPropagation();
+                console.log('on', this, this.node,  e)
+            },
         }]
     };
     hokuto.render(config, true);

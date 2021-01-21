@@ -25,7 +25,6 @@ Unode.prototype.prepareState = function () {
 }
 Unode.prototype.init = function () {
     this.rendered = false;
-    // this.prepareSolve();
     this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs');
 };
 
@@ -149,11 +148,11 @@ Unode.prototype.setEvents = function () {
         mat, ev;
 
     for (i in self.config) {
-        mat = i.match(/^on([A-Z]{1}[a-z]*)$/);
+        mat = i.match(/^(on(ce)?)([A-Z]{1}[a-z]*)$/);
         if (mat) {
-            ev = mat[1].toLowerCase();
+            ev = mat[3].toLowerCase();
             (function (eventName) {
-                utils.on(self.node, ev, function (e) {
+                utils[mat[1]](self.node, ev, function (e) {
                     self.config[eventName].call(self, e);
                 });
             })(i);
@@ -179,27 +178,21 @@ Unode.prototype.solve = function () {
         this.resolve(this);
     }
 };
+
 Unode.prototype.render = function () {
     var self = this,
         ret = new Balle(function (resolve, reject) {
             self.resolve = resolve;
             self.reject = reject;
         });
-        // console.log(new Date)
         this.rendered = false
-        // console.log(this)
-        // console.log('children', this.children)
         this.toSolve > 0
         ? this.children.forEach(function (child, i) {
-            console.log('child', i)
             child.render().then(function () {
                 self.node.appendChild(child.node);
-                console.log('child cb ', i)
                 self.cb();
             });
         })
         : this.rendered = true, this.cb();
-
-    console.log(+new Date)
     return ret;
 };
