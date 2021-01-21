@@ -3,7 +3,7 @@
     var n = 0;
     var config = {
         target: target,
-        styles: {
+        style: {
             'font-size': '23px'
         },
         children: [{
@@ -24,9 +24,9 @@
                     var self = this;
                     this.config.text = 'You ' + ++n;
                     this.done();
-                    setTimeout(function () {
-                        self.render();
-                    }, 100);
+                    // setTimeout(function () {
+                    //     self.render();
+                    // }, 100);
                 }
             }],
             cb: function () {
@@ -57,5 +57,5 @@
             }
         }]
     };
-    hokuto.render(config);
+    hokuto.render(config, true);
 })();

@@ -185,16 +185,21 @@ Unode.prototype.render = function () {
             self.resolve = resolve;
             self.reject = reject;
         });
-
+        // console.log(new Date)
         this.rendered = false
-
+        // console.log(this)
+        // console.log('children', this.children)
         this.toSolve > 0
-        ? this.children.forEach(function (child) {
+        ? this.children.forEach(function (child, i) {
+            console.log('child', i)
             child.render().then(function () {
                 self.node.appendChild(child.node);
+                console.log('child cb ', i)
                 self.cb();
             });
         })
         : this.rendered = true, this.cb();
+
+    console.log(+new Date)
     return ret;
 };
