@@ -53,12 +53,12 @@ var utils = (function (W) {
             _.unhandlers[el] = _.unhandlers[el] || [];
             _.unhandlers[el].push(f);
         }
-        // function unhandle(el) {
-        //     _.unhandlers[el] && _.unhandlers[el].forEach(function (unhandler) {
-        //         unhandler();
-        //     });
-        //     _.unhandlers = [];
-        // }
+        function unhandle(el) {
+            _.unhandlers[el] && _.unhandlers[el].forEach(function (unhandler) {
+                unhandler();
+            });
+            _.unhandlers = [];
+        }
         var on = (function () {
                 function unhandle (el, evnt, cb) {
                     saveUnhandler(el, function () {
@@ -161,6 +161,7 @@ var utils = (function (W) {
         setHtml: setHtml,
         setStyle: setStyle,
         setAttrs: setAttrs,
-        setData: setData
+        setData: setData,
+        unhandle: unhandle
     };
 })(window);
