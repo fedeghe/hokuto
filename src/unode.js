@@ -143,7 +143,7 @@ Unode.prototype.killEvent = function (e) {
 };
 
 Unode.prototype.unhandle = function (el) {
-    utils.unhandle(el);
+    utils.unhandle(el || this.node);
 };
 
 Unode.prototype.setEvents = function () {
