@@ -9,17 +9,16 @@
         },
         
         onClick: function (e){
-            console.log('on', this, this.node, e)
+            console.log('on parent', this, this.node, e)
         },
         children: [{
             tag: 'p',
             html: 'hello',
             onClick: function (e){
                 e.stopPropagation();
-                console.log('on', this, this.node,  e)
-
-                this.unhandle()// itself
-                //this.unhandle(this.parentNode.node) // its parent
+                console.log('on child', this, this.node,  e)
+                // this.unhandle()// itself
+                // this.unhandle(this.parentNode.node) // its parent
             },
         }]
     };
