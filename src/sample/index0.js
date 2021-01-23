@@ -18,7 +18,7 @@
                 e.stopPropagation();
                 console.log('on', this, this.node,  e)
 
-                //this.unhandle()// itself
+                this.unhandle()// itself
                 //this.unhandle(this.parentNode.node) // its parent
             },
         }]
