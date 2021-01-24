@@ -33,8 +33,9 @@ var hokuto = (function () {
 
     function render(config, clear, name) {
         var target = config.target,
+            originalHTML = target.innerHTML,
             fragment = document.createDocumentFragment(),
-            wn = new Unode(
+            rootNode = new Unode(
                 Object.assign(
                     {},
                     config,
@@ -46,12 +47,12 @@ var hokuto = (function () {
                 )
             );
         if (name && !(name in __renders)) {
-            __renders[name] = wn;
+            __renders[name] = rootNode;
         }
         if (clear === true) {
             target.innerHTML = '';
         }
-        return wn.render().then(function () {
+        return rootNode.render().then(function () {
             target.appendChild(fragment);
         });
     }

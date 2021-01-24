@@ -1,6 +1,6 @@
 function Unode(config) {
     this.config = config;
-    this.map = config.map;
+    
     this.parent = config.target;
     this.node = document.createElement(config.tag || 'div');
     this.rendered = false;
@@ -15,6 +15,8 @@ function Unode(config) {
     this.setMethods(); //just once
     this.prepareState(); //just once
     this.initialize();
+
+    this.map = config.map;
 }
 
 Unode.prototype.prepareState = function () { 

@@ -440,7 +440,7 @@ var hokuto = (function () {
     */
     function Unode(config) {
         this.config = config;
-        this.map = config.map;
+        
         this.parent = config.target;
         this.node = document.createElement(config.tag || 'div');
         this.rendered = false;
@@ -455,6 +455,8 @@ var hokuto = (function () {
         this.setMethods(); //just once
         this.prepareState(); //just once
         this.initialize();
+    
+        this.map = config.map;
     }
     
     Unode.prototype.prepareState = function () { 
@@ -663,8 +665,9 @@ var hokuto = (function () {
 
     function render(config, clear, name) {
         var target = config.target,
+            originalHTML = target.innerHTML,
             fragment = document.createDocumentFragment(),
-            wn = new Unode(
+            rootNode = new Unode(
                 Object.assign(
                     {},
                     config,
@@ -676,12 +679,12 @@ var hokuto = (function () {
                 )
             );
         if (name && !(name in __renders)) {
-            __renders[name] = wn;
+            __renders[name] = rootNode;
         }
         if (clear === true) {
             target.innerHTML = '';
         }
-        return wn.render().then(function () {
+        return rootNode.render().then(function () {
             target.appendChild(fragment);
         });
     }
