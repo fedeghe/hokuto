@@ -5,7 +5,8 @@ var hokuto = (function () {
         LIB = {};
 
     
-    var NS =
+    var NS = {};
+
     /*
     [Malta] core.js
     */
@@ -120,11 +121,10 @@ var hokuto = (function () {
     
         // use makens to publish itself and something more
         //
-        return {
-            makeNs: makens,
-            checkNs: checkns,
-            extendNs: extendns
-        }
+        Namespace.makeNs = makens;
+        Namespace.checkNs = checkns;
+        Namespace.extendNs= extendns;
+    
     })(NS);
     
 
@@ -164,7 +164,6 @@ var hokuto = (function () {
         LIB.Balle = Balle;
     })();
     
-
 
     /*
     [Malta] _searchhash.js

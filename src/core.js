@@ -109,9 +109,8 @@
 
     // use makens to publish itself and something more
     //
-    return {
-        makeNs: makens,
-        checkNs: checkns,
-        extendNs: extendns
-    }
+    Namespace.makeNs = makens;
+    Namespace.checkNs = checkns;
+    Namespace.extendNs= extendns;
+
 })(NS);

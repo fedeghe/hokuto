@@ -5,11 +5,11 @@ var hokuto = (function () {
         LIB = {};
 
     
-    var NS =
+    var NS = {};
+
     maltaF('core.js')
 
     maltaF('_balle.js')
-
 
     maltaF('_searchhash.js')
 
