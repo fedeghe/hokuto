@@ -93,7 +93,7 @@ Unode.prototype.setRef = function (ref, ctx) {
         (ctx || this).map[ref] = ctx || this
 
     // or incase is in the config, just set it
-    } else if (typeof this.config.ref !== 'undefined') {
+    } else if (typeof this.config.ref !== _U_) {
         this.map[this.config.ref] = this
     }
 };
@@ -108,14 +108,14 @@ Unode.prototype.setStyle = function (style) {
     if (style) {
         this.config.style = Object.assign({}, this.config.style, style)
     }
-    this.config.style && utils.setStyle(this.node, this.config.style);
+    this.config.style && LIB.utils.setStyle(this.node, this.config.style);
 };
 
 Unode.prototype.setAttrs = function (attrs) {
     if (attrs) {
         this.config.attrs = Object.assign({}, this.config.attrs, attrs)
     }
-    this.config.attrs && utils.setAttrs(this.node, this.config.attrs);
+    this.config.attrs && LIB.utils.setAttrs(this.node, this.config.attrs);
 };
 
 Unode.prototype.setData = function (data) {
@@ -124,26 +124,26 @@ Unode.prototype.setData = function (data) {
     }
     if (this.config.data) {
         this.data = this.config.data;
-        utils.setData(this.node, this.data);
+        LIB.utils.setData(this.node, this.data);
     }
 };
 
 Unode.prototype.setText = function (text) {
-    if (typeof text !== 'undefined') this.config.text = text;
-    typeof this.config.text !== 'undefined' && utils.setText(this.node, this.config.text);
+    if (typeof text !== _U_) this.config.text = text;
+    typeof this.config.text !== _U_ && LIB.utils.setText(this.node, this.config.text);
 };
 
 Unode.prototype.setHtml = function (html) {
-    if (typeof html !== 'undefined') this.config.html = html;
-    typeof this.config.html !== 'undefined' && utils.setHtml(this.node, this.config.html);
+    if (typeof html !== _U_) this.config.html = html;
+    typeof this.config.html !== _U_ && LIB.utils.setHtml(this.node, this.config.html);
 };
 
 Unode.prototype.killEvent = function (e) {
-    utils.kill(e);
+    LIB.utils.kill(e);
 };
 
 Unode.prototype.unhandle = function (el) {
-    utils.unhandle(el || this.node);
+    LIB.utils.unhandle(el || this.node);
 };
 
 Unode.prototype.setEvents = function () {
@@ -156,7 +156,7 @@ Unode.prototype.setEvents = function () {
         if (mat) {
             ev = mat[3].toLowerCase();
             (function (eventName) {
-                utils[mat[1]](self.node, ev, function (e) {
+                LIB.utils[mat[1]](self.node, ev, function (e) {
                     self.config[eventName].call(self, e);
                 });
             })(i);
@@ -185,7 +185,7 @@ Unode.prototype.solve = function () {
 
 Unode.prototype.render = function () {
     var self = this,
-        ret = new Balle(function (resolve, reject) {
+        ret = new LIB.Balle(function (resolve, reject) {
             self.resolve = resolve;
             self.reject = reject;
         });

@@ -4,7 +4,7 @@
     var config = {
         target: target,
         style: {
-            'font-size': '123px',
+            'font-size': '2em',
             padding:'50px'
         },
         

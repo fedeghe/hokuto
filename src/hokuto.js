@@ -1,12 +1,27 @@
 var hokuto = (function () {
-    // only IE
-    maltaF('_balle.js');
+
+    var _U_ = 'undefined',
+        _ = {},
+        LIB = {};
+
     
-    maltaF('_searchhash.js');
+    var NS =
+    maltaF('core.js')
 
-    maltaF('poly.js');
+    maltaF('_balle.js')
 
-    maltaF('utils.js');
+
+    maltaF('_searchhash.js')
+
+
+
+
+    maltaF('poly.js')
+
+    maltaF('utils.js')
+
+
+    // console.log("maltaV('NS')")
     
     maltaF('Unode.js');
     

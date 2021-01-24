@@ -1,1 +1,4 @@
-maltaF('./../node_modules/balle/dist/index.js');
+(function () {
+    maltaF('./../node_modules/balle/dist/index.js')
+    LIB.Balle = Balle;
+})();

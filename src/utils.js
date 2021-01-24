@@ -1,33 +1,30 @@
-var utils = (function (W) {
-    var _U_ = 'undefined',
-        noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
+LIB.utils = (function (W) {
+    var noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
     
     function setStyle(node, styles) {
         var tmp;
-        if (typeof styles !== _U_) {
-            for (tmp in styles) {
-                if (tmp === 'float') {
-                    node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
-                } else {
-                    node.style[tmp] = styles[tmp];
-                }
+        if (typeof styles === _U_) throw new Error('ERR: styles needed')
+        for (tmp in styles) {
+            if (tmp === 'float') {
+                node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
+            } else {
+                node.style[tmp] = styles[tmp];
             }
         }
+        
     }
 
     function setAttrs(node, attrs) {
-        if (typeof attrs !== _U_) {
-            for (var tmp in attrs) {
-                if (noAttrs.indexOf(tmp) < 0)
-                    node.setAttribute(tmp, attrs[tmp]);
-            }
+        if (typeof attrs === _U_) throw new Error('ERR: attrs needed')
+        for (var tmp in attrs) {
+            if (noAttrs.indexOf(tmp) < 0)
+                node.setAttribute(tmp, attrs[tmp]);
         }
     }
     function setData(node, data) {
-        if (typeof data !== _U_) {
-            for (var tmp in data) {
-                node.dataset[tmp] = data[tmp];
-            }
+        if (typeof data === _U_) throw new Error('ERR: data needed')
+        for (var tmp in data) {
+            node.dataset[tmp] = data[tmp];
         }
     }
     function filterHtml(html) {return '' + html;}
@@ -131,10 +128,10 @@ var utils = (function (W) {
     
             ready = (function () {
                 var cb = [],
-                    i,
-                    l,
+                    comp = 'complete',
+                    i, l,
                     readyStateCheckInterval = setInterval(function () {
-                        if (document.readyState === 'complete') {
+                        if (document.readyState === comp) {
                             clearInterval(readyStateCheckInterval);
                             for (i = 0, l = cb.length; i < l; i++) {
                                 cb[i].call(this);
@@ -142,7 +139,7 @@ var utils = (function (W) {
                         }
                     }, 10);
                 return function (c) {
-                    if (document.readyState === 'complete') {
+                    if (document.readyState === comp) {
                         c.call(this);
                     } else {
                         cb.push(c);
