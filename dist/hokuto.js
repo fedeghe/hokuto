@@ -194,6 +194,137 @@ var hokuto = (function () {
 
 
     /*
+    [Malta] events.js
+    */
+    LIB.events = (function (W) {
+    
+        var _ = {
+            events: {
+                getElementDeterminant: function (el) {
+                    var tname = el.tagName;
+                    return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
+                },
+                getElementEvent: function (el) {
+                    var tname = el.tagName;
+                    return (tname.match(/input|textarea/i)) ? 'input' : 'change';
+                }
+            },
+            unhandlers: {}
+        };
+    
+        function saveUnhandler(el, f) {
+            _.unhandlers[el] = _.unhandlers[el] || [];
+            _.unhandlers[el].push(f);
+        }
+        function unhandle(el) {
+            _.unhandlers[el] && _.unhandlers[el].forEach(function (unhandler) {
+                unhandler();
+            });
+            _.unhandlers = [];
+        }
+        var on = (function () {
+                function unhandle (el, evnt, cb) {
+                    saveUnhandler(el, function () {
+                        off(el, evnt, cb);
+                    });
+                }
+                if ('addEventListener' in W) {
+                    return function (el, evnt, cb, capture) {
+                        capture = capture || false
+                        el.addEventListener.apply(el, [evnt, cb, capture]);
+                        unhandle(el, evnt, cb);
+                    };
+                } else if ('attachEvent' in W) {
+                    return function (el, evnt, cb) {
+                        el.attachEvent.apply(el, ['on' + evnt, cb]);
+                        unhandle(el, evnt, cb);
+                    };
+                } else {
+                    return function () {
+                        throw new Error('No straight way to bind an event');
+                    };
+                }
+            })(),
+    
+            off = (function () {
+                if ('removeEventListener' in W) {
+                    return function (el, evnt, cb) {
+                        el.removeEventListener(evnt, cb);
+                    };
+                } else if ('detachEvent' in W) {
+                    return function (el, evnt, cb) {
+                        el.detachEvent.apply(el, ['on' + evnt, cb]);
+                    };
+                } else {
+                    return function () {
+                        throw new Error('No straight way to unbind an event');
+                    };
+                }
+            })(),
+    
+            kill = function (e) {
+                if (!e) {
+                    e = W.event;
+                    e.cancelBubble = true;
+                    e.returnValue = false;
+                }
+                'stopPropagation' in e && e.stopPropagation();
+                e.preventDefault();
+                return false;
+            },
+    
+            once = function (el, evnt, cb) {
+                on(el, evnt, function _(e) {
+                    cb.call(el, e)
+                    off(el, evnt, _)
+                })
+            },
+    
+            eventTarget = function (e) {
+                e = e || W.event;
+                var targetElement = e.currentTarget || (typeof e.target !== _U_) ? e.target : e.srcElement;
+                if (!targetElement) {
+                    return false;
+                }
+                while (targetElement.nodeType === 3 && targetElement.parentNode !== null) {
+                    targetElement = targetElement.parentNode;
+                }
+                return targetElement;
+            },
+    
+            ready = (function () {
+                var cb = [],
+                    comp = 'complete',
+                    i, l,
+                    readyStateCheckInterval = setInterval(function () {
+                        if (document.readyState === comp) {
+                            clearInterval(readyStateCheckInterval);
+                            for (i = 0, l = cb.length; i < l; i++) {
+                                cb[i].call(this);
+                            }
+                        }
+                    }, 10);
+                return function (c) {
+                    if (document.readyState === comp) {
+                        c.call(this);
+                    } else {
+                        cb.push(c);
+                    }
+                };
+            })();
+        return {
+            on: on,
+            off: off,
+            kill: kill,
+            once: once,
+            eventTaget: eventTarget,
+            ready: ready,
+            unhandle: unhandle
+        };
+    })(window);
+    
+
+    /*
     [Malta] poly.js
     */
     if (typeof Object.assign !== 'function') {
@@ -223,9 +354,9 @@ var hokuto = (function () {
     }
 
     /*
-    [Malta] utils.js
+    [Malta] dom.js
     */
-    LIB.utils = (function (W) {
+    LIB.dom = (function (W) {
         var noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
         
         function setStyle(node, styles) {
@@ -248,147 +379,57 @@ var hokuto = (function () {
                     node.setAttribute(tmp, attrs[tmp]);
             }
         }
+        
+        function unsetAttrs(node, attrs) {
+            if (typeof attrs === _U_) throw new Error('ERR: attrs needed')
+            for (var tmp in attrs) {
+                if (noAttrs.indexOf(tmp) < 0)
+                    node.removeAttribute(tmp, attrs[tmp]);
+            }
+        }
+    
         function setData(node, data) {
             if (typeof data === _U_) throw new Error('ERR: data needed')
             for (var tmp in data) {
                 node.dataset[tmp] = data[tmp];
             }
         }
+    
+        function unsetData(node, data) {
+            if (typeof data === _U_) throw new Error('ERR: data needed')
+            for (var tmp in data) {
+                delete node.dataset[tmp]
+            }
+        }
+    
+        function remove(el) {
+            return el.parentNode && el.parentNode.removeChild(el);
+        }
+    
         function filterHtml(html) {return '' + html;}
+    
         function setText(node, text) {node.appendChild(document.createTextNode(text));}
+    
         function setHtml(node, html) {node.innerHTML = filterHtml(html);}
-        function isUnode(n) {return n instanceof Unode;}
     
-            var _ = {
-                events: {
-                    getElementDeterminant: function (el) {
-                        var tname = el.tagName;
-                        return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
-                    },
-                    getElementEvent: function (el) {
-                        var tname = el.tagName;
-                        return (tname.match(/input|textarea/i)) ? 'input' : 'change';
-                    }
-                },
-                unhandlers: {}
-            };
-        
-            function saveUnhandler(el, f) {
-                _.unhandlers[el] = _.unhandlers[el] || [];
-                _.unhandlers[el].push(f);
-            }
-            function unhandle(el) {
-                _.unhandlers[el] && _.unhandlers[el].forEach(function (unhandler) {
-                    unhandler();
-                });
-                _.unhandlers = [];
-            }
-            var on = (function () {
-                    function unhandle (el, evnt, cb) {
-                        saveUnhandler(el, function () {
-                            off(el, evnt, cb);
-                        });
-                    }
-                    if ('addEventListener' in W) {
-                        return function (el, evnt, cb, capture) {
-                            capture = capture || false
-                            el.addEventListener.apply(el, [evnt, cb, capture]);
-                            unhandle(el, evnt, cb);
-                        };
-                    } else if ('attachEvent' in W) {
-                        return function (el, evnt, cb) {
-                            el.attachEvent.apply(el, ['on' + evnt, cb]);
-                            unhandle(el, evnt, cb);
-                        };
-                    } else {
-                        return function () {
-                            throw new Error('No straight way to bind an event');
-                        };
-                    }
-                })(),
-    
-                off = (function () {
-                    if ('removeEventListener' in W) {
-                        return function (el, evnt, cb) {
-                            el.removeEventListener(evnt, cb);
-                        };
-                    } else if ('detachEvent' in W) {
-                        return function (el, evnt, cb) {
-                            el.detachEvent.apply(el, ['on' + evnt, cb]);
-                        };
-                    } else {
-                        return function () {
-                            throw new Error('No straight way to unbind an event');
-                        };
-                    }
-                })(),
-        
-                kill = function (e) {
-                    if (!e) {
-                        e = W.event;
-                        e.cancelBubble = true;
-                        e.returnValue = false;
-                    }
-                    'stopPropagation' in e && e.stopPropagation();
-                    e.preventDefault();
-                    return false;
-                },
-    
-                once = function (el, evnt, cb) {
-                    on(el, evnt, function _(e) {
-                        cb.call(el, e)
-                        off(el, evnt, _)
-                    })
-                },
-        
-                eventTarget = function (e) {
-                    e = e || W.event;
-                    var targetElement = e.currentTarget || (typeof e.target !== _U_) ? e.target : e.srcElement;
-                    if (!targetElement) {
-                        return false;
-                    }
-                    while (targetElement.nodeType === 3 && targetElement.parentNode !== null) {
-                        targetElement = targetElement.parentNode;
-                    }
-                    return targetElement;
-                },
-        
-                ready = (function () {
-                    var cb = [],
-                        comp = 'complete',
-                        i, l,
-                        readyStateCheckInterval = setInterval(function () {
-                            if (document.readyState === comp) {
-                                clearInterval(readyStateCheckInterval);
-                                for (i = 0, l = cb.length; i < l; i++) {
-                                    cb[i].call(this);
-                                }
-                            }
-                        }, 10);
-                    return function (c) {
-                        if (document.readyState === comp) {
-                            c.call(this);
-                        } else {
-                            cb.push(c);
-                        }
-                    };
-                })();
         return {
-            on: on,
-            off: off,
-            kill: kill,
-            once: once,
-            eventTaget: eventTarget,
-            ready: ready,
-            isUnode: isUnode,
+            remove: remove,
             setText: setText,
             setHtml: setHtml,
             setStyle: setStyle,
             setAttrs: setAttrs,
+            unsetAttrs: unsetAttrs,
             setData: setData,
-            unhandle: unhandle
+            unsetData: unsetData
         };
     })(window);
+    
+    NS.makeNs('LIB.dom', {
+        removessss: function (el) {
+            return el.parentNode && el.parentNode.removeChild(el);
+        }
+    });
+    
     
 
 
@@ -406,13 +447,14 @@ var hokuto = (function () {
         this.toSolve = 0;
         this.state = 'state' in config ? config.state : {};
         this.data = 'data' in config ? config.data : {};
+        this.init = 'init' in config && config.init;
         this.rootNode = 'rootNode' in config ? config.rootNode : this;
         this.parentNode = 'parentNode' in config ? config.parentNode : this;
         this.resolve = function () {};
         this.reset = function () {};
         this.setMethods(); //just once
         this.prepareState(); //just once
-        this.init();
+        this.initialize();
     }
     
     Unode.prototype.prepareState = function () { 
@@ -422,7 +464,7 @@ var hokuto = (function () {
             ? state()
             : state;
     }
-    Unode.prototype.init = function () {
+    Unode.prototype.initialize = function () {
         this.rendered = false;
         this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs');
     };
@@ -478,7 +520,6 @@ var hokuto = (function () {
                 }
             }
         });
-        return this;
     };
     
     Unode.prototype.getNode = function (id) {
@@ -507,14 +548,14 @@ var hokuto = (function () {
         if (style) {
             this.config.style = Object.assign({}, this.config.style, style)
         }
-        this.config.style && LIB.utils.setStyle(this.node, this.config.style);
+        this.config.style && LIB.dom.setStyle(this.node, this.config.style);
     };
     
     Unode.prototype.setAttrs = function (attrs) {
         if (attrs) {
             this.config.attrs = Object.assign({}, this.config.attrs, attrs)
         }
-        this.config.attrs && LIB.utils.setAttrs(this.node, this.config.attrs);
+        this.config.attrs && LIB.dom.setAttrs(this.node, this.config.attrs);
     };
     
     Unode.prototype.setData = function (data) {
@@ -523,26 +564,26 @@ var hokuto = (function () {
         }
         if (this.config.data) {
             this.data = this.config.data;
-            LIB.utils.setData(this.node, this.data);
+            LIB.dom.setData(this.node, this.data);
         }
     };
     
     Unode.prototype.setText = function (text) {
         if (typeof text !== _U_) this.config.text = text;
-        typeof this.config.text !== _U_ && LIB.utils.setText(this.node, this.config.text);
+        typeof this.config.text !== _U_ && LIB.dom.setText(this.node, this.config.text);
     };
     
     Unode.prototype.setHtml = function (html) {
         if (typeof html !== _U_) this.config.html = html;
-        typeof this.config.html !== _U_ && LIB.utils.setHtml(this.node, this.config.html);
+        typeof this.config.html !== _U_ && LIB.dom.setHtml(this.node, this.config.html);
     };
     
     Unode.prototype.killEvent = function (e) {
-        LIB.utils.kill(e);
+        LIB.events.kill(e);
     };
     
     Unode.prototype.unhandle = function (el) {
-        LIB.utils.unhandle(el || this.node);
+        LIB.events.unhandle(el || this.node);
     };
     
     Unode.prototype.setEvents = function () {
@@ -555,7 +596,7 @@ var hokuto = (function () {
             if (mat) {
                 ev = mat[3].toLowerCase();
                 (function (eventName) {
-                    LIB.utils[mat[1]](self.node, ev, function (e) {
+                    LIB.events[mat[1]](self.node, ev, function (e) {
                         self.config[eventName].call(self, e);
                     });
                 })(i);
@@ -583,6 +624,7 @@ var hokuto = (function () {
     };
     
     Unode.prototype.render = function () {
+    
         var self = this,
             ret = new LIB.Balle(function (resolve, reject) {
                 self.resolve = resolve;
@@ -598,7 +640,10 @@ var hokuto = (function () {
             })
             : this.rendered = true, this.cb();
         return ret;
-    };;
+    };
+    
+    Unode.isUnode = function(n) {return n instanceof Unode;}
+    ;
     
     /*
     [Malta] engy.js
@@ -677,15 +722,15 @@ var hokuto = (function () {
         return __renders;
     }
 
+    
+
     return {
         render: render,
         renderWithComponents: renderWithComponents ,
         cleanup: cleanup,
-
         get: get,
-
         preload: preload,
         getElement: getElement,
-        getElements: getElements
-    }
+        getElements: getElements,
+    };
 })();

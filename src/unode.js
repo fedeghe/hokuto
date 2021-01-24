@@ -7,13 +7,14 @@ function Unode(config) {
     this.toSolve = 0;
     this.state = 'state' in config ? config.state : {};
     this.data = 'data' in config ? config.data : {};
+    this.init = 'init' in config && config.init;
     this.rootNode = 'rootNode' in config ? config.rootNode : this;
     this.parentNode = 'parentNode' in config ? config.parentNode : this;
     this.resolve = function () {};
     this.reset = function () {};
     this.setMethods(); //just once
     this.prepareState(); //just once
-    this.init();
+    this.initialize();
 }
 
 Unode.prototype.prepareState = function () { 
@@ -23,7 +24,7 @@ Unode.prototype.prepareState = function () {
         ? state()
         : state;
 }
-Unode.prototype.init = function () {
+Unode.prototype.initialize = function () {
     this.rendered = false;
     this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs');
 };
@@ -79,7 +80,6 @@ Unode.prototype.setMethods = function () {
             }
         }
     });
-    return this;
 };
 
 Unode.prototype.getNode = function (id) {
@@ -108,14 +108,14 @@ Unode.prototype.setStyle = function (style) {
     if (style) {
         this.config.style = Object.assign({}, this.config.style, style)
     }
-    this.config.style && LIB.utils.setStyle(this.node, this.config.style);
+    this.config.style && LIB.dom.setStyle(this.node, this.config.style);
 };
 
 Unode.prototype.setAttrs = function (attrs) {
     if (attrs) {
         this.config.attrs = Object.assign({}, this.config.attrs, attrs)
     }
-    this.config.attrs && LIB.utils.setAttrs(this.node, this.config.attrs);
+    this.config.attrs && LIB.dom.setAttrs(this.node, this.config.attrs);
 };
 
 Unode.prototype.setData = function (data) {
@@ -124,26 +124,26 @@ Unode.prototype.setData = function (data) {
     }
     if (this.config.data) {
         this.data = this.config.data;
-        LIB.utils.setData(this.node, this.data);
+        LIB.dom.setData(this.node, this.data);
     }
 };
 
 Unode.prototype.setText = function (text) {
     if (typeof text !== _U_) this.config.text = text;
-    typeof this.config.text !== _U_ && LIB.utils.setText(this.node, this.config.text);
+    typeof this.config.text !== _U_ && LIB.dom.setText(this.node, this.config.text);
 };
 
 Unode.prototype.setHtml = function (html) {
     if (typeof html !== _U_) this.config.html = html;
-    typeof this.config.html !== _U_ && LIB.utils.setHtml(this.node, this.config.html);
+    typeof this.config.html !== _U_ && LIB.dom.setHtml(this.node, this.config.html);
 };
 
 Unode.prototype.killEvent = function (e) {
-    LIB.utils.kill(e);
+    LIB.events.kill(e);
 };
 
 Unode.prototype.unhandle = function (el) {
-    LIB.utils.unhandle(el || this.node);
+    LIB.events.unhandle(el || this.node);
 };
 
 Unode.prototype.setEvents = function () {
@@ -156,7 +156,7 @@ Unode.prototype.setEvents = function () {
         if (mat) {
             ev = mat[3].toLowerCase();
             (function (eventName) {
-                LIB.utils[mat[1]](self.node, ev, function (e) {
+                LIB.events[mat[1]](self.node, ev, function (e) {
                     self.config[eventName].call(self, e);
                 });
             })(i);
@@ -184,6 +184,7 @@ Unode.prototype.solve = function () {
 };
 
 Unode.prototype.render = function () {
+
     var self = this,
         ret = new LIB.Balle(function (resolve, reject) {
             self.resolve = resolve;
@@ -200,3 +201,5 @@ Unode.prototype.render = function () {
         : this.rendered = true, this.cb();
     return ret;
 };
+
+Unode.isUnode = function(n) {return n instanceof Unode;}

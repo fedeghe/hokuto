@@ -16,9 +16,11 @@ var hokuto = (function () {
 
 
 
+    maltaF('events.js')
+
     maltaF('poly.js')
 
-    maltaF('utils.js')
+    maltaF('dom.js')
 
 
     // console.log("maltaV('NS')")
@@ -90,15 +92,15 @@ var hokuto = (function () {
         return __renders;
     }
 
+    
+
     return {
         render: render,
         renderWithComponents: renderWithComponents ,
         cleanup: cleanup,
-
         get: get,
-
         preload: preload,
         getElement: getElement,
-        getElements: getElements
-    }
+        getElements: getElements,
+    };
 })();
