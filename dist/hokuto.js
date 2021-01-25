@@ -481,7 +481,6 @@ var hokuto = (function () {
         typeof this.config[Unode.identifier] !== _U_
         && typeof this.config.map.elements[this.config[Unode.identifier]] === _U_
         && this.map.add(this.config[Unode.identifier], this);
-        // console.log(this.map)
     };
     
     Unode.prototype.setCall = function (fns) {
@@ -501,21 +500,18 @@ var hokuto = (function () {
             _children = [];
     
         if ('children' in this.config) {
-            var common = {
-                target: self.node,
-                rootNode: self.rootNode,
-                map: self.map,
-                parentNode: self
-            };
-            if (typeof this.config.children === 'function') {
-                _children = this.config.children.call(this).map(function (child) {
-                    return new Unode(Object.assign({}, child, common));
-                });
-            } else {
-                _children = this.config.children.map(function (child) {
-                    return new Unode(Object.assign({}, child, common));
-                });
-            }
+            _children = (
+                typeof this.config.children === 'function'
+                ? this.config.children.call(this)
+                : this.config.children
+            ).map(function (child) {
+                return new Unode(Object.assign({}, child, {
+                    target: self.node,
+                    rootNode: self.rootNode,
+                    map: self.map,
+                    parentNode: self
+                }));
+            });
         }
         this.toSolve = _children.length;
         this.children = _children;
