@@ -2,9 +2,10 @@ function Unode(config) {
     this.config = config;
     this.map = this.config.map;
     this.parent = config.target;
+    this.tag = config.tag || 'div'
     this.node = this.config.ns
-        ? document.createElementNS(config.ns, config.tag || 'div')
-        : document.createElement(config.tag || 'div');
+        ? document.createElementNS(config.ns, this.tag)
+        : document.createElement(this.tag);
     this.rendered = false;
     this.toSolve = 0;
     this.state = 'state' in config ? config.state : {};
@@ -12,6 +13,8 @@ function Unode(config) {
     this.init = 'init' in config && config.init;
     this.rootNode = 'rootNode' in config ? config.rootNode : this;
     this.parentNode = 'parentNode' in config ? config.parentNode : this;
+
+    this.paramsFromChildren = [];
 
     //from map
     this.root = this.map.rootNode;
@@ -205,7 +208,9 @@ Unode.prototype.setState = function (o){
 
 Unode.prototype.done =
 Unode.prototype.solve = function () {
-    this.toSolve--;
+    var args = [].slice.call(arguments, 0);
+    this.parentNode.paramsFromChildren.push(args);
+    this.parentNode.toSolve--;
     if (this.toSolve <= 0) {
         this.parent.appendChild(this.node)
         this.rendered = true;
@@ -224,12 +229,13 @@ Unode.prototype.render = function () {
             this.children.forEach(function (child, i) {
                 child.render().then(function () {
                     self.node.appendChild(child.node);
-                    self.cb();
+                    self.toSolve ===0 && self.cb(self.paramsFromChildren);
                 });
             })
         } else {
             this.rendered = true;
-            this.cb();
+            var res = this.cb(self.paramsFromChildren);
+            this.rootNode.paramsFromChildren.push(res);
         }
     return ret;
 };

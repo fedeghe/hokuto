@@ -44,6 +44,34 @@
             cb: function () {
                 this.done()
             }
+        },{
+            tag: 'ul',
+            children: [{
+                tag: 'li',
+                html: 'one',
+                cb: function () {
+                    var self = this
+                    setTimeout(function () {
+                        self.done('one', 'two', 'three')
+                    },3000)
+                }
+            },{
+                tag: 'li',
+                html: 'two',
+                cb: function () {
+                    this.done(2)
+                }
+            },{
+                tag: 'li',
+                html: 'three',
+                cb: function () {
+                    this.done(3)
+                }
+            }],
+            cb: function () {
+                console.log('ul arguments', arguments)
+                this.done()
+            }
         }],
         cb: function () {
             console.log('render', +new Date)
