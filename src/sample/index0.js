@@ -51,9 +51,9 @@
                 html: 'one',
                 cb: function () {
                     var self = this
-                    setTimeout(function () {
-                        self.done('one', 'two', 'three')
-                    },3000)
+                    // setTimeout(function () {
+                        self.done(1)
+                    // },3000)
                 }
             },{
                 tag: 'li',
@@ -70,10 +70,11 @@
             }],
             cb: function () {
                 console.log('ul arguments', arguments)
-                this.done()
+                this.done([].slice.call(arguments, 0))
             }
         }],
         cb: function () {
+            console.log('root arguments', arguments)
             console.log('render', +new Date)
             this.done()
         }

@@ -209,7 +209,9 @@ Unode.prototype.setState = function (o){
 Unode.prototype.done =
 Unode.prototype.solve = function () {
     var args = [].slice.call(arguments, 0);
-    this.parentNode.paramsFromChildren.push(args);
+    if (args.length) {
+        this.parentNode.paramsFromChildren.push(args);
+    }
     this.parentNode.toSolve--;
     if (this.toSolve <= 0) {
         this.parent.appendChild(this.node)
@@ -229,13 +231,17 @@ Unode.prototype.render = function () {
             this.children.forEach(function (child, i) {
                 child.render().then(function () {
                     self.node.appendChild(child.node);
-                    self.toSolve ===0 && self.cb(self.paramsFromChildren);
+                    if (self.toSolve === 0) {
+                        self.paramsFromChildren.length
+                            ? self.cb(self.paramsFromChildren)
+                            : self.cb()
+                    }
                 });
             })
         } else {
             this.rendered = true;
             var res = this.cb(self.paramsFromChildren);
-            this.rootNode.paramsFromChildren.push(res);
+            res && this.rootNode.paramsFromChildren.push(res);
         }
     return ret;
 };
