@@ -9,16 +9,20 @@
         },
         
         onClick: function (e){
+            console.log('ciccio', this.getNode('ciccio'))
             console.log('on parent', this, this.node, e)
+            console.log('elements', this.getElement('xxx'))
         },
         
         children: [{
+            id: 'ciccio',
             tag: 'p',
             html: 'hello',
             method_say: function (a) {
                 console.log(a, this)
             },
             onClick: function (e){
+                
                 // console.log(hokuto)
                 this.say('HI')
                 e.stopPropagation();
@@ -34,5 +38,5 @@
             }
         }]
     };
-    hokuto.render(config, true);
+    hokuto.render(config, true, 'xxx');
 })();

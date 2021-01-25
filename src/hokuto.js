@@ -35,6 +35,25 @@ var hokuto = (function () {
         var target = config.target,
             originalHTML = target.innerHTML,
             fragment = document.createDocumentFragment(),
+            active = true,
+            map = {
+                abort: function () {
+                    active = false;
+                    target.innerHTML = originalHTML;
+                    'onAbort' in config
+                        && (typeof config.onAbort === 'function')
+                        && config.onAbort.call(null, config);
+                    return false;
+                },
+                add: function (id, inst) { map.elements[id] = inst; },
+                getNode: function (id) { return map.elements[id] || false; },
+                getNodes: function () { return map.elements; },
+                lateWid: function (wid) { map.elements[wid] = this; },
+                elements: {},
+                endFunctions: [],
+                getElement: getElement,
+                getElements: getElements
+            },
             rootNode = new Unode(
                 Object.assign(
                     {},
@@ -42,7 +61,7 @@ var hokuto = (function () {
                     {
                         target: fragment,
                     }, {
-                        map: {}
+                        map: map
                     }
                 )
             );
@@ -53,6 +72,7 @@ var hokuto = (function () {
             target.innerHTML = '';
         }
         return rootNode.render().then(function () {
+            if (!active) return
             target.appendChild(fragment);
         });
     }

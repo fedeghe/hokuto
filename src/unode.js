@@ -1,6 +1,6 @@
 function Unode(config) {
     this.config = config;
-    
+    this.map = this.config.map;
     this.parent = config.target;
     this.node = document.createElement(config.tag || 'div');
     this.rendered = false;
@@ -10,13 +10,21 @@ function Unode(config) {
     this.init = 'init' in config && config.init;
     this.rootNode = 'rootNode' in config ? config.rootNode : this;
     this.parentNode = 'parentNode' in config ? config.parentNode : this;
+
+    //from map
+    this.root = this.map.rootNode;
+    this.abort = this.map.abort;
+    this.getNode = this.map.getNode;
+    this.getNodes = this.map.getNodes;
+    this.lateWid = this.map.lateWid;
+    this.getElements = this.map.getElements;
+    this.getElement = this.map.getElement;
+
     this.resolve = function () {};
     this.reset = function () {};
     this.setMethods(); //just once
     this.prepareState(); //just once
     this.initialize();
-
-    this.map = config.map;
 }
 
 Unode.prototype.prepareState = function () { 
@@ -29,6 +37,11 @@ Unode.prototype.prepareState = function () {
 Unode.prototype.initialize = function () {
     this.rendered = false;
     this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs');
+    // debugger
+    typeof this.config[Unode.identifier] !== _U_
+    && typeof this.config.map.elements[this.config[Unode.identifier]] === _U_
+    && this.map.add(this.config[Unode.identifier], this);
+    // console.log(this.map)
 };
 
 Unode.prototype.setCall = function (fns) {
@@ -205,3 +218,4 @@ Unode.prototype.render = function () {
 };
 
 Unode.isUnode = function(n) {return n instanceof Unode;}
+Unode.identifier = 'id';
