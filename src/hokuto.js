@@ -72,8 +72,9 @@ var hokuto = (function () {
             target.innerHTML = '';
         }
         return rootNode.render().then(function () {
-            if (!active) return
+            if (!active) returnrootNode
             target.appendChild(fragment);
+            while (map.endFunctions.length) map.endFunctions.pop()();
         });
     }
 

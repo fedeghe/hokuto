@@ -154,7 +154,6 @@ Unode.prototype.killEvent = function (e) {
 };
 
 Unode.prototype.checkInit = function (e) {
-    'use strict';
     var keepRunning = true;
     if ('init' in this.config && typeof this.config.init === 'function') {
         keepRunning = this.config.init.call(this);
@@ -162,8 +161,15 @@ Unode.prototype.checkInit = function (e) {
     }
     return this;
 };
+
 Unode.prototype.checkEnd = function (e) {
-    
+    var self = this;
+    'end' in this.config
+        && typeof this.config.end === 'function'
+        && this.map.endFunctions.push(function () {
+            self.config.end.call(self);
+        });
+    return this;
 };
 
 Unode.prototype.unhandle = function (el) {
@@ -208,21 +214,23 @@ Unode.prototype.solve = function () {
 };
 
 Unode.prototype.render = function () {
-
     var self = this,
         ret = new LIB.Balle(function (resolve, reject) {
             self.resolve = resolve;
             self.reject = reject;
         });
         this.rendered = false
-        this.toSolve > 0
-        ? this.children.forEach(function (child, i) {
-            child.render().then(function () {
-                self.node.appendChild(child.node);
-                self.cb();
-            });
-        })
-        : this.rendered = true, this.cb();
+        if (this.toSolve > 0) {
+            this.children.forEach(function (child, i) {
+                child.render().then(function () {
+                    self.node.appendChild(child.node);
+                    self.cb();
+                });
+            })
+        } else {
+            this.rendered = true;
+            this.cb();
+        }
     return ret;
 };
 

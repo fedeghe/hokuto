@@ -594,7 +594,6 @@ var hokuto = (function () {
     };
     
     Unode.prototype.checkInit = function (e) {
-        'use strict';
         var keepRunning = true;
         if ('init' in this.config && typeof this.config.init === 'function') {
             keepRunning = this.config.init.call(this);
@@ -602,8 +601,15 @@ var hokuto = (function () {
         }
         return this;
     };
+    
     Unode.prototype.checkEnd = function (e) {
-        
+        var self = this;
+        'end' in this.config
+            && typeof this.config.end === 'function'
+            && this.map.endFunctions.push(function () {
+                self.config.end.call(self);
+            });
+        return this;
     };
     
     Unode.prototype.unhandle = function (el) {
@@ -648,21 +654,23 @@ var hokuto = (function () {
     };
     
     Unode.prototype.render = function () {
-    
         var self = this,
             ret = new LIB.Balle(function (resolve, reject) {
                 self.resolve = resolve;
                 self.reject = reject;
             });
             this.rendered = false
-            this.toSolve > 0
-            ? this.children.forEach(function (child, i) {
-                child.render().then(function () {
-                    self.node.appendChild(child.node);
-                    self.cb();
-                });
-            })
-            : this.rendered = true, this.cb();
+            if (this.toSolve > 0) {
+                this.children.forEach(function (child, i) {
+                    child.render().then(function () {
+                        self.node.appendChild(child.node);
+                        self.cb();
+                    });
+                })
+            } else {
+                this.rendered = true;
+                this.cb();
+            }
         return ret;
     };
     
@@ -727,8 +735,9 @@ var hokuto = (function () {
             target.innerHTML = '';
         }
         return rootNode.render().then(function () {
-            if (!active) return
+            if (!active) returnrootNode
             target.appendChild(fragment);
+            while (map.endFunctions.length) map.endFunctions.pop()();
         });
     }
 

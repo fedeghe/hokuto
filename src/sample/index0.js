@@ -13,11 +13,16 @@
             console.log('on parent', this, this.node, e)
             console.log('elements', this.getElement('xxx'))
         },
-        
+        end: function () {
+            console.log(this, +new Date)
+        },        
         children: [{
             id: 'ciccio',
             tag: 'p',
             html: 'hello',
+            end: function () {
+                console.log(this, +new Date)
+            },
             method_say: function (a) {
                 console.log(a, this)
             },
@@ -39,7 +44,11 @@
             cb: function () {
                 this.done()
             }
-        }]
+        }],
+        cb: function () {
+            console.log('render', +new Date)
+            this.done()
+        }
     };
     hokuto.render(config, true, 'xxx');
 })();
