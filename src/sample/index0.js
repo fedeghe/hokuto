@@ -21,6 +21,9 @@
             method_say: function (a) {
                 console.log(a, this)
             },
+            init: function () {
+                return true
+            },
             onClick: function (e){
                 
                 // console.log(hokuto)

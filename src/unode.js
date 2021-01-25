@@ -2,7 +2,9 @@ function Unode(config) {
     this.config = config;
     this.map = this.config.map;
     this.parent = config.target;
-    this.node = document.createElement(config.tag || 'div');
+    this.node = this.config.ns
+        ? document.createElementNS(config.ns, config.tag || 'div')
+        : document.createElement(config.tag || 'div');
     this.rendered = false;
     this.toSolve = 0;
     this.state = 'state' in config ? config.state : {};
@@ -25,6 +27,8 @@ function Unode(config) {
     this.setMethods(); //just once
     this.prepareState(); //just once
     this.initialize();
+    this.checkInit();
+    this.checkEnd();
 }
 
 Unode.prototype.prepareState = function () { 
@@ -93,10 +97,6 @@ Unode.prototype.setMethods = function () {
     });
 };
 
-Unode.prototype.getNode = function (id) {
-    return this.map[id];
-};
-
 Unode.prototype.setRef = function (ref, ctx) {
     // allow the node to set a ref on itself
     // or to another node it can reference
@@ -151,6 +151,19 @@ Unode.prototype.setHtml = function (html) {
 
 Unode.prototype.killEvent = function (e) {
     LIB.events.kill(e);
+};
+
+Unode.prototype.checkInit = function (e) {
+    'use strict';
+    var keepRunning = true;
+    if ('init' in this.config && typeof this.config.init === 'function') {
+        keepRunning = this.config.init.call(this);
+        !keepRunning && this.abort();
+    }
+    return this;
+};
+Unode.prototype.checkEnd = function (e) {
+    
 };
 
 Unode.prototype.unhandle = function (el) {
