@@ -1,4 +1,4 @@
 (function () {
     maltaF('./../node_modules/balle/dist/index.js')
-    LIB.Balle = Balle;
+    NS.LIB.Balle = Balle;
 })();

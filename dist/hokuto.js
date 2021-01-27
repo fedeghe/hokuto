@@ -2,10 +2,8 @@ var hokuto = (function () {
 
     var _U_ = 'undefined',
         _ = {},
-        LIB = {};
-
-    
-    var NS = {};
+        W = window,
+        NS = {};
 
     /*
     [Malta] core.js
@@ -128,6 +126,11 @@ var hokuto = (function () {
     })(NS);
     
 
+    console.log(NS);
+
+    NS.makeNs('LIB', {});
+
+
     /*
     [Malta] _balle.js
     */
@@ -161,42 +164,49 @@ var hokuto = (function () {
         e.then(l).catch(t)})}):Balle.reject("Balle.race acceps an Iterable Promise only")},Balle.chain=function(e){if(!Balle._isIterable(e))return Balle.reject("Balle.chain acceps an Iterable Promise only")
         ;var l=e.length;return new Balle(function(t,a){!function n(r,s){return r===l?t(s):e[r](s).then(function(e){n(++r,e)}).catch(function(e){a(e)})}(0)})},Balle.reject=function(e){
         return new Balle(function(l,t){return t(e)})},Balle.resolve=function(e){return new Balle(function(l,t){e instanceof Balle?e.then(l).catch(t):l(e)})},"object"==typeof exports&&(module.exports=Balle);
-        LIB.Balle = Balle;
+        NS.LIB.Balle = Balle;
     })();
+    
+    
     
 
     /*
-    [Malta] _searchhash.js
+    [Malta] history.js
     */
     (function () {
-        /*
-        [Malta] ./../node_modules/searchhash/dist/index.js
-        */
         'use strict';
-        /*
-        SEARCHHASH v1.2.0
-        ~1KB
-        */
-        var searchHash=function(){function n(n,t){return JSON.stringify(n)===JSON.stringify(t)&&!e(t)}function t(n){return"string"==typeof n||n instanceof String}function e(n){return n instanceof RegExp}
-        function i(n){var t=String(n)!==n,e=n===Object(n),i="function"!=typeof n,r={}.toString.call(n).match(/\[object\sObject\]/);return t&&e&&i&&!(!r||!r.length)}function r(n){
-        var t={}.toString.call(n).match(/\[object\sArray\]/);return String(n)!==n&&!(!t||!t.length)}function o(o,a,u,c){if(!i(a)&&!r(a))throw new Error("BAD PARAM: must search into an object or an array")
-        ;var f,l=0,m=function(i,r){return t(i)&&e(r)?i.match(r):n(i,r)},y={key:function(n,t,e){return"function"==typeof e?e(n):m(n,e)},value:function(n,t,e){return"function"==typeof e?e(t):m(t,e)},
-        keyvalue:function(n,t,e){return("function"==typeof e.key&&e.key(n)||m(n,e.key))&&("function"==typeof e.value&&e.value(t)||m(t,e.value))}}[o],s=[],p=function(n,t,e,i,r){
-        var o=[].concat.call(n,[t]),a=y(t,i[t],e),u=c.min<=r&&r<=c.max,f=o.length;u&&a&&(s.push({obj:i,value:i[t],key:o[f-1],parentKey:o[f-2],path:o.join("/"),container:o.slice(0,f-1).join("/"),
-        parentContainer:o.slice(0,f-2).join("/"),regexp:a,level:r}),l++),h(i[t],e,o,r+1)},h=function(n,t,e,i){var r,o;if(n instanceof Array)for(r=0,o=n.length;r<o&&(p(e,r,t,n,i),
-        c.limit!==l);r++);else if("object"==typeof n)for(r in n)if(p(e,r,t,n,i),c.limit===l)break};return c.limit="limit"in c?~~c.limit:1/0,c.min="min"in c?~~c.min:0,c.max="max"in c?~~c.max:1/0,
-        0===c.limit?s:(c.min=c.min<0?0:c.min,c.max<c.min&&(f=c.min,c.min=c.max,c.max=f),h(a,u,[],0),s)}return{forKey:function(n,t,e){return o("key",n,t,e||{})},forValue:function(n,t,e){
-        return o("value",n,t,e||{})},forKeyValue:function(n,t,e){return o("keyvalue",n,t,e||{})}}}();"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=searchHash);
-        LIB.searchHash = searchHash;
+        var H = W.history,
+            handlers = [],
+            spread = function (url, state, title) {
+                handlers.forEach(function (handler) {
+                    handler(url, state, title);
+                });
+            };
+        NS.makeNs('LIB.history', {
+            push: function (url, state, title) {
+                H.pushState(state || {}, title || '', url);
+                spread(url, state, title);
+            },
+            registerHandler: function (f) {
+                handlers.push(f);
+            },
+            replace: function (url, state, title) {
+                H.replaceState(state || {}, title || '', url);
+                spread(url, state, title);
+            },
+            resetHandlers: function () {
+                handlers = [];
+            },
+            state: function () {
+                return H.state;
+            }
+        });
     })();
-
-
-
-
+    
     /*
     [Malta] events.js
     */
-    LIB.events = (function (W) {
+    (function () {
     
         var _ = {
             events: {
@@ -312,7 +322,7 @@ var hokuto = (function () {
                     }
                 };
             })();
-        return {
+        NS.makeNs('LIB.events', {
             on: on,
             off: off,
             kill: kill,
@@ -320,10 +330,9 @@ var hokuto = (function () {
             eventTaget: eventTarget,
             ready: ready,
             unhandle: unhandle
-        };
-    })(window);
+        });
+    })();
     
-
     /*
     [Malta] poly.js
     */
@@ -352,11 +361,10 @@ var hokuto = (function () {
             configurable: true
         });
     }
-
     /*
     [Malta] dom.js
     */
-    LIB.dom = (function (W) {
+    (function () {
         var noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
         
         function setStyle(node, styles) {
@@ -412,7 +420,8 @@ var hokuto = (function () {
     
         function setHtml(node, html) {node.innerHTML = filterHtml(html);}
     
-        return {
+    
+        NS.makeNs('LIB.dom', {
             remove: remove,
             setText: setText,
             setHtml: setHtml,
@@ -421,20 +430,13 @@ var hokuto = (function () {
             unsetAttrs: unsetAttrs,
             setData: setData,
             unsetData: unsetData
-        };
-    })(window);
-    
-    NS.makeNs('LIB.dom', {
-        removessss: function (el) {
-            return el.parentNode && el.parentNode.removeChild(el);
-        }
-    });
+        });
+    })();
     
     
-
-
-    // console.log("Hokuto")
     
+    
+    console.log(NS);
     /*
     [Malta] Unode.js
     */
@@ -562,14 +564,14 @@ var hokuto = (function () {
         if (style) {
             this.config.style = Object.assign({}, this.config.style, style)
         }
-        this.config.style && LIB.dom.setStyle(this.node, this.config.style);
+        this.config.style && NS.LIB.dom.setStyle(this.node, this.config.style);
     };
     
     Unode.prototype.setAttrs = function (attrs) {
         if (attrs) {
             this.config.attrs = Object.assign({}, this.config.attrs, attrs)
         }
-        this.config.attrs && LIB.dom.setAttrs(this.node, this.config.attrs);
+        this.config.attrs && NS.LIB.dom.setAttrs(this.node, this.config.attrs);
     };
     
     Unode.prototype.setData = function (data) {
@@ -578,22 +580,22 @@ var hokuto = (function () {
         }
         if (this.config.data) {
             this.data = this.config.data;
-            LIB.dom.setData(this.node, this.data);
+            NS.LIB.dom.setData(this.node, this.data);
         }
     };
     
     Unode.prototype.setText = function (text) {
         if (typeof text !== _U_) this.config.text = text;
-        typeof this.config.text !== _U_ && LIB.dom.setText(this.node, this.config.text);
+        typeof this.config.text !== _U_ && NS.LIB.dom.setText(this.node, this.config.text);
     };
     
     Unode.prototype.setHtml = function (html) {
         if (typeof html !== _U_) this.config.html = html;
-        typeof this.config.html !== _U_ && LIB.dom.setHtml(this.node, this.config.html);
+        typeof this.config.html !== _U_ && NS.LIB.dom.setHtml(this.node, this.config.html);
     };
     
     Unode.prototype.killEvent = function (e) {
-        LIB.events.kill(e);
+        NS.LIB.events.kill(e);
     };
     
     Unode.prototype.checkInit = function (e) {
@@ -616,7 +618,7 @@ var hokuto = (function () {
     };
     
     Unode.prototype.unhandle = function (el) {
-        LIB.events.unhandle(el || this.node);
+        NS.LIB.events.unhandle(el || this.node);
     };
     
     Unode.prototype.setEvents = function () {
@@ -629,7 +631,7 @@ var hokuto = (function () {
             if (mat) {
                 ev = mat[3].toLowerCase();
                 (function (eventName) {
-                    LIB.events[mat[1]](self.node, ev, function (e) {
+                    NS.LIB.events[mat[1]](self.node, ev, function (e) {
                         self.config[eventName].call(self, e);
                     });
                 })(i);
@@ -662,7 +664,7 @@ var hokuto = (function () {
     
     Unode.prototype.render = function () {
         var self = this,
-            ret = new LIB.Balle(function (resolve, reject) {
+            ret = new NS.LIB.Balle(function (resolve, reject) {
                 self.resolve = resolve;
                 self.reject = reject;
             });
@@ -689,7 +691,6 @@ var hokuto = (function () {
     Unode.isUnode = function(n) {return n instanceof Unode;}
     Unode.identifier = 'id';
     ;
-    
     /*
     [Malta] engy.js
     */

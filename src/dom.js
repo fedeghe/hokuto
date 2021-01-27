@@ -1,4 +1,4 @@
-LIB.dom = (function (W) {
+(function () {
     var noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
     
     function setStyle(node, styles) {
@@ -54,7 +54,8 @@ LIB.dom = (function (W) {
 
     function setHtml(node, html) {node.innerHTML = filterHtml(html);}
 
-    return {
+
+    NS.makeNs('LIB.dom', {
         remove: remove,
         setText: setText,
         setHtml: setHtml,
@@ -63,12 +64,8 @@ LIB.dom = (function (W) {
         unsetAttrs: unsetAttrs,
         setData: setData,
         unsetData: unsetData
-    };
-})(window);
+    });
+})();
 
-NS.makeNs('LIB.dom', {
-    removessss: function (el) {
-        return el.parentNode && el.parentNode.removeChild(el);
-    }
-});
+
 

@@ -2,31 +2,26 @@ var hokuto = (function () {
 
     var _U_ = 'undefined',
         _ = {},
-        LIB = {};
-
-    
-    var NS = {};
+        W = window,
+        NS = {};
 
     maltaF('core.js')
 
+    console.log(NS);
+
+    NS.makeNs('LIB', {});
+
+
     maltaF('_balle.js')
+    
+    
 
-    maltaF('_searchhash.js')
-
-
-
-
+    maltaF('history.js')
     maltaF('events.js')
-
     maltaF('poly.js')
-
     maltaF('dom.js')
-
-
-    // console.log("maltaV('NS')")
-    
+    console.log(NS);
     maltaF('Unode.js');
-    
     maltaF('engy.js');
 
     var __renders = {};

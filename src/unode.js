@@ -122,14 +122,14 @@ Unode.prototype.setStyle = function (style) {
     if (style) {
         this.config.style = Object.assign({}, this.config.style, style)
     }
-    this.config.style && LIB.dom.setStyle(this.node, this.config.style);
+    this.config.style && NS.LIB.dom.setStyle(this.node, this.config.style);
 };
 
 Unode.prototype.setAttrs = function (attrs) {
     if (attrs) {
         this.config.attrs = Object.assign({}, this.config.attrs, attrs)
     }
-    this.config.attrs && LIB.dom.setAttrs(this.node, this.config.attrs);
+    this.config.attrs && NS.LIB.dom.setAttrs(this.node, this.config.attrs);
 };
 
 Unode.prototype.setData = function (data) {
@@ -138,22 +138,22 @@ Unode.prototype.setData = function (data) {
     }
     if (this.config.data) {
         this.data = this.config.data;
-        LIB.dom.setData(this.node, this.data);
+        NS.LIB.dom.setData(this.node, this.data);
     }
 };
 
 Unode.prototype.setText = function (text) {
     if (typeof text !== _U_) this.config.text = text;
-    typeof this.config.text !== _U_ && LIB.dom.setText(this.node, this.config.text);
+    typeof this.config.text !== _U_ && NS.LIB.dom.setText(this.node, this.config.text);
 };
 
 Unode.prototype.setHtml = function (html) {
     if (typeof html !== _U_) this.config.html = html;
-    typeof this.config.html !== _U_ && LIB.dom.setHtml(this.node, this.config.html);
+    typeof this.config.html !== _U_ && NS.LIB.dom.setHtml(this.node, this.config.html);
 };
 
 Unode.prototype.killEvent = function (e) {
-    LIB.events.kill(e);
+    NS.LIB.events.kill(e);
 };
 
 Unode.prototype.checkInit = function (e) {
@@ -176,7 +176,7 @@ Unode.prototype.checkEnd = function (e) {
 };
 
 Unode.prototype.unhandle = function (el) {
-    LIB.events.unhandle(el || this.node);
+    NS.LIB.events.unhandle(el || this.node);
 };
 
 Unode.prototype.setEvents = function () {
@@ -189,7 +189,7 @@ Unode.prototype.setEvents = function () {
         if (mat) {
             ev = mat[3].toLowerCase();
             (function (eventName) {
-                LIB.events[mat[1]](self.node, ev, function (e) {
+                NS.LIB.events[mat[1]](self.node, ev, function (e) {
                     self.config[eventName].call(self, e);
                 });
             })(i);
@@ -222,7 +222,7 @@ Unode.prototype.solve = function () {
 
 Unode.prototype.render = function () {
     var self = this,
-        ret = new LIB.Balle(function (resolve, reject) {
+        ret = new NS.LIB.Balle(function (resolve, reject) {
             self.resolve = resolve;
             self.reject = reject;
         });

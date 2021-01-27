@@ -1,4 +1,4 @@
-LIB.events = (function (W) {
+(function () {
 
     var _ = {
         events: {
@@ -114,7 +114,7 @@ LIB.events = (function (W) {
                 }
             };
         })();
-    return {
+    NS.makeNs('LIB.events', {
         on: on,
         off: off,
         kill: kill,
@@ -122,5 +122,5 @@ LIB.events = (function (W) {
         eventTaget: eventTarget,
         ready: ready,
         unhandle: unhandle
-    };
-})(window);
+    });
+})();
