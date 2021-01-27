@@ -77,6 +77,7 @@
             console.log('root arguments', arguments)
             console.log('render', +new Date)
             this.done()
+            console.log(this.report())
         }
     };
     hokuto.render(config, true, 'xxx');

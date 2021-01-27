@@ -24,7 +24,9 @@ var hokuto = (function () {
     var __renders = {};
 
     function render(config, clear, name) {
-        var target = config.target,
+        var timeStart = +new Date(),
+            timeEnd,
+            target = config.target,
             originalHTML = target.innerHTML,
             fragment = document.createDocumentFragment(),
             active = true,
@@ -52,10 +54,9 @@ var hokuto = (function () {
                     config,
                     {
                         target: fragment,
-                    }, {
-                        map: map
                     }
-                )
+                ),
+                map
             );
         if (name && !(name in __renders)) {
             __renders[name] = rootNode;
@@ -66,6 +67,8 @@ var hokuto = (function () {
         return rootNode.render().then(function () {
             if (!active) returnrootNode
             target.appendChild(fragment);
+            timeEnd = +new Date();
+            NS.LIB.timer.add(timeEnd - timeStart);
             while (map.endFunctions.length) map.endFunctions.pop()();
         });
     }

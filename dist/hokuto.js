@@ -453,9 +453,9 @@ var hokuto = (function () {
     /*
     [Malta] Unode.js
     */
-    function Unode(config) {
+    function Unode(config, map) {
         this.config = config;
-        this.map = this.config.map;
+        this.map = map
         this.parent = config.target;
         this.tag = config.tag || 'div'
         this.node = this.config.ns
@@ -532,7 +532,7 @@ var hokuto = (function () {
                     rootNode: self.rootNode,
                     map: self.map,
                     parentNode: self
-                }));
+                }), self.map);
             });
         }
         this.toSolve = _children.length;
@@ -700,6 +700,11 @@ var hokuto = (function () {
             }
         return ret;
     };
+    Unode.prototype.report = function () {
+        var jsonSize = JSON.stringify(this.config).length,
+            htmlSize = this.node.innerHTML.length;
+        return (htmlSize / jsonSize).toFixed(2) + " (html:" + htmlSize + " / json:" + jsonSize + ")"
+    };
     
     Unode.isUnode = function(n) {return n instanceof Unode;}
     Unode.identifier = 'id';
@@ -721,7 +726,9 @@ var hokuto = (function () {
     var __renders = {};
 
     function render(config, clear, name) {
-        var target = config.target,
+        var timeStart = +new Date(),
+            timeEnd,
+            target = config.target,
             originalHTML = target.innerHTML,
             fragment = document.createDocumentFragment(),
             active = true,
@@ -749,10 +756,9 @@ var hokuto = (function () {
                     config,
                     {
                         target: fragment,
-                    }, {
-                        map: map
                     }
-                )
+                ),
+                map
             );
         if (name && !(name in __renders)) {
             __renders[name] = rootNode;
@@ -763,6 +769,8 @@ var hokuto = (function () {
         return rootNode.render().then(function () {
             if (!active) returnrootNode
             target.appendChild(fragment);
+            timeEnd = +new Date();
+            NS.LIB.timer.add(timeEnd - timeStart);
             while (map.endFunctions.length) map.endFunctions.pop()();
         });
     }

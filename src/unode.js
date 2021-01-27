@@ -1,6 +1,6 @@
-function Unode(config) {
+function Unode(config, map) {
     this.config = config;
-    this.map = this.config.map;
+    this.map = map
     this.parent = config.target;
     this.tag = config.tag || 'div'
     this.node = this.config.ns
@@ -77,7 +77,7 @@ Unode.prototype.setChildren = function () {
                 rootNode: self.rootNode,
                 map: self.map,
                 parentNode: self
-            }));
+            }), self.map);
         });
     }
     this.toSolve = _children.length;
@@ -244,6 +244,11 @@ Unode.prototype.render = function () {
             res && this.rootNode.paramsFromChildren.push(res);
         }
     return ret;
+};
+Unode.prototype.report = function () {
+    var jsonSize = JSON.stringify(this.config).length,
+        htmlSize = this.node.innerHTML.length;
+    return (htmlSize / jsonSize).toFixed(2) + " (html:" + htmlSize + " / json:" + jsonSize + ")"
 };
 
 Unode.isUnode = function(n) {return n instanceof Unode;}
