@@ -1,6 +1,9 @@
 var hokuto = (function () {
 
-    var _U_ = 'undefined',
+    var TYPES = {
+            U: 'undefined',
+            F: 'function'
+        },
         _ = {},
         W = window,
         NS = {};
@@ -64,15 +67,15 @@ var hokuto = (function () {
     
             // default context window
             //
-            (typeof ctx === _U_) && (ctx = Namespace);
+            (typeof ctx === TYPES.U) && (ctx = Namespace);
     
             // default object empty
             //
-            (typeof obj === _U_) && (obj = {});
+            (typeof obj === TYPES.U) && (obj = {});
     
             // if function
             //
-            (typeof obj === 'function') && (obj = obj());
+            (typeof obj === TYPES.F) && (obj = obj());
     
             //
             if (!ctx[els[0]]) {
@@ -90,14 +93,14 @@ var hokuto = (function () {
             var els = ns.split(/\.|\//),
                 i = 0,
                 l = els.length;
-            ctx = (typeof ctx !== _U_) ? ctx : _context_;
+            ctx = (typeof ctx !== TYPES.U) ? ctx : _context_;
     
             if (!ns) {
                 return ctx;
             }
     
             for (null; i < l; i += 1) {
-                if (typeof ctx[els[i]] !== _U_) {
+                if (typeof ctx[els[i]] !== TYPES.U) {
                     ctx = ctx[els[i]];
                 } else {
                     // break it
@@ -109,9 +112,9 @@ var hokuto = (function () {
     
         function extendns (ns, objfn) {
             var i,
-                obj = typeof objfn === 'function' ? objfn() : objfn;
+                obj = typeof objfn === TYPES.F ? objfn() : objfn;
             for (i in obj) {
-                if (typeof ns[i] === _U_) {
+                if (typeof ns[i] === TYPES.U) {
                     ns[i] = obj[i];
                 }
             }
@@ -125,11 +128,7 @@ var hokuto = (function () {
     
     })(NS);
     
-
-    console.log(NS);
-
     NS.makeNs('LIB', {});
-
 
     /*
     [Malta] _balle.js
@@ -167,9 +166,6 @@ var hokuto = (function () {
         NS.LIB.Balle = Balle;
     })();
     
-    
-    
-
     /*
     [Malta] history.js
     */
@@ -292,7 +288,7 @@ var hokuto = (function () {
     
             eventTarget = function (e) {
                 e = e || W.event;
-                var targetElement = e.currentTarget || (typeof e.target !== _U_) ? e.target : e.srcElement;
+                var targetElement = e.currentTarget || (typeof e.target !== TYPES.U) ? e.target : e.srcElement;
                 if (!targetElement) {
                     return false;
                 }
@@ -336,7 +332,7 @@ var hokuto = (function () {
     /*
     [Malta] poly.js
     */
-    if (typeof Object.assign !== 'function') {
+    if (typeof Object.assign !== TYPES.F) {
         // Must be writable: true, enumerable: false, configurable: true
         Object.defineProperty(Object, "assign", {
             value: function assign(target, varArgs) {
@@ -369,7 +365,7 @@ var hokuto = (function () {
         
         function setStyle(node, styles) {
             var tmp;
-            if (typeof styles === _U_) throw new Error('ERR: styles needed')
+            if (typeof styles === TYPES.U) throw new Error('ERR: styles needed')
             for (tmp in styles) {
                 if (tmp === 'float') {
                     node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
@@ -381,7 +377,7 @@ var hokuto = (function () {
         }
     
         function setAttrs(node, attrs) {
-            if (typeof attrs === _U_) throw new Error('ERR: attrs needed')
+            if (typeof attrs === TYPES.U) throw new Error('ERR: attrs needed')
             for (var tmp in attrs) {
                 if (noAttrs.indexOf(tmp) < 0)
                     node.setAttribute(tmp, attrs[tmp]);
@@ -389,7 +385,7 @@ var hokuto = (function () {
         }
         
         function unsetAttrs(node, attrs) {
-            if (typeof attrs === _U_) throw new Error('ERR: attrs needed')
+            if (typeof attrs === TYPES.U) throw new Error('ERR: attrs needed')
             for (var tmp in attrs) {
                 if (noAttrs.indexOf(tmp) < 0)
                     node.removeAttribute(tmp, attrs[tmp]);
@@ -397,14 +393,14 @@ var hokuto = (function () {
         }
     
         function setData(node, data) {
-            if (typeof data === _U_) throw new Error('ERR: data needed')
+            if (typeof data === TYPES.U) throw new Error('ERR: data needed')
             for (var tmp in data) {
                 node.dataset[tmp] = data[tmp];
             }
         }
     
         function unsetData(node, data) {
-            if (typeof data === _U_) throw new Error('ERR: data needed')
+            if (typeof data === TYPES.U) throw new Error('ERR: data needed')
             for (var tmp in data) {
                 delete node.dataset[tmp]
             }
@@ -420,7 +416,6 @@ var hokuto = (function () {
     
         function setHtml(node, html) {node.innerHTML = filterHtml(html);}
     
-    
         NS.makeNs('LIB.dom', {
             remove: remove,
             setText: setText,
@@ -435,6 +430,24 @@ var hokuto = (function () {
     
     
     
+    
+    /*
+    [Malta] timer.js
+    */
+    (function () {
+        'use strict';
+        var time = 0;
+        NS.makeNs('LIB.timer', {
+            add: function (t) {
+                time += t;
+            },
+            get: function () {
+                var tmp = time + 0;
+                time = 0;
+                return tmp;
+            }
+        });
+    })();
     
     console.log(NS);
     /*
@@ -479,7 +492,7 @@ var hokuto = (function () {
     Unode.prototype.prepareState = function () { 
         var statePassed = 'state' in this.config,
             state = statePassed ? this.config.state : {};
-        this.state = typeof state === 'function'
+        this.state = typeof state === TYPES.F
             ? state()
             : state;
     }
@@ -487,8 +500,8 @@ var hokuto = (function () {
         this.rendered = false;
         this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs');
         // debugger
-        typeof this.config[Unode.identifier] !== _U_
-        && typeof this.config.map.elements[this.config[Unode.identifier]] === _U_
+        typeof this.config[Unode.identifier] !== TYPES.U
+        && typeof this.config.map.elements[this.config[Unode.identifier]] === TYPES.U
         && this.map.add(this.config[Unode.identifier], this);
     };
     
@@ -510,7 +523,7 @@ var hokuto = (function () {
     
         if ('children' in this.config) {
             _children = (
-                typeof this.config.children === 'function'
+                typeof this.config.children === TYPES.F
                 ? this.config.children.call(this)
                 : this.config.children
             ).map(function (child) {
@@ -549,13 +562,13 @@ var hokuto = (function () {
             (ctx || this).map[ref] = ctx || this
     
         // or incase is in the config, just set it
-        } else if (typeof this.config.ref !== _U_) {
+        } else if (typeof this.config.ref !== TYPES.U) {
             this.map[this.config.ref] = this
         }
     };
     
     Unode.prototype.setCbs = function () {
-        this.cb = ('cb' in this.config && typeof this.config.cb === 'function')
+        this.cb = ('cb' in this.config && typeof this.config.cb === TYPES.F)
             ? this.config.cb.bind(this)
             : this.solve.bind(this);
     };
@@ -585,13 +598,13 @@ var hokuto = (function () {
     };
     
     Unode.prototype.setText = function (text) {
-        if (typeof text !== _U_) this.config.text = text;
-        typeof this.config.text !== _U_ && NS.LIB.dom.setText(this.node, this.config.text);
+        if (typeof text !== TYPES.U) this.config.text = text;
+        typeof this.config.text !== TYPES.U && NS.LIB.dom.setText(this.node, this.config.text);
     };
     
     Unode.prototype.setHtml = function (html) {
-        if (typeof html !== _U_) this.config.html = html;
-        typeof this.config.html !== _U_ && NS.LIB.dom.setHtml(this.node, this.config.html);
+        if (typeof html !== TYPES.U) this.config.html = html;
+        typeof this.config.html !== TYPES.U && NS.LIB.dom.setHtml(this.node, this.config.html);
     };
     
     Unode.prototype.killEvent = function (e) {
@@ -600,7 +613,7 @@ var hokuto = (function () {
     
     Unode.prototype.checkInit = function (e) {
         var keepRunning = true;
-        if ('init' in this.config && typeof this.config.init === 'function') {
+        if ('init' in this.config && typeof this.config.init === TYPES.F) {
             keepRunning = this.config.init.call(this);
             !keepRunning && this.abort();
         }
@@ -610,7 +623,7 @@ var hokuto = (function () {
     Unode.prototype.checkEnd = function (e) {
         var self = this;
         'end' in this.config
-            && typeof this.config.end === 'function'
+            && typeof this.config.end === TYPES.F
             && this.map.endFunctions.push(function () {
                 self.config.end.call(self);
             });
@@ -704,7 +717,7 @@ var hokuto = (function () {
     }
     
     ;
-
+    
     var __renders = {};
 
     function render(config, clear, name) {
@@ -717,7 +730,7 @@ var hokuto = (function () {
                     active = false;
                     target.innerHTML = originalHTML;
                     'onAbort' in config
-                        && (typeof config.onAbort === 'function')
+                        && (typeof config.onAbort === TYPES.F)
                         && config.onAbort.call(null, config);
                     return false;
                 },

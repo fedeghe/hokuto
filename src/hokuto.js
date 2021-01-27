@@ -1,29 +1,26 @@
 var hokuto = (function () {
 
-    var _U_ = 'undefined',
+    var TYPES = {
+            U: 'undefined',
+            F: 'function'
+        },
         _ = {},
         W = window,
         NS = {};
 
     maltaF('core.js')
-
-    console.log(NS);
-
     NS.makeNs('LIB', {});
 
-
     maltaF('_balle.js')
-    
-    
-
     maltaF('history.js')
     maltaF('events.js')
     maltaF('poly.js')
     maltaF('dom.js')
+    maltaF('timer.js')
     console.log(NS);
     maltaF('Unode.js');
     maltaF('engy.js');
-
+    
     var __renders = {};
 
     function render(config, clear, name) {
@@ -36,7 +33,7 @@ var hokuto = (function () {
                     active = false;
                     target.innerHTML = originalHTML;
                     'onAbort' in config
-                        && (typeof config.onAbort === 'function')
+                        && (typeof config.onAbort === TYPES.F)
                         && config.onAbort.call(null, config);
                     return false;
                 },

@@ -1,4 +1,4 @@
-if (typeof Object.assign !== 'function') {
+if (typeof Object.assign !== TYPES.F) {
     // Must be writable: true, enumerable: false, configurable: true
     Object.defineProperty(Object, "assign", {
         value: function assign(target, varArgs) {

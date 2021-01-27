@@ -37,7 +37,7 @@ function Unode(config) {
 Unode.prototype.prepareState = function () { 
     var statePassed = 'state' in this.config,
         state = statePassed ? this.config.state : {};
-    this.state = typeof state === 'function'
+    this.state = typeof state === TYPES.F
         ? state()
         : state;
 }
@@ -45,8 +45,8 @@ Unode.prototype.initialize = function () {
     this.rendered = false;
     this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs');
     // debugger
-    typeof this.config[Unode.identifier] !== _U_
-    && typeof this.config.map.elements[this.config[Unode.identifier]] === _U_
+    typeof this.config[Unode.identifier] !== TYPES.U
+    && typeof this.config.map.elements[this.config[Unode.identifier]] === TYPES.U
     && this.map.add(this.config[Unode.identifier], this);
 };
 
@@ -68,7 +68,7 @@ Unode.prototype.setChildren = function () {
 
     if ('children' in this.config) {
         _children = (
-            typeof this.config.children === 'function'
+            typeof this.config.children === TYPES.F
             ? this.config.children.call(this)
             : this.config.children
         ).map(function (child) {
@@ -107,13 +107,13 @@ Unode.prototype.setRef = function (ref, ctx) {
         (ctx || this).map[ref] = ctx || this
 
     // or incase is in the config, just set it
-    } else if (typeof this.config.ref !== _U_) {
+    } else if (typeof this.config.ref !== TYPES.U) {
         this.map[this.config.ref] = this
     }
 };
 
 Unode.prototype.setCbs = function () {
-    this.cb = ('cb' in this.config && typeof this.config.cb === 'function')
+    this.cb = ('cb' in this.config && typeof this.config.cb === TYPES.F)
         ? this.config.cb.bind(this)
         : this.solve.bind(this);
 };
@@ -143,13 +143,13 @@ Unode.prototype.setData = function (data) {
 };
 
 Unode.prototype.setText = function (text) {
-    if (typeof text !== _U_) this.config.text = text;
-    typeof this.config.text !== _U_ && NS.LIB.dom.setText(this.node, this.config.text);
+    if (typeof text !== TYPES.U) this.config.text = text;
+    typeof this.config.text !== TYPES.U && NS.LIB.dom.setText(this.node, this.config.text);
 };
 
 Unode.prototype.setHtml = function (html) {
-    if (typeof html !== _U_) this.config.html = html;
-    typeof this.config.html !== _U_ && NS.LIB.dom.setHtml(this.node, this.config.html);
+    if (typeof html !== TYPES.U) this.config.html = html;
+    typeof this.config.html !== TYPES.U && NS.LIB.dom.setHtml(this.node, this.config.html);
 };
 
 Unode.prototype.killEvent = function (e) {
@@ -158,7 +158,7 @@ Unode.prototype.killEvent = function (e) {
 
 Unode.prototype.checkInit = function (e) {
     var keepRunning = true;
-    if ('init' in this.config && typeof this.config.init === 'function') {
+    if ('init' in this.config && typeof this.config.init === TYPES.F) {
         keepRunning = this.config.init.call(this);
         !keepRunning && this.abort();
     }
@@ -168,7 +168,7 @@ Unode.prototype.checkInit = function (e) {
 Unode.prototype.checkEnd = function (e) {
     var self = this;
     'end' in this.config
-        && typeof this.config.end === 'function'
+        && typeof this.config.end === TYPES.F
         && this.map.endFunctions.push(function () {
             self.config.end.call(self);
         });

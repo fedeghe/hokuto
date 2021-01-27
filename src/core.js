@@ -54,15 +54,15 @@
 
         // default context window
         //
-        (typeof ctx === _U_) && (ctx = Namespace);
+        (typeof ctx === TYPES.U) && (ctx = Namespace);
 
         // default object empty
         //
-        (typeof obj === _U_) && (obj = {});
+        (typeof obj === TYPES.U) && (obj = {});
 
         // if function
         //
-        (typeof obj === 'function') && (obj = obj());
+        (typeof obj === TYPES.F) && (obj = obj());
 
         //
         if (!ctx[els[0]]) {
@@ -80,14 +80,14 @@
         var els = ns.split(/\.|\//),
             i = 0,
             l = els.length;
-        ctx = (typeof ctx !== _U_) ? ctx : _context_;
+        ctx = (typeof ctx !== TYPES.U) ? ctx : _context_;
 
         if (!ns) {
             return ctx;
         }
 
         for (null; i < l; i += 1) {
-            if (typeof ctx[els[i]] !== _U_) {
+            if (typeof ctx[els[i]] !== TYPES.U) {
                 ctx = ctx[els[i]];
             } else {
                 // break it
@@ -99,9 +99,9 @@
 
     function extendns (ns, objfn) {
         var i,
-            obj = typeof objfn === 'function' ? objfn() : objfn;
+            obj = typeof objfn === TYPES.F ? objfn() : objfn;
         for (i in obj) {
-            if (typeof ns[i] === _U_) {
+            if (typeof ns[i] === TYPES.U) {
                 ns[i] = obj[i];
             }
         }

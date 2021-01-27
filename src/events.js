@@ -84,7 +84,7 @@
 
         eventTarget = function (e) {
             e = e || W.event;
-            var targetElement = e.currentTarget || (typeof e.target !== _U_) ? e.target : e.srcElement;
+            var targetElement = e.currentTarget || (typeof e.target !== TYPES.U) ? e.target : e.srcElement;
             if (!targetElement) {
                 return false;
             }
