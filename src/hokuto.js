@@ -6,6 +6,7 @@ var hokuto = (function () {
         },
         _ = {},
         W = window,
+        WD = W.document,
         NS = {};
 
     maltaF('core.js')
@@ -17,6 +18,9 @@ var hokuto = (function () {
     maltaF('poly.js')
     maltaF('dom.js')
     maltaF('timer.js')
+    maltaF('io.js')
+    maltaF('object.js')
+    maltaF('cookie.js')
     console.log(NS);
     maltaF('Unode.js');
     maltaF('engy.js');

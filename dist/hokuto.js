@@ -6,6 +6,7 @@ var hokuto = (function () {
         },
         _ = {},
         W = window,
+        WD = W.document,
         NS = {};
 
     /*
@@ -446,6 +447,605 @@ var hokuto = (function () {
                 time = 0;
                 return tmp;
             }
+        });
+    })();
+    
+    /*
+    [Malta] io.js
+    */
+    /* eslint-disable no-console */
+    (function () {
+        'use strict';
+    
+        var W = window,
+            xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.userAgent.match(/opera/i)),
+            _ = {
+                /**
+                 * Façade for getting the xhr object
+                 * @return {object} the xhr
+                 */
+                getxhr: function (o) {
+                    var xhr,
+                        IEfuckIds = ['Msxml2.XMLHTTP', 'Msxml3.XMLHTTP', 'Microsoft.XMLHTTP'],
+                        len = IEfuckIds.length,
+                        i = 0;
+    
+                    if (xdr && o.cors) {
+                        xhr = new W.XDomainRequest();
+                    } else {
+                        try {
+                            xhr = new W.XMLHttpRequest();
+                        } catch (e1) {
+                            for (null; i < len; i += 1) {
+                                try {
+                                    xhr = new W.ActiveXObject(IEfuckIds[i]);
+                                } catch (e2) { continue; }
+                            }
+                            !xhr && W.alert('No way to initialize XHR');
+                        }
+                    }
+                    return xhr;
+                },
+    
+                setHeaders: function (xhr, type) {
+                    var tmp = {
+                        xml: 'text/xml',
+                        html: 'text/html',
+                        json: 'application/json'
+                    }[type] || 'text/html';
+                    xhr.setRequestHeader('Accept', tmp + 'charset=utf-8');
+                },
+    
+                setMultipartHeader: function (xhr) {
+                    xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+                },
+    
+                setCookiesHeaders: function (xhr) {
+                    var cookies, i, l;
+                    cookies = NS.LIB.cookie.getall();
+                    i = 0;
+                    l = cookies.length;
+                    while (i < l) {
+                        xhr.setRequestHeader('Cookie', cookies[i].name + '=' + cookies[i].value);
+                        i++;
+                    }
+                },
+    
+                // eslint-disable-next-line complexity
+                ajcall: function (uri, options) {
+                    var xhr = _.getxhr(options),
+                        method = (options && options.method) || 'POST',
+                        cback = options && options.cback,
+                        cbOpened = (options && options.opened) || function () { },
+                        cbLoading = (options && options.loading) || function () { },
+                        cbError = (options && options.error) || function () { },
+                        cbabort = (options && options.abort) || function () { },
+                        sync = options && options.sync,
+                        data = (options && options.data) || {},
+                        type = (options && options.type) || 'text/html',
+                        cache = (options && options.cache !== undefined) ? options.cache : true,
+                        targetType = type === 'xml' ? 'responseXML' : 'responseText',
+                        timeout = (options && options.timeout) || 10000,
+                        hasFiles = options && options.hasFiles,
+                        formData,
+                        complete = false,
+                        res = false,
+                        ret = false,
+                        state = false,
+                        tmp;
+    
+                    // prepare data, caring of cache
+                    //
+                    if (!cache) {
+                        data.C = +new Date();
+                    }
+    
+                    if (method === 'GET') {
+                        data = NS.LIB.object.toQs(data).substr(1);
+                    } else {
+                        // wrap data into a FromData object
+                        //
+                        formData = new W.FormData();
+                        for (tmp in data) {
+                            if (data.hasOwnProperty(tmp)) {
+                                formData.append(tmp, data[tmp]);
+                            }
+                        }
+                        data = formData;
+                    }
+    
+                    if (xdr && options.cors) {
+                        // xhr is actually a xdr
+                        xhr.open(method, (method === 'GET') ? (uri + ((data) ? ('?' + data) : '')) : uri);
+    
+                        xhr.onerror = cbError;
+                        xhr.ontimeout = function () { };
+                        xhr.onprogress = function (e) {
+                            if (e.lengthComputable) {
+                                var percentComplete = (e.loaded / e.total) * 100;
+                                console.log(percentComplete + '% uploaded');
+                            }
+                        };
+                        xhr.onload = function (/* r */) {
+                            // cback((targetType === 'responseXML') ? r.target[targetType].childNodes[0] : r.target[targetType]);
+                            cback(xhr.responseText);
+                        };
+                        xhr.timeout = 3000;
+    
+                        _.setHeaders(xhr, hasFiles, type);
+    
+                        tmp = {
+                            xml: 'text/xml',
+                            html: 'text/html',
+                            json: 'application/json'
+                        }[type] || 'text/html';
+    
+                        xhr.contentType = tmp;
+                        window.setTimeout(function () {
+                            xhr.send();
+                        }, 20);
+                    } else {
+                        // eslint-disable-next-line complexity
+                        xhr.onreadystatechange = function () {
+                            if (state === xhr.readyState) {
+                                return false;
+                            }
+                            state = xhr.readyState;
+    
+                            // 404
+                            //
+                            if (parseInt(xhr.readyState, 10) === 4 && parseInt(xhr.status, 10) === 0) {
+                                xhr.onerror({ error: 404, xhr: xhr, url: uri });
+                                xhr.abort();
+                                return false;
+                            }
+    
+                            if (state === 'complete' || (parseInt(state, 10) === 4 && parseInt(xhr.status, 10) === 200)) {
+                                complete = true;
+    
+                                if (parseInt(xhr.status, 10) === 404) {
+                                    xhr.onerror.call(xhr);
+                                    return false;
+                                }
+    
+    
+                                if (cback) {
+                                    res = xhr[targetType];
+                                    (function () { cback(res); })(res);
+                                }
+                                ret = xhr[targetType];
+    
+                                // IE leak ?????
+                                W.setTimeout(function () {
+                                    xhr = null;
+                                }, 50);
+                                return ret;
+                            } else if (state === 3) {
+                                // loading data
+                                //
+                                cbLoading(xhr);
+                            } else if (state === 2) {
+                                // headers received
+                                //
+                                cbOpened(xhr);
+                            } else if (state === 1) {
+                                // only if no file upload is required
+                                // add the header
+                                //
+                                if (!hasFiles) {
+                                    _.setHeaders(xhr, type);
+                                    // NOOOOOOO
+                                    // _.setCookiesHeaders(xhr);
+                                } else {
+                                    _.setHeaders(xhr, 'json');
+                                    // NO HEADERS AT ALL!!!!!!
+                                    // othewise no up
+                                    //
+                                    // _.setMultipartHeader(xhr);
+                                }
+                                switch (method) {
+                                    case 'POST':
+                                    case 'PUT':
+                                        try {
+                                            xhr.send(data || true);
+                                        } catch (e1) { }
+                                        break;
+                                    case 'DELETE':
+                                    case 'GET':
+                                        try {
+                                            xhr.send(null);
+                                        } catch (e2) { }
+                                        break;
+                                    default:
+                                        W.alert(method);
+                                        xhr.send(null);
+                                        break;
+                                }
+                            }
+                            return true;
+                        };
+    
+                        // error
+                        //
+                        xhr.onerror = function () {
+                            cbError && cbError.apply(null, arguments);
+                        };
+    
+                        // abort
+                        //
+                        xhr.onabort = function () {
+                            cbabort && cbabort.apply(null, arguments);
+                        };
+    
+                        // open request
+                        //
+                        xhr.open(method, method === 'GET' ? uri + (data ? ('?' + data) : '') : uri, sync);
+    
+                        // thread abortion
+                        //
+                        W.setTimeout(function () {
+                            if (!complete) {
+                                complete = true;
+                                xhr.abort();
+                            }
+                        }, timeout);
+                        try {
+                            return (targetType === 'responseXML') ? xhr[targetType].childNodes[0] : xhr[targetType];
+                        } catch (e3) { }
+                    }
+                    return true;
+                }
+            };
+    
+    
+        // returning module
+        //
+        NS.makeNs('LIB.io', {
+            getxhr: _.getxhr,
+            post: function (uri, cback, sync, data, cache, files, err) {
+                return _.ajcall(uri, {
+                    cback: function (r) {
+                        if (files) {
+                            r = r.replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:([\s;])+\/\/(?:.*)$)/gm, '');
+                            cback((window.JSON && window.JSON.parse) ? JSON.parse(r) : eval(['(', r, ')'].join('')));
+                        } else {
+                            cback(r);
+                        }
+                    },
+                    method: 'POST',
+                    sync: sync,
+                    data: data,
+                    cache: cache,
+                    error: err,
+                    hasFiles: !!files
+                });
+            },
+            get: function (uri, cback, sync, data, cache, err) {
+                return _.ajcall(uri, {
+                    cback: cback || function () { },
+                    method: 'GET',
+                    sync: sync,
+                    data: data,
+                    cache: cache,
+                    error: err
+                });
+            },
+            put: function (uri, cback, sync, data, cache, err) {
+                return _.ajcall(uri, {
+                    cback: cback,
+                    method: 'PUT',
+                    sync: sync,
+                    data: data,
+                    cache: cache,
+                    error: err
+                });
+            },
+            getJson: function (uri, cback, data, cors) {
+                return _.ajcall(uri, {
+                    type: 'json',
+                    method: 'GET',
+                    sync: false,
+                    cback: function (r) {
+                        // just to allow inline comments on json (not valid in json)
+                        // cleanup comments
+                        r = r.replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:([\s;])+\/\/(?:.*)$)/gm, '');
+                        cback((W.JSON && W.JSON.parse) ? JSON.parse(r) : eval(['(', r, ')'].join('')));
+                    },
+                    data: data,
+                    cors: !!cors
+                });
+            },
+            getXML: function (uri, cback) {
+                return _.ajcall(uri, {
+                    method: 'GET',
+                    sync: false,
+                    type: 'xml',
+                    cback: cback || function () { }
+                });
+            }
+        });
+    })();
+    
+    /*
+    [Malta] object.js
+    */
+    (function () {
+        'use strict';
+    
+        /**
+         * maps an object literal to a string according using the map function  passed
+         * @param  {Literal}   o  the object literal
+         * @param  {Function} fn  the map function
+         * @return {String}       the resulting string
+         */
+        function strMap (o, fn) {
+            var ret = '',
+                j;
+            for (j in o) {
+                if (o.hasOwnProperty(j)) {
+                    ret += fn(o, j, ret);
+                }
+            }
+            return ret;
+        }
+    
+        function jCompare (obj1, obj2) {
+            // avoid tags
+            return !isNode(obj1)
+            && typeof JSON !== _U_
+                ? JSON.stringify(obj1) === JSON.stringify(obj2)
+                : obj1 === obj2;
+        }
+    
+        // Returns true if it is a DOM node
+        //
+        function isNode (o) {
+            return (
+                typeof Node === 'object'
+                    ? o instanceof W.Node
+                    : o
+                        && typeof o === 'object'
+                        && typeof o.nodeType === 'number'
+                        && typeof o.nodeName === 'string'
+            );
+        }
+    
+        function extract (data, where) {
+            var key,
+                g = where || (typeof global !== 'undefined' ? global : (typeof window !== 'undefined' ? window : this));
+            for (key in data) {
+                if (data.hasOwnProperty(key)) {
+                    g[key] = data[key];
+                }
+            }
+        }
+    
+        // Returns true if it is a DOM element
+        //
+        // function isElement (o) {
+        //     return (
+        //         typeof HTMLElement === 'object'
+        //             ? o instanceof W.HTMLElement
+        //             : o
+        //                 && o !== null
+        //                 && typeof o === 'object'
+        //                 && o.nodeType === 1
+        //                 && typeof o.nodeName === 'string'
+        //     );
+        // }
+    
+        /**
+         * returning module
+         */
+        NS.makeNs('LIB.object', {
+            extract: extract,
+            fromQs: function () {
+                var els = document.location.search.substr(1).split('&'),
+                    i, len, tmp, out = [];
+    
+                for (i = 0, len = els.length; i < len; i += 1) {
+                    tmp = els[i].split('=');
+    
+                    // do not override extra path out
+                    //
+                    !out[tmp[0]] && (out[tmp[0]] = decodeURIComponent(tmp[1]));
+                }
+                return out;
+            },
+    
+            clone: function (obj) {
+                var self = NS.object,
+                    copy,
+                    i, l;
+                // Handle the 3 simple types, and null or undefined
+                if (obj === null || typeof obj !== 'object') {
+                    return obj;
+                }
+    
+                // Handle Date
+                if (obj instanceof Date) {
+                    copy = new Date();
+                    copy.setTime(obj.getTime());
+                    return copy;
+                }
+    
+                // Handle Array
+                if (obj instanceof Array) {
+                    copy = [];
+                    for (i = 0, l = obj.length; i < l; i++) {
+                        copy[i] = self.clone(obj[i]);
+                    }
+                    return copy;
+                }
+    
+                // Handle Object
+                if (obj instanceof Object) {
+                    copy = {};
+                    for (i in obj) {
+                        if (obj.hasOwnProperty(i)) {
+                            copy[i] = self.clone(obj[i]);
+                        }
+                    }
+                    return copy;
+                }
+                throw new Error('Unable to copy obj! Its type isn\'t supported.');
+            },
+    
+            extend: function (o, ext, force) {
+                var obj = NS.object.clone(o),
+                    j;
+                for (j in ext) {
+                    if (ext.hasOwnProperty(j) && (!(j in obj) || force)) {
+                        obj[j] = ext[j];
+                    }
+                }
+                return obj;
+            },
+    
+            keyize: function (objArr, k) {
+                var objRet = {},
+                    i = 0,
+                    l = objArr.length;
+                for (null; i < l; i++) {
+                    if (k in objArr[i] && !(objArr[i][k] in objRet)) {
+                        objRet[objArr[i][k]] = objArr[i];
+                    }
+                }
+                return objRet;
+            },
+    
+            isString: function (o) {
+                return typeof o === 'string' || o instanceof String;
+            },
+    
+            jCompare: jCompare,
+    
+            /**
+             * uses strMap private function to map an onject literal to a querystring ready for url
+             * @param  {Literal} obj    the object literal
+             * @return {String}         the mapped object
+             */
+            toQs: function (obj) {
+                return strMap(obj, function (o, i, r) {
+                    return ([
+                        r ? '&' : '?',
+                        encodeURIComponent(i),
+                        '=',
+                        encodeURIComponent(o[i])
+                    ].join('')).replace(/'/g, '%27');
+                });
+            }
+        });
+    })();
+    
+    /*
+    [Malta] cookie.js
+    */
+    // type : NS
+    //
+    (function () {
+        'use strict';
+        function initCheck () {
+            return W.navigator.cookieEnabled;
+        }
+    
+        function set (name, value, expires, copath, domain, secure) {
+            if (!NS.LIB.cookie.enabled) return false;
+            this.cookie_nocookiesaround = false;
+            var today = new Date(),
+                expiresDate = new Date(today.getTime() + expires);
+            // expires && (expires = expires * 1000 * 60 * 60 * 24);
+            WD.cookie = [
+                name, '=', W.escape(value),
+                (expires ? ';expires=' + expiresDate.toGMTString() : ''),
+                (copath ? ';path=' + copath : ''),
+                (domain ? ';domain=' + domain : ''),
+                (secure ? ';secure' : '')
+            ].join();
+            return true;
+        }
+    
+        function del (name, path, domain) {
+            if (!NS.LIB.cookie.enabled) return false;
+            var ret = false;
+    
+            if (this.get(name)) {
+                WD.cookie = [
+                    name, '=',
+                    (path ? ';path=' + path : ''),
+                    (domain ? ';domain=' + domain : ''),
+                    ';expires=Thu, 01-Jan-1970 00:00:01 GMT'
+                ].join('');
+                ret = true;
+            }
+            return ret;
+        }
+    
+        function get (checkName) {
+            var allCookies = WD.cookie.split(';'),
+                tempCookie = '',
+                cookieName = '',
+                cookieValue = '',
+                cookieFound = false,
+                i = 0,
+                l = allCookies.length;
+    
+            if (!NS.LIB.cookie.enabled) return false;
+    
+            for (null; i < l; i += 1) {
+                tempCookie = allCookies[i].split('=');
+                cookieName = tempCookie[0].replace(/^\s+|\s+$/g, '');
+    
+                if (cookieName === checkName) {
+                    cookieFound = true;
+                    tempCookie.length > 1 && (cookieValue = W.unescape(tempCookie[1].replace(/^\s+|\s+$/g, '')));
+                    return cookieValue;
+                }
+    
+                tempCookie = null;
+                cookieName = '';
+            }
+            return cookieFound;
+        }
+    
+        function delall () {
+            if (!NS.LIB.cookie.enabled) return false;
+            var thecookie = WD.cookie.split(/;/),
+                i = 0,
+                l = thecookie.length,
+                nome;
+            for (null; i < l; i += 1) {
+                nome = thecookie[i].split(/=/);
+                this.del(nome[0], false, false);
+            }
+            this.cookie_nocookiesaround = true;
+            return true;
+        }
+    
+        function getall () {
+            if (!NS.LIB.cookie.enabled) return false;
+            if (WD.cookie === '') {
+                return [];
+            }
+            return this.cookie_nocookiesaround
+                ? []
+                : WD.cookie.split(';').forEach(
+                    function (i) {
+                        var t = i.split('=');
+                        return { name: t[0], value: t[1] };
+                    }
+                );
+        }
+    
+        NS.makeNs('LIB.cookie', {
+            enabled: true,
+            cookie_nocookiesaround: false,
+            initCheck: initCheck,
+            set: set,
+            get: get,
+            del: del,
+            delall: delall,
+            getall: getall
         });
     })();
     
