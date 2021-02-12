@@ -40,7 +40,9 @@
                                             width:'60px',
                                             height:'20px',
                                             textAlign: 'center',
-                                            fontSize:'18px'
+                                            fontSize:'18px',
+                                            userSelect: 'none',
+                                            cursor: 'pointer'
                                         },
                                         state: function () {return {
                                             tab1: self.getNode('tab1')
