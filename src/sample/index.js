@@ -3,7 +3,7 @@
     var n = 0;
     var config = {
         target: target,
-        style: {
+        style: { 
             'font-size': '23px'
         },
         children: [{
