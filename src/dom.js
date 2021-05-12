@@ -1,6 +1,6 @@
-(function () {
+(function() {
     var noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
-    
+
     function setStyle(node, styles) {
         var tmp;
         if (typeof styles === TYPES.U) throw new Error('ERR: styles needed')
@@ -11,7 +11,7 @@
                 node.style[tmp] = styles[tmp];
             }
         }
-        
+
     }
 
     function setAttrs(node, attrs) {
@@ -21,7 +21,7 @@
                 node.setAttribute(tmp, attrs[tmp]);
         }
     }
-    
+
     function unsetAttrs(node, attrs) {
         if (typeof attrs === TYPES.U) throw new Error('ERR: attrs needed')
         for (var tmp in attrs) {
@@ -48,11 +48,12 @@
         return el.parentNode && el.parentNode.removeChild(el);
     }
 
-    function filterHtml(html) {return '' + html;}
+    //TODO
+    function filterHtml(html) { return '' + html; }
 
-    function setText(node, text) {node.appendChild(document.createTextNode(text));}
+    function setText(node, text) { node.appendChild(document.createTextNode(text)); }
 
-    function setHtml(node, html) {node.innerHTML = filterHtml(html);}
+    function setHtml(node, html) { node.innerHTML = filterHtml(html); }
 
     NS.makeNs('LIB.dom', {
         remove: remove,
@@ -65,6 +66,3 @@
         unsetData: unsetData
     });
 })();
-
-
-
