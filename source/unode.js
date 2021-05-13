@@ -114,8 +114,7 @@ Unode.prototype.setRef = function(ref, ctx) {
     // or to another node it can reference
     if (ref) {
         (ctx || this).map[ref] = ctx || this
-
-        // or incase is in the config, just set it
+            // or incase is in the config, just set it
     } else if (typeof this.config.ref !== TYPES.U) {
         this.map.add(this.config.ref, this)
     }

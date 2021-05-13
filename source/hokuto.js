@@ -1,17 +1,9 @@
 import './poly'
 import Unode from './unode'
 import TIMER from './timer'
+import { TYPES } from './core'
 
 window.hokuto = (function() {
-
-    var TYPES = {
-            U: 'undefined',
-            F: 'function'
-        },
-        _ = {},
-        W = window,
-        WD = W.document,
-        NS = {};
 
     var __renders = {};
 
