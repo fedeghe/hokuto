@@ -94,8 +94,12 @@
                 }
             }]
         };
-    hokuto.render(config, true).then(function(t) {
-        console.log(t)
-    })
+
+
+    window.onload = function() {
+        hokuto.render(config, false).then(function(t) {
+            console.log(t)
+        })
+    }
 
 })();
