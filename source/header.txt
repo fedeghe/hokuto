@@ -1,0 +1,5 @@
+
+%NAME%
+
+version %VERSION% __SIZE__
+%DATE%

@@ -1,4 +1,8 @@
-var hokuto = (function () {
+import './poly'
+import Unode from './unode'
+import TIMER from './timer'
+
+window.hokuto = (function() {
 
     var TYPES = {
             U: 'undefined',
@@ -9,22 +13,6 @@ var hokuto = (function () {
         WD = W.document,
         NS = {};
 
-    maltaF('core.js')
-    NS.makeNs('LIB', {});
-
-    maltaF('_balle.js')
-    maltaF('history.js')
-    maltaF('events.js')
-    maltaF('poly.js')
-    maltaF('dom.js')
-    maltaF('timer.js')
-    maltaF('io.js')
-    maltaF('object.js')
-    maltaF('cookie.js')
-    console.log(NS);
-    maltaF('Unode.js');
-    maltaF('engy.js');
-    
     var __renders = {};
 
     function render(config, clear, name) {
@@ -35,28 +23,29 @@ var hokuto = (function () {
             fragment = document.createDocumentFragment(),
             active = true,
             map = {
-                abort: function () {
+                abort: function() {
                     active = false;
                     target.innerHTML = originalHTML;
                     'onAbort' in config
-                        && (typeof config.onAbort === TYPES.F)
-                        && config.onAbort.call(null, config);
+                        &&
+                        (typeof config.onAbort === TYPES.F) &&
+                        config.onAbort.call(null, config);
                     return false;
                 },
-                add: function (id, inst) { map.elements[id] = inst; },
-                getNode: function (id) { return map.elements[id] || false; },
-                getNodes: function () { return map.elements; },
-                lateWid: function (wid) { map.elements[wid] = this; },
+                add: function(id, inst) { map.elements[id] = inst; },
+                getNode: function(id) {
+                    return map.elements[id] || false;
+                },
+                getNodes: function() { return map.elements; },
+                lateWid: function(wid) { map.elements[wid] = this; },
                 elements: {},
                 endFunctions: [],
                 getElement: getElement,
                 getElements: getElements
             },
             rootNode = new Unode(
-                Object.assign(
-                    {},
-                    config,
-                    {
+                Object.assign({},
+                    config, {
                         target: fragment,
                     }
                 ),
@@ -68,25 +57,25 @@ var hokuto = (function () {
         if (clear === true) {
             target.innerHTML = '';
         }
-        return rootNode.render().then(function () {
+        return rootNode.render().then(function() {
             if (!active) returnrootNode
             target.appendChild(fragment);
             timeEnd = +new Date();
-            NS.LIB.timer.add(timeEnd - timeStart);
+            TIMER.add(timeEnd - timeStart);
             while (map.endFunctions.length) map.endFunctions.pop()();
         });
     }
 
     function renderWithComponents(config) {
         console.log('init', config)
-        // return Engy.solve(config).then(render)
+            // return Engy.solve(config).then(render)
     }
-    
-    function cleanup (trg, msg) {
+
+    function cleanup(trg, msg) {
         render({ target: trg, children: [{ html: msg || '' }] }, true);
     }
 
-    function get (params) {
+    function get(params) {
         var r = document.createElement('div'),
             unode;
         params.target = r;
@@ -94,30 +83,28 @@ var hokuto = (function () {
         return [r, unode.value];
     }
 
-    function preload (src) {
+    function preload(src) {
         var s = document.createElement('script');
         document.getElementsByTagName('head')[0].appendChild(s);
 
         // when finished remove the script tag
-        s.onload = function () {
+        s.onload = function() {
             s.parentNode.removeChild(s);
         };
         s.src = src;
     }
 
-    function getElement (n) {
+    function getElement(n) {
         return n in __renders ? __renders[n] : false;
     }
 
-    function getElements () {
+    function getElements() {
         return __renders;
     }
 
-    
-
     return {
         render: render,
-        renderWithComponents: renderWithComponents ,
+        renderWithComponents: renderWithComponents,
         cleanup: cleanup,
         get: get,
         preload: preload,

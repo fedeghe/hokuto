@@ -1,3 +1,4 @@
+import { TYPES } from './core'
 if (typeof Object.assign !== TYPES.F) {
     // Must be writable: true, enumerable: false, configurable: true
     Object.defineProperty(Object, "assign", {
@@ -12,10 +13,10 @@ if (typeof Object.assign !== TYPES.F) {
             for (var i = 1, l = arguments.length; i < l; i++) {
                 var nextSource = arguments[i];
 
-                if (nextSource !== null && nextSource !== undefined) 
-                    for (var nextKey in nextSource) 
-                        if ({}.hasOwnProperty.call(nextSource, nextKey)) 
-                            to[nextKey] = nextSource[nextKey];                
+                if (nextSource !== null && nextSource !== undefined)
+                    for (var nextKey in nextSource)
+                        if ({}.hasOwnProperty.call(nextSource, nextKey))
+                            to[nextKey] = nextSource[nextKey];
             }
             return to;
         },

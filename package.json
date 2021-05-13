@@ -4,9 +4,8 @@
     "main": "dist/index.js",
     "license": "MIT",
     "scripts": {
-        "dev": "malta src/build_dev.json",
-        "mini": "malta src/build_minidev.json",
-        "prod": "malta src/build_prod.json"
+        "start": "webpack serve --open --config source/webpack.dev.js",
+        "build": "webpack --config source/webpack.prod.js"
     },
     "devDependencies": {
         "@babel/core": "^7.12.9",
