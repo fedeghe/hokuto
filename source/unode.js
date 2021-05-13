@@ -4,7 +4,7 @@ import DOM from './dom'
 import EVENTS from './events'
 
 
-console.log(TYPES)
+
 
 function Unode(config, map) {
     this.config = config;
@@ -45,11 +45,10 @@ function Unode(config, map) {
 Unode.prototype.prepareState = function() {
     var statePassed = 'state' in this.config,
         state = statePassed ? this.config.state : {};
-    console.log('2', TYPES)
+
     this.state = typeof state === TYPES.F ?
         state() :
         state;
-    console.log(this.state)
 }
 Unode.prototype.initialize = function() {
     this.rendered = false;

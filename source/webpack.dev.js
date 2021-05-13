@@ -7,7 +7,7 @@ module.exports = {
         index: path.resolve(__dirname, './hokuto.js'),
     },
     output: {
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, '../dist'),
         filename: '[name].js',
     },
     devtool: 'inline-source-map',
@@ -41,8 +41,8 @@ module.exports = {
     },
 
     devServer: {
-        contentBase: path.resolve(__dirname, './dist'),
-        // publicPath: path.resolve(__dirname, './source/sample'),
+        contentBase: path.resolve(__dirname, './sample'),
+        // publicPath: path.resolve(__dirname, './sample'),
         compress: true,
         port: 9000,
         hot: true,
