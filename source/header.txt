@@ -1,5 +1,5 @@
 
 %NAME%
 
-version %VERSION% __SIZE__
+version %VERSION%
 %DATE%
