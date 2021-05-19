@@ -1,7 +1,7 @@
 (function() {
     var target = document.getElementById('target'),
         config = {
-            target: target,
+            target,
             method_rndColor: function() {
                 return '#' + [0, 1, 2, 3, 4, 5, 6, 7].sort(function(a, b) {
                     return Math.random() > 0.5 ? 1 : -1;
@@ -16,6 +16,11 @@
                 return 1e3 * Math.random().toFixed(3)
             },
             children: [{
+                component: 'h2',
+                params: {
+                    html: 'this is html'
+                }
+            }, {
                 tag: 'table',
                 ref: 'tab1',
                 data: {
@@ -97,8 +102,8 @@
 
 
     window.onload = function() {
-        hokuto.render(config, false).then(function(t) {
-            console.log(t)
+        hokuto.renderWithComponents(config, true, 'xxx').then(function(t) {
+            // console.log(t)
         })
     }
 

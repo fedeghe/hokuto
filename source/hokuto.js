@@ -1,5 +1,6 @@
 import './poly'
 import Unode from './unode'
+import Engy from './Engy'
 import TIMER from './timer'
 import { TYPES } from './core'
 
@@ -58,9 +59,8 @@ window.hokuto = (function() {
         });
     }
 
-    function renderWithComponents(config) {
-        console.log('init', config)
-            // return Engy.solve(config).then(render)
+    function renderWithComponents(config, clean, name) {
+        return Engy.solve(config, clean, name).then(r => render.apply(null, r))
     }
 
     function cleanup(trg, msg) {
