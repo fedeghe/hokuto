@@ -38,18 +38,12 @@ function report(stats) {
     console.log(ln);
 }
 Engy.solve = function(config, clean, name) {
-    console.log()
     var t = +new Date();
     return Balle.one(function(resolve, reject) {
         _process(config).then(function(r) {
-
             r[1] && report(r[1]);
             var now = +new Date();
             console.log('Engy process tot: ' + (now - t));
-
-            // console.log('config: ', config)
-            // console.log('clean: ', clean)
-            // console.log('name: ', name)
             resolve([r[0], clean, name])
         })
     });
