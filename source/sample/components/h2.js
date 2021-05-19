@@ -2,7 +2,11 @@
 var t = {
     tag: 'h2',
     html: '#PARAM{html}',
-    data: {
+    state: {
         times: 0
     },
+    onClick: function() {
+        this.state.times++;
+        this.node.innerHTML = this.state.times
+    }
 };
