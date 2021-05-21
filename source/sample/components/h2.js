@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 var t = {
     tag: 'h2',
-    html: '#PARAM{html}',
     state: {
-        times: 0
+        times: 0,
+        html: '#PARAM{html}'
     },
     style: {
         cursor: 'pointer'
@@ -15,8 +15,12 @@ var t = {
     },
     onClick: function() {
         this.state.times++;
-        this.node.innerHTML = this.state.times
+        this.node.innerHTML = `${this.state.html} - ${this.state.times}`
         this.node.style.color = this.rndColor();
         this.node.blur()
+    },
+    cb: function() {
+        this.node.innerHTML = this.state.html
+        this.done();
     }
-};
+}
