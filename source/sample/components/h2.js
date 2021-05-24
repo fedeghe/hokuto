@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 var t = {
-    tag: 'h2',
+    tag: 'h2', 
     state: {
         times: 0,
         html: '#PARAM{html}'
