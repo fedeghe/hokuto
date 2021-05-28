@@ -143,7 +143,12 @@ export default class Processor {
                 } else if (cached) {
                     cback(components[componentName]);
                 } else {
-                    io.get(componentName, cback, true);
+                    io.get(componentName, cback, true, null, true, (e) => {
+                        cback(JSON.stringify({
+                            tag: 'h2',
+                            html: `no component found (${componentName})`
+                        }))
+                    });
                 }
             }
         })();

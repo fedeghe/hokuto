@@ -129,6 +129,7 @@ var xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.use
             } else {
                 // eslint-disable-next-line complexity
                 xhr.onreadystatechange = function() {
+
                     if (state === xhr.readyState) {
                         return false;
                     }
@@ -136,7 +137,7 @@ var xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.use
 
                     // 404
                     //
-                    if (parseInt(xhr.readyState, 10) === 4 && parseInt(xhr.status, 10) === 0) {
+                    if (xhr.status == 404 || (parseInt(xhr.readyState, 10) === 4 && parseInt(xhr.status, 10) === 0)) {
                         xhr.onerror({ error: 404, xhr: xhr, url: uri });
                         xhr.abort();
                         return false;
