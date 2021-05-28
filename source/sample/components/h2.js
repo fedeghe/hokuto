@@ -14,7 +14,7 @@ var t = {
         }).slice(0, 6).join('');
     },
     onClick: function() {
-        this.state.times += 1;
+        this.state.times++;
         this.node.innerHTML = `${this.state.html} - ${this.state.times}`
         this.node.style.color = this.rndColor();
         this.node.blur()
