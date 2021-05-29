@@ -23,6 +23,7 @@
             }, {
                 tag: 'table',
                 ref: 'tab1',
+                end: () => console.log('end table'),
                 data: {
                     rows: 10, // 100,
                     cols: 20 // 7

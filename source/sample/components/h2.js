@@ -22,5 +22,8 @@ var t = {
     cb: function() {
         this.node.innerHTML = this.state.html
         this.done();
+    },
+    end: () => {
+        console.log('end h2')
     }
 }
