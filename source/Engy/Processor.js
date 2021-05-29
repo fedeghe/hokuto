@@ -15,6 +15,11 @@ const components = {},
         componentsUrl: CONF.ENGY.COMPONENTS.URL
     };
 
+const cmp404 = componentName => JSON.stringify({
+    tag: 'h2',
+    html: `no component found (${componentName})`
+})
+
 export default class Processor {
     constructor(conf) {
         this.config = conf;
@@ -144,10 +149,7 @@ export default class Processor {
                     cback(components[componentName]);
                 } else {
                     io.get(componentName, cback, true, null, true, (e) => {
-                        cback(JSON.stringify({
-                            tag: 'h2',
-                            html: `no component found (${componentName})`
-                        }))
+                        cback(cmp404(componentName))
                     });
                 }
             }
