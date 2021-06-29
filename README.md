@@ -9,4 +9,4 @@ Experimental dom engine
 - run unminified  
   `> yarn dev`
 - navigate to [http://127.0.0.1:3001](http://127.0.0.1:3001)
-- edit the `src/sample/index.js` (or `style.css`) 
+- edit the `src/sample/index.js` (or `style.css`)
