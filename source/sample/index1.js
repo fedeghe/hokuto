@@ -1,11 +1,12 @@
-(function () {
+(function() {
     var target = document.getElementById('target');
     var n = 0;
     var config = {
         target: target,
-        style: { 
+        style: {
             'font-size': '23px'
         },
+
         children: [{
             tag: 'p',
             data: {
@@ -15,12 +16,12 @@
                 tag: 'span',
                 html: "maltaV('PACKAGE.name') &hearts;",
                 style: {
-                    paddingRight:'5px'
+                    paddingRight: '5px'
                 }
             }, {
                 tag: 'span',
                 text: 'me',
-                cb: function () {
+                cb: function() {
                     var self = this;
                     this.config.text = 'You ' + ++n;
                     this.done();
@@ -29,14 +30,14 @@
                     // }, 100);
                 }
             }],
-            cb: function () {
+            cb: function() {
                 console.log(+new Date)
                 this.done();
             }
         }, {
             tag: 'ul',
-            method_renderDelayedNumber : function (node, text, secs) {
-                setTimeout(function () {
+            method_renderDelayedNumber: function(node, text, secs) {
+                setTimeout(function() {
                     hokuto.render({
                         target: node,
                         tag: 'li',
@@ -44,18 +45,22 @@
                     })
                 }, secs)
             },
-            cb: function () {
+            cb: function() {
                 var self = this,
                     node = self.node;
-                setTimeout(function () {
+                setTimeout(function() {
                     self.renderDelayedNumber(node, 'three', 500)
                     self.renderDelayedNumber(node, 'two', 1000)
                     self.renderDelayedNumber(node, 'one', 1500)
                     self.renderDelayedNumber(node, 'woops!... there is zero!', 2000)
                 }, 3000)
                 self.done();
+
             }
         }]
+
     };
-    hokuto.render(config, true);
+    window.onload = function() {
+        hokuto.render(config, true);
+    }
 })();
