@@ -11,7 +11,7 @@ function initCheck() {
 function set(name, value, expires, copath, domain, secure) {
     if (!COOKIE.enabled) return false;
     this.cookie_nocookiesaround = false;
-    var today = new Date(),
+    const today = new Date(),
         expiresDate = new Date(today.getTime() + expires);
     // expires && (expires = expires * 1000 * 60 * 60 * 24);
     WD.cookie = [
@@ -26,7 +26,7 @@ function set(name, value, expires, copath, domain, secure) {
 
 function del(name, path, domain) {
     if (!COOKIE.enabled) return false;
-    var ret = false;
+    let ret = false;
 
     if (this.get(name)) {
         WD.cookie = [
@@ -41,13 +41,13 @@ function del(name, path, domain) {
 }
 
 function get(checkName) {
-    var allCookies = WD.cookie.split(';'),
-        tempCookie = '',
+    const allCookies = WD.cookie.split(';'),
+        l = allCookies.length;
+    let tempCookie = '',
         cookieName = '',
         cookieValue = '',
         cookieFound = false,
-        i = 0,
-        l = allCookies.length;
+        i = 0;
 
     if (!NS.LIB.cookie.enabled) return false;
 
@@ -69,13 +69,13 @@ function get(checkName) {
 
 function delall() {
     if (!COOKIE.enabled) return false;
-    var thecookie = WD.cookie.split(/;/),
-        i = 0,
-        l = thecookie.length,
-        nome;
+    const thecookie = WD.cookie.split(/;/),
+        l = thecookie.length;
+    let i = 0,
+        name;
     for (null; i < l; i += 1) {
-        nome = thecookie[i].split(/=/);
-        this.del(nome[0], false, false);
+        name = thecookie[i].split(/=/);
+        this.del(name[0], false, false);
     }
     this.cookie_nocookiesaround = true;
     return true;
@@ -89,7 +89,7 @@ function getall() {
     return this.cookie_nocookiesaround ? [] :
         WD.cookie.split(';').forEach(
             function(i) {
-                var t = i.split('=');
+                const t = i.split('=');
                 return { name: t[0], value: t[1] };
             }
         );

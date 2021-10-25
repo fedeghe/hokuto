@@ -1,7 +1,7 @@
 import { _U_ } from './core'
 
 function strMap(o, fn) {
-    var ret = '',
+    let ret = '',
         j;
     for (j in o) {
         if (o.hasOwnProperty(j)) {
@@ -25,9 +25,12 @@ function isNode(o) {
 }
 
 function extract(data, where) {
-    var key,
-        g = where || (typeof global !== 'undefined' ? global : (typeof window !== 'undefined' ? window : this));
-    for (key in data) {
+    const g = where
+        || ( typeof global !== 'undefined'
+            ? global
+            : (typeof window !== 'undefined' ? window : this)
+        );
+    for (let key in data) {
         if (data.hasOwnProperty(key)) {
             g[key] = data[key];
         }
@@ -37,12 +40,15 @@ function extract(data, where) {
 const OBJECT = {
     extract: extract,
     fromQs: function() {
-        var els = document.location.search.substr(1).split('&'),
-            i, len, tmp, out = [];
+        const els = document.location.search.substr(1).split('&'),
+            len = els.length;
 
-        for (i = 0, len = els.length; i < len; i += 1) {
+        let i = 0,
+            tmp,
+            out = [];
+
+        for (null; i < len; i += 1) {
             tmp = els[i].split('=');
-
             // do not override extra path out
             //
             !out[tmp[0]] && (out[tmp[0]] = decodeURIComponent(tmp[1]));
@@ -51,7 +57,7 @@ const OBJECT = {
     },
 
     clone: function(obj) {
-        var copy,
+        let  copy,
             i, l;
         // Handle the 3 simple types, and null or undefined
         if (obj === null || typeof obj !== 'object') {
@@ -99,9 +105,9 @@ const OBJECT = {
     },
 
     keyize: function(objArr, k) {
-        var objRet = {},
-            i = 0,
-            l = objArr.length;
+        let objRet = {},
+            i = 0;
+        const l = objArr.length;
         for (null; i < l; i++) {
             if (k in objArr[i] && !(objArr[i][k] in objRet)) {
                 objRet[objArr[i][k]] = objArr[i];

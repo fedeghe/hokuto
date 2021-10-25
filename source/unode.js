@@ -43,7 +43,7 @@ function Unode(config, map) {
 }
 
 Unode.prototype.prepareState = function() {
-    var statePassed = 'state' in this.config,
+    const statePassed = 'state' in this.config,
         state = statePassed ? this.config.state : {};
 
     this.state = typeof state === TYPES.F ?
@@ -60,7 +60,7 @@ Unode.prototype.initialize = function() {
 };
 
 Unode.prototype.setCall = function(fns) {
-    var self = this;
+    const self = this;
     fns.split(/,/).forEach(function(f) {
         self['set' + f]()
     })
@@ -72,8 +72,8 @@ Unode.prototype.cleanup = function() {
 };
 
 Unode.prototype.setChildren = function() {
-    var self = this,
-        _children = [];
+    const self = this;
+    let _children = [];
 
     if ('children' in this.config) {
         _children = (
@@ -94,9 +94,9 @@ Unode.prototype.setChildren = function() {
 };
 
 Unode.prototype.setMethods = function() {
-    var self = this,
-        keys = Object.keys(this.config),
-        tmp;
+    const self = this,
+        keys = Object.keys(this.config);
+    let tmp;
     keys.forEach(function(k) {
         tmp = k.match(/^method_(\w*)$/i);
         if (tmp) {
@@ -174,7 +174,7 @@ Unode.prototype.checkInit = function(e) {
 };
 
 Unode.prototype.checkEnd = function(e) {
-    var self = this;
+    const self = this;
     'end' in this.config &&
         typeof this.config.end === TYPES.F &&
         this.map.endFunctions.push(function() {
@@ -188,11 +188,10 @@ Unode.prototype.unhandle = function(el) {
 };
 
 Unode.prototype.setEvents = function() {
-    var i,
-        self = this,
-        mat, ev;
+    const self = this;
+    let mat, ev;
 
-    for (i in self.config) {
+    for (let i in self.config) {
         mat = i.match(/^(on(ce)?)([A-Z]{1}[a-z]*)$/);
         if (mat) {
             ev = mat[3].toLowerCase();
@@ -207,7 +206,7 @@ Unode.prototype.setEvents = function() {
 };
 
 Unode.prototype.setState = function(o) {
-    for (var i in o) {
+    for (let i in o) {
         if (o.hasOwnProperty(i)) {
             this.state[i] = o;
         }
@@ -216,7 +215,7 @@ Unode.prototype.setState = function(o) {
 
 Unode.prototype.done =
     Unode.prototype.solve = function() {
-        var args = [].slice.call(arguments, 0);
+        const args = [].slice.call(arguments, 0);
         if (args.length) {
             this.parentNode.paramsFromChildren.push(args);
         }
@@ -229,11 +228,12 @@ Unode.prototype.done =
     };
 
 Unode.prototype.render = function() {
-    var self = this,
+    const self = this,
         ret = new Balle(function(resolve, reject) {
             self.resolve = resolve;
             self.reject = reject;
         });
+    let res;
     this.rendered = false
     if (this.toSolve > 0) {
         this.children.forEach(function(child, i) {
@@ -248,13 +248,13 @@ Unode.prototype.render = function() {
         })
     } else {
         this.rendered = true;
-        var res = this.cb(self.paramsFromChildren);
+        res = this.cb(self.paramsFromChildren);
         res && this.rootNode.paramsFromChildren.push(res);
     }
     return ret;
 };
 Unode.prototype.report = function() {
-    var jsonSize = JSON.stringify(this.config).length,
+    const  jsonSize = JSON.stringify(this.config).length,
         htmlSize = this.node.innerHTML.length;
     return (htmlSize / jsonSize).toFixed(2) + " (html:" + htmlSize + " / json:" + jsonSize + ")"
 };

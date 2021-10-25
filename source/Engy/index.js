@@ -15,7 +15,8 @@ function _process(a) {
 }
 
 function report(stats) {
-    var j, ln = new Array(37).join('-');
+    let j;
+    const ln = new Array(37).join('-');
     console.log(ln);
     console.log(
         'Engy used ' + stats.elements + ' component' + (stats.elements === 1 ? '' : 's')
@@ -38,11 +39,11 @@ function report(stats) {
     console.log(ln);
 }
 Engy.solve = function(config, clean, name) {
-    var t = +new Date();
+    const t = +new Date();
     return Balle.one(function(resolve, reject) {
         _process(config).then(function(r) {
             r[1] && report(r[1]);
-            var now = +new Date();
+            const now = +new Date();
             console.log('Engy process tot: ' + (now - t));
             resolve([r[0], clean, name])
         })

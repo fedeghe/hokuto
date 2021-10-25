@@ -10,9 +10,9 @@ export const TYPES = {
 
 export const makens = (str, obj, ctx) => {
     str = str.replace(/^\//, '');
-    var els = str.split(/\.|\//),
-        l = els.length,
-        ret;
+    const els = str.split(/\.|\//),
+        l = els.length;
+    let ret;
 
     // default context window
     (typeof ctx === _U_) && (ctx = W);
@@ -35,9 +35,9 @@ export const checkns = (ns, ctx) => {
     ns = ns.replace(/^\//, '');
 
     // get all elements splitting by . or /
-    var els = ns.split(/\.|\//),
-        i = 0,
+    const els = ns.split(/\.|\//),
         l = els.length;
+    let i = 0;
     ctx = (typeof ctx !== _U_) ? ctx : W;
 
     if (!ns) {
@@ -56,9 +56,11 @@ export const checkns = (ns, ctx) => {
 }
 
 export const extendns = (ns, objfn) => {
-    var i,
-        obj = typeof objfn === 'function' ? objfn() : objfn;
-    for (i in obj) {
+    const obj = typeof objfn === 'function'
+        ? objfn()
+        : objfn;
+
+    for (let i in obj) {
         if (typeof ns[i] === _U_) {
             ns[i] = obj[i];
         }

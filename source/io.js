@@ -1,7 +1,7 @@
 import { W, TYPES } from './core'
 import COOKIE from './cookie'
 import OBJECT from './object'
-var xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.userAgent.match(/opera/i)),
+const xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.userAgent.match(/opera/i)),
     _ = {
         /**
          * Façade for getting the xhr object

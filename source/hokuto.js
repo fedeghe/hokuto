@@ -7,12 +7,13 @@ import { TYPES } from './core'
 window.hokuto = (function() {
     const __renders = {},
         render = (config, clear, name) => {
-            var timeStart = +new Date(),
-                timeEnd,
+            let timeEnd,
+                active = true;
+
+            const timeStart = +new Date(),
                 target = config.target,
                 originalHTML = target.innerHTML,
                 fragment = document.createDocumentFragment(),
-                active = true,
                 map = {
                     abort: () => {
                         active = false;
@@ -40,6 +41,7 @@ window.hokuto = (function() {
                     ),
                     map
                 );
+
             if (name && !(name in __renders)) {
                 __renders[name] = rootNode;
             }

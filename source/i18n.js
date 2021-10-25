@@ -20,10 +20,12 @@ const data = {},
         },
 
         parse: obj => {
-            const replacing = SearchHash.forValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/);
-            let mayP, ref, i, l;
+            const replacing = SearchHash.forValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/),
+                l = replacing.length;
+                
+            let mayP, ref, i = 0;
 
-            for (i = 0, l = replacing.length; i < l; i++) {
+            for (; i < l; i++) {null
                 if ((typeof replacing[i].regexp).match(/boolean/i)) continue;
 
                 mayP = i18n.check(replacing[i].regexp[0]);

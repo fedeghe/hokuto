@@ -51,21 +51,19 @@ export default class Processor {
 
     run() {
 
-        var self = this,
+        let self = this,
             langFunc = i18n.parse,
             elementsN = 0,
             start = +new Date(),
             end,
             xhrTot = 0,
             requested = {},
-            cback,
-            computeStats = CONF.ENGY.STATS;
+            cback;
 
+        const computeStats = CONF.ENGY.STATS;
 
         (function solve() {
-
-
-            var component = SearchHash.forKey(
+            let component = SearchHash.forKey(
                     self.config,
                     'component', { limit: 1 }
                 ),
@@ -96,9 +94,12 @@ export default class Processor {
                 cback = function(cntORobj) {
                     xhrEnd = +new Date();
                     xhrTot += xhrEnd - xhrStart;
-                    var params = checkns(component.container + '/params', self.config),
-                        obj,
-                        usedParams, foundParam, foundParamValue, foundParamValueReplaced, i, l;
+                    const params = checkns(component.container + '/params', self.config);
+                    let obj,
+                        usedParams, foundParam,
+                        foundParamValue, foundParamValueReplaced,
+                        i, l;
+                        
                     if (preLoaded) {
                         obj = _clone(cntORobj);
                     } else {

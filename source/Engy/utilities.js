@@ -4,8 +4,8 @@ export const _clone = obj => {
     if (obj == null || typeof obj !== 'object') {
         return obj;
     }
-    var copy = obj.constructor(),
-        attr;
+    const copy = obj.constructor();
+    let attr;
     for (attr in obj) {
         if (obj.hasOwnProperty(attr)) copy[attr] = _clone(obj[attr]);
     }
@@ -19,9 +19,9 @@ export const _overwrite = (destObj, path, obj) => {
     //
     // in any case we need the elements of it
     //
-    var pathEls = path.split(/\.|\//),
-        l = pathEls.length,
-        i = 0;
+    const pathEls = path.split(/\.|\//),
+        l = pathEls.length;
+    let i = 0;
 
     // in case path has more than one element in the split result
     // like
@@ -36,10 +36,10 @@ export const _overwrite = (destObj, path, obj) => {
 }
 
 export const _mergeComponent = (ns, path, o) => {
-    var componentPH = checkns(path, ns),
+    const componentPH = checkns(path, ns),
         replacementOBJ = o,
-        merged = {},
-        i = 0;
+        merged = {};
+    let i = 0;
 
     // start from the replacement
     //

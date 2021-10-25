@@ -3,11 +3,11 @@ import { W } from './core'
 const _ = {
     events: {
         getElementDeterminant: function(el) {
-            var tname = el.tagName;
+            const tname = el.tagName;
             return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
         },
         getElementEvent: function(el) {
-            var tname = el.tagName;
+            const tname = el.tagName;
             return (tname.match(/input|textarea/i)) ? 'input' : 'change';
         }
     },
@@ -85,7 +85,7 @@ const on = (function() {
 
     eventTarget = function(e) {
         e = e || W.event;
-        var targetElement = e.currentTarget || (typeof e.target !== TYPES.U) ? e.target : e.srcElement;
+        let targetElement = e.currentTarget || (typeof e.target !== TYPES.U) ? e.target : e.srcElement;
         if (!targetElement) {
             return false;
         }
@@ -96,17 +96,18 @@ const on = (function() {
     },
 
     ready = (function() {
-        var cb = [],
-            comp = 'complete',
-            i, l,
-            readyStateCheckInterval = setInterval(function() {
-                if (document.readyState === comp) {
-                    clearInterval(readyStateCheckInterval);
-                    for (i = 0, l = cb.length; i < l; i++) {
-                        cb[i].call(this);
-                    }
+        const comp = 'complete',
+        readyStateCheckInterval = setInterval(function() {
+            if (document.readyState === comp) {
+                clearInterval(readyStateCheckInterval);
+                for (i = 0, l = cb.length; i < l; i++) {
+                    cb[i].call(this);
                 }
-            }, 10);
+            }
+        }, 10);
+        let cb = [],
+            i, l;
+            
         return function(c) {
             if (document.readyState === comp) {
                 c.call(this);
