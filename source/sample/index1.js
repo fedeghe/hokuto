@@ -14,7 +14,7 @@
             },
             children: [{
                 tag: 'span',
-                html: "maltaV('PACKAGE.name') &hearts;",
+                html: "&hearts;",
                 style: {
                     paddingRight: '5px'
                 }
