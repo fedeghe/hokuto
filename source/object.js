@@ -1,45 +1,41 @@
 import { _U_ } from './core'
 
-function strMap(o, fn) {
-    let ret = '',
-        j;
-    for (j in o) {
-        if (o.hasOwnProperty(j)) {
-            ret += fn(o, j, ret);
+const strMap = (o, fn) => {
+        let ret = '',
+            j;
+        for (j in o) {
+            if (o.hasOwnProperty(j)) {
+                ret += fn(o, j, ret);
+            }
         }
-    }
-    return ret;
-}
+        return ret;
+    },
+        
 
-// Returns true if it is a DOM node
-//
-function isNode(o) {
-    return (
-        typeof Node === 'object' ?
-        o instanceof W.Node :
-        o &&
-        typeof o === 'object' &&
-        typeof o.nodeType === 'number' &&
-        typeof o.nodeName === 'string'
-    );
-}
+    // Returns true if it is a DOM node
+    isNode = o => typeof Node === 'object'
+        ? o instanceof W.Node
+        : o
+            && typeof o === 'object'
+            && typeof o.nodeType === 'number'
+            && typeof o.nodeName === 'string',
 
-function extract(data, where) {
-    const g = where
-        || ( typeof global !== 'undefined'
-            ? global
-            : (typeof window !== 'undefined' ? window : this)
-        );
-    for (let key in data) {
-        if (data.hasOwnProperty(key)) {
-            g[key] = data[key];
+    extract = (data, where) => {
+        const g = where
+            || ( typeof global !== 'undefined'
+                ? global
+                : (typeof window !== 'undefined' ? window : this)
+            );
+        for (let key in data) {
+            if (data.hasOwnProperty(key)) {
+                g[key] = data[key];
+            }
         }
-    }
-}
+    };
 
 const OBJECT = {
     extract: extract,
-    fromQs: function() {
+    fromQs: () => {
         const els = document.location.search.substr(1).split('&'),
             len = els.length;
 
@@ -56,7 +52,7 @@ const OBJECT = {
         return out;
     },
 
-    clone: function(obj) {
+    clone: obj => {
         let  copy,
             i, l;
         // Handle the 3 simple types, and null or undefined
@@ -93,10 +89,10 @@ const OBJECT = {
         throw new Error('Unable to copy obj! Its type isn\'t supported.');
     },
 
-    extend: function(o, ext, force) {
-        var obj = OBJECT.clone(o),
-            j;
-        for (j in ext) {
+    extend: (o, ext, force) => {
+        const obj = OBJECT.clone(o);
+
+        for (let j in ext) {
             if (ext.hasOwnProperty(j) && (!(j in obj) || force)) {
                 obj[j] = ext[j];
             }
@@ -104,7 +100,7 @@ const OBJECT = {
         return obj;
     },
 
-    keyize: function(objArr, k) {
+    keyize: (objArr, k) => {
         let objRet = {},
             i = 0;
         const l = objArr.length;
@@ -116,32 +112,27 @@ const OBJECT = {
         return objRet;
     },
 
-    isString: function(o) {
-        return typeof o === 'string' || o instanceof String;
-    },
+    isString: o => typeof o === 'string' || o instanceof String,
 
-    jCompare: function(obj1, obj2) {
-        // avoid tags
-        return !isNode(obj1) &&
+    // avoid tags
+    jCompare: (obj1, obj2) => !isNode(obj1) &&
             typeof JSON !== _U_ ?
             JSON.stringify(obj1) === JSON.stringify(obj2) :
-            obj1 === obj2;
-    },
+            obj1 === obj2,
 
     /**
      * uses strMap private function to map an onject literal to a querystring ready for url
      * @param  {Literal} obj    the object literal
      * @return {String}         the mapped object
      */
-    toQs: function(obj) {
-        return strMap(obj, function(o, i, r) {
-            return ([
-                r ? '&' : '?',
-                encodeURIComponent(i),
-                '=',
-                encodeURIComponent(o[i])
-            ].join('')).replace(/'/g, '%27');
-        });
-    }
+    toQs: obj => strMap(
+        obj,
+        (o, i, r) => ([
+            r ? '&' : '?',
+            encodeURIComponent(i),
+            '=',
+            encodeURIComponent(o[i])
+        ].join('')).replace(/'/g, '%27')
+    )
 };
 export default OBJECT

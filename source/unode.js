@@ -80,14 +80,13 @@ Unode.prototype.setChildren = function() {
             typeof this.config.children === TYPES.F ?
             this.config.children.call(this) :
             this.config.children
-        ).map(function(child) {
-            return new Unode(Object.assign({}, child, {
+        ).map(child => new Unode(Object.assign({}, child, {
                 target: self.node,
                 rootNode: self.rootNode,
                 map: self.map,
                 parentNode: self
-            }), self.map);
-        });
+            }), self.map)
+        );
     }
     this.toSolve = _children.length;
     this.children = _children;
@@ -97,7 +96,7 @@ Unode.prototype.setMethods = function() {
     const self = this,
         keys = Object.keys(this.config);
     let tmp;
-    keys.forEach(function(k) {
+    keys.forEach(k => {
         tmp = k.match(/^method_(\w*)$/i);
         if (tmp) {
             if (!(tmp[1] in self)) {
@@ -152,12 +151,14 @@ Unode.prototype.setData = function(data) {
 
 Unode.prototype.setText = function(text) {
     if (typeof text !== TYPES.U) this.config.text = text;
-    typeof this.config.text !== TYPES.U && DOM.setText(this.node, this.config.text);
+    typeof this.config.text !== TYPES.U
+    && DOM.setText(this.node, this.config.text);
 };
 
 Unode.prototype.setHtml = function(html) {
     if (typeof html !== TYPES.U) this.config.html = html;
-    typeof this.config.html !== TYPES.U && DOM.setHtml(this.node, this.config.html);
+    typeof this.config.html !== TYPES.U
+    && DOM.setHtml(this.node, this.config.html);
 };
 
 Unode.prototype.killEvent = function(e) {
@@ -196,9 +197,11 @@ Unode.prototype.setEvents = function() {
         if (mat) {
             ev = mat[3].toLowerCase();
             (function(eventName) {
-                EVENTS[mat[1]](self.node, ev, function(e) {
-                    self.config[eventName].call(self, e);
-                });
+                EVENTS[mat[1]](
+                    self.node,
+                    ev,
+                    e => self.config[eventName].call(self, e)
+                );
             })(i);
         }
     }
@@ -259,7 +262,7 @@ Unode.prototype.report = function() {
     return (htmlSize / jsonSize).toFixed(2) + " (html:" + htmlSize + " / json:" + jsonSize + ")"
 };
 
-Unode.isUnode = function(n) { return n instanceof Unode; }
+Unode.isUnode = n => n instanceof Unode;
 Unode.identifier = 'id';
 
 export default Unode

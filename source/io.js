@@ -1,17 +1,19 @@
-import { W, TYPES } from './core'
+import { W, TYPES, noop } from './core'
 import COOKIE from './cookie'
 import OBJECT from './object'
-const xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.userAgent.match(/opera/i)),
+const xdr = typeof W.XDomainRequest !== TYPES.U
+    && document.all
+    && !(navigator.userAgent.match(/opera/i)),
     _ = {
         /**
          * Façade for getting the xhr object
          * @return {object} the xhr
          */
-        getxhr: function(o) {
-            var xhr,
-                IEfuckIds = ['Msxml2.XMLHTTP', 'Msxml3.XMLHTTP', 'Microsoft.XMLHTTP'],
-                len = IEfuckIds.length,
+        getxhr: o => {
+            let xhr,
                 i = 0;
+            const IEfuckIds = ['Msxml2.XMLHTTP', 'Msxml3.XMLHTTP', 'Microsoft.XMLHTTP'],
+                len = IEfuckIds.length;
 
             if (xdr && o.cors) {
                 xhr = new W.XDomainRequest();
@@ -23,14 +25,15 @@ const xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.u
                         try {
                             xhr = new W.ActiveXObject(IEfuckIds[i]);
                         } catch (e2) { continue; }
-                    }!xhr && W.alert('No way to initialize XHR');
+                    }
+                    !xhr && W.alert('No way to initialize XHR');
                 }
             }
             return xhr;
         },
 
-        setHeaders: function(xhr, type) {
-            var tmp = {
+        setHeaders: (xhr, type) => {
+            const tmp = {
                 xml: 'text/xml',
                 html: 'text/html',
                 json: 'application/json'
@@ -38,15 +41,13 @@ const xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.u
             xhr.setRequestHeader('Accept', tmp + 'charset=utf-8');
         },
 
-        setMultipartHeader: function(xhr) {
-            xhr.setRequestHeader('Content-Type', 'multipart/form-data');
-        },
+        setMultipartHeader: xhr => xhr.setRequestHeader('Content-Type', 'multipart/form-data'),
 
-        setCookiesHeaders: function(xhr) {
-            var cookies, i, l;
-            cookies = COOKIE.getall();
-            i = 0;
-            l = cookies.length;
+        setCookiesHeaders: xhr => {
+            const cookies = COOKIE.getall(),
+                l = cookies.length;
+
+            let i = 0;
             while (i < l) {
                 xhr.setRequestHeader('Cookie', cookies[i].name + '=' + cookies[i].value);
                 i++;
@@ -54,34 +55,35 @@ const xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.u
         },
 
         // eslint-disable-next-line complexity
-        ajcall: function(uri, options) {
-            var xhr = _.getxhr(options),
-                method = (options && options.method) || 'POST',
+        ajcall: (uri, options) => {
+            const method = (options && options.method) || 'POST',
                 cback = options && options.cback,
-                cbOpened = (options && options.opened) || function() {},
-                cbLoading = (options && options.loading) || function() {},
-                cbError = (options && options.error) || function() {},
-                cbabort = (options && options.abort) || function() {},
+                cbOpened = (options && options.opened) || noop,
+                cbLoading = (options && options.loading) || noop,
+                cbError = (options && options.error) || noop,
+                cbAbort = (options && options.abort) || noop,
                 sync = options && options.sync,
-                data = (options && options.data) || {},
                 type = (options && options.type) || 'text/html',
                 cache = (options && options.cache !== undefined) ? options.cache : true,
                 targetType = type === 'xml' ? 'responseXML' : 'responseText',
                 timeout = (options && options.timeout) || 10000,
-                hasFiles = options && options.hasFiles,
-                formData,
+                hasFiles = options && options.hasFiles;
+                
+            let formData,
+                xhr = _.getxhr(options),
+                data = (options && options.data) || {},
                 complete = false,
                 res = false,
                 ret = false,
                 state = false,
                 tmp;
-
+        
             // prepare data, caring of cache
             //
             if (!cache) {
                 data.C = +new Date();
             }
-
+        
             if (method === 'GET') {
                 data = OBJECT.toQs(data).substr(1);
             } else {
@@ -95,46 +97,46 @@ const xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.u
                 }
                 data = formData;
             }
-
+        
             if (xdr && options.cors) {
                 // xhr is actually a xdr
                 xhr.open(method, (method === 'GET') ? (uri + ((data) ? ('?' + data) : '')) : uri);
-
+        
                 xhr.onerror = cbError;
-                xhr.ontimeout = function() {};
-                xhr.onprogress = function(e) {
+                xhr.ontimeout = () => {};
+                xhr.onprogress = e => {
                     if (e.lengthComputable) {
-                        var percentComplete = (e.loaded / e.total) * 100;
+                        const percentComplete = (e.loaded / e.total) * 100;
                         console.log(percentComplete + '% uploaded');
                     }
                 };
-                xhr.onload = function( /* r */ ) {
+                xhr.onload = ( /* r */ ) => {
                     // cback((targetType === 'responseXML') ? r.target[targetType].childNodes[0] : r.target[targetType]);
                     cback(xhr.responseText);
                 };
-                xhr.timeout = 3000;
-
+                xhr.timeout = timeout;
+        
                 _.setHeaders(xhr, hasFiles, type);
-
+        
                 tmp = {
                     xml: 'text/xml',
                     html: 'text/html',
                     json: 'application/json'
                 }[type] || 'text/html';
-
+        
                 xhr.contentType = tmp;
-                window.setTimeout(function() {
+                window.setTimeout(() => {
                     xhr.send();
                 }, 20);
             } else {
                 // eslint-disable-next-line complexity
-                xhr.onreadystatechange = function() {
-
+                xhr.onreadystatechange = () => {
+        
                     if (state === xhr.readyState) {
                         return false;
                     }
                     state = xhr.readyState;
-
+        
                     // 404
                     //
                     if (xhr.status == 404 || (parseInt(xhr.readyState, 10) === 4 && parseInt(xhr.status, 10) === 0)) {
@@ -142,24 +144,24 @@ const xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.u
                         xhr.abort();
                         return false;
                     }
-
+        
                     if (state === 'complete' || (parseInt(state, 10) === 4 && parseInt(xhr.status, 10) === 200)) {
                         complete = true;
-
+        
                         if (parseInt(xhr.status, 10) === 404) {
                             xhr.onerror.call(xhr);
                             return false;
                         }
-
-
+        
+        
                         if (cback) {
                             res = xhr[targetType];
                             (function() { cback(res); })(res);
                         }
                         ret = xhr[targetType];
-
+        
                         // IE leak ?????
-                        W.setTimeout(function() {
+                        W.setTimeout(() => {
                             xhr = null;
                         }, 50);
                         return ret;
@@ -207,33 +209,31 @@ const xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.u
                     }
                     return true;
                 };
-
-                // error
+        
+                // error, no arrow cause arguments
                 //
-                xhr.onerror = function() {
-                    cbError && cbError.apply(null, arguments);
-                };
-
-                // abort
+                xhr.onerror = function() { cbError && cbError.apply(null, arguments)};
+        
+                // abort, no arrow cause arguments
                 //
-                xhr.onabort = function() {
-                    cbabort && cbabort.apply(null, arguments);
-                };
-
+                xhr.onabort = function () {cbAbort && cbAbort.apply(null, arguments)};
+        
                 // open request
                 //
                 xhr.open(method, method === 'GET' ? uri + (data ? ('?' + data) : '') : uri, sync);
-
+        
                 // thread abortion
                 //
-                W.setTimeout(function() {
+                W.setTimeout(() => {
                     if (!complete) {
                         complete = true;
                         xhr.abort();
                     }
                 }, timeout);
                 try {
-                    return (targetType === 'responseXML') ? xhr[targetType].childNodes[0] : xhr[targetType];
+                    return (targetType === 'responseXML')
+                        ? xhr[targetType].childNodes[0]
+                        : xhr[targetType];
                 } catch (e3) {}
             }
             return true;
@@ -245,65 +245,55 @@ const xdr = typeof W.XDomainRequest !== TYPES.U && document.all && !(navigator.u
 //
 export default {
     getxhr: _.getxhr,
-    post: function(uri, cback, sync, data, cache, files, err) {
-        return _.ajcall(uri, {
-            cback: function(r) {
-                if (files) {
-                    r = r.replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:([\s;])+\/\/(?:.*)$)/gm, '');
-                    cback((W.JSON && W.JSON.parse) ? JSON.parse(r) : eval(['(', r, ')'].join('')));
-                } else {
-                    cback(r);
-                }
-            },
-            method: 'POST',
-            sync: sync,
-            data: data,
-            cache: cache,
-            error: err,
-            hasFiles: !!files
-        });
-    },
-    get: function(uri, cback, sync, data, cache, err) {
-        return _.ajcall(uri, {
-            cback: cback || function() {},
-            method: 'GET',
-            sync: sync,
-            data: data,
-            cache: cache,
-            error: err
-        });
-    },
-    put: function(uri, cback, sync, data, cache, err) {
-        return _.ajcall(uri, {
-            cback: cback,
-            method: 'PUT',
-            sync: sync,
-            data: data,
-            cache: cache,
-            error: err
-        });
-    },
-    getJson: function(uri, cback, data, cors) {
-        return _.ajcall(uri, {
-            type: 'json',
-            method: 'GET',
-            sync: false,
-            cback: function(r) {
-                // just to allow inline comments on json (not valid in json)
-                // cleanup comments
+    post: (uri, cback, sync, data, cache, files, error) => _.ajcall(uri, {
+        cback: r => {
+            if (files) {
                 r = r.replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:([\s;])+\/\/(?:.*)$)/gm, '');
                 cback((W.JSON && W.JSON.parse) ? JSON.parse(r) : eval(['(', r, ')'].join('')));
-            },
-            data: data,
-            cors: !!cors
-        });
-    },
-    getXML: function(uri, cback) {
-        return _.ajcall(uri, {
-            method: 'GET',
-            sync: false,
-            type: 'xml',
-            cback: cback || function() {}
-        });
-    }
+            } else {
+                cback(r);
+            }
+        },
+        method: 'POST',
+        sync,
+        data,
+        cache,
+        error,
+        hasFiles: !!files
+    }),
+    get: (uri, cback, sync, data, cache, error) => _.ajcall(uri, {
+        cback: cback || noop,
+        method: 'GET',
+        sync,
+        data,
+        cache,
+        error
+    }),
+    put: (uri, cback, sync, data, cache, error) => _.ajcall(uri, {
+        cback,
+        method: 'PUT',
+        sync,
+        data,
+        cache,
+        error
+    }),
+    getJson: (uri, cback, data, cors) => _.ajcall(uri, {
+        type: 'json',
+        method: 'GET',
+        sync: false,
+        cback: r => {
+            // just to allow inline comments on json (not valid in json)
+            // cleanup comments
+            r = r.replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:([\s;])+\/\/(?:.*)$)/gm, '');
+            cback((W.JSON && W.JSON.parse) ? JSON.parse(r) : eval(['(', r, ')'].join('')));
+        },
+        data,
+        cors: !!cors
+    }),
+    getXML: (uri, cback) => _.ajcall(uri, {
+        method: 'GET',
+        sync: false,
+        type: 'xml',
+        cback: cback || noop
+    })
 };

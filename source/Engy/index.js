@@ -40,13 +40,13 @@ function report(stats) {
 }
 Engy.solve = function(config, clean, name) {
     const t = +new Date();
-    return Balle.one(function(resolve, reject) {
-        _process(config).then(function(r) {
+    return Balle.one((resolve) => 
+        _process(config).then( r => {
             r[1] && report(r[1]);
             const now = +new Date();
             console.log('Engy process tot: ' + (now - t));
             resolve([r[0], clean, name])
         })
-    });
+    );
 }
 export default Engy

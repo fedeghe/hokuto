@@ -11,7 +11,8 @@ const _ = {
             return (tname.match(/input|textarea/i)) ? 'input' : 'change';
         }
     },
-    unhandlers: {}
+    unhandlers: {},
+    bindErr: v => `No straight way to ${v ? '' : 'un'}bind an event`
 };
 
 function saveUnhandler(el, f) {
@@ -44,7 +45,7 @@ const on = (function() {
             };
         } else {
             return function() {
-                throw new Error('No straight way to bind an event');
+                throw new Error(bindErr(1));
             };
         }
     })(),
@@ -60,7 +61,7 @@ const on = (function() {
             };
         } else {
             return function() {
-                throw new Error('No straight way to unbind an event');
+                throw new Error(bindErr(0));
             };
         }
     })(),
@@ -108,7 +109,7 @@ const on = (function() {
         let cb = [],
             i, l;
             
-        return function(c) {
+        return c => {
             if (document.readyState === comp) {
                 c.call(this);
             } else {

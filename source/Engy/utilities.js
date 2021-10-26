@@ -37,18 +37,12 @@ export const _overwrite = (destObj, path, obj) => {
 
 export const _mergeComponent = (ns, path, o) => {
     const componentPH = checkns(path, ns),
-        replacementOBJ = o,
-        merged = {};
-    let i = 0;
+        // start from the replacement
+        merged = {...o};
 
-    // start from the replacement
-    //
-    for (i in replacementOBJ) {
-        merged[i] = replacementOBJ[i];
-    }
     // copy everything but 'component' & 'params', overriding
     //
-    for (i in componentPH) {
+    for (let i in componentPH) {
         !(i.match(/component|params/)) && (merged[i] = componentPH[i]);
     }
     _overwrite(ns, path, merged);

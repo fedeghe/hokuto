@@ -76,10 +76,11 @@
                                                 backgroundColor: rootNode.rndColor()
                                             });
                                             this.killEvent(e);
+                                            console.log(this.getNode('xxx'))
                                         },
                                         cb: function() {
                                             var self = this;
-
+                                            
                                             // var id = requestAnimationFrame(function() {
                                             //     self.setHtml(self.rootNode.rnd());
                                             //     self.setStyle({
@@ -98,7 +99,11 @@
                         }
                     })
                 }
-            }]
+            }],
+            cb: function () {
+                this.lateWid('xxx')
+                this.done();
+            }
         };
 
 

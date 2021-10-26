@@ -67,6 +67,8 @@ export const extendns = (ns, objfn) => {
     }
 }
 
+export const noop = function () {};
+
 export default {
     makens,
     checkns,
@@ -76,4 +78,5 @@ export default {
     WD,
     H,
     _U_,
+    noop,
 }

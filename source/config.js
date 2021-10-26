@@ -11,7 +11,8 @@ export default {
         COMPONENTS: {
             EXT: ".js",
             URL: "/components/",
-            NAME_PREPEND: ""
+            NAME_PREPEND: "",
+            PATH_SEPARATOR: "/"
         }
     },
     NS: "Widgzard",

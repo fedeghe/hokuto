@@ -88,7 +88,7 @@ function getall() {
     }
     return this.cookie_nocookiesaround ? [] :
         WD.cookie.split(';').forEach(
-            function(i) {
+            i => {
                 const t = i.split('=');
                 return { name: t[0], value: t[1] };
             }

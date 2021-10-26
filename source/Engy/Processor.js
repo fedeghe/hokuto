@@ -9,7 +9,7 @@ import CONF from '../config'
 const components = {},
     preloadedComponents = {},
     config = {
-        fileNameSeparator: '/',
+        fileNameSeparator: CONF.ENGY.COMPONENTS.PATH_SEPARATOR,
         fileNamePrepend: CONF.ENGY.COMPONENTS.NAME_PREPEND,
         ext: CONF.ENGY.COMPONENTS.EXT,
         componentsUrl: CONF.ENGY.COMPONENTS.URL
@@ -91,7 +91,7 @@ export default class Processor {
                 cached = componentName in components;
                 preLoaded = componentName in preloadedComponents;
 
-                cback = function(cntORobj) {
+                cback = cntORobj => {
                     xhrEnd = +new Date();
                     xhrTot += xhrEnd - xhrStart;
                     const params = checkns(component.container + '/params', self.config);
