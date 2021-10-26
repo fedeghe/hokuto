@@ -18,7 +18,7 @@
             children: [{
                 component: 'h2',
                 params: {
-                    html: 'this is html'
+                    html: 'Just a component'
                 }
             }, {
                 tag: 'table',
@@ -76,7 +76,6 @@
                                                 backgroundColor: rootNode.rndColor()
                                             });
                                             this.killEvent(e);
-                                            console.log(this.getNode('xxx'))
                                         },
                                         cb: function() {
                                             var self = this;
@@ -101,7 +100,7 @@
                 }
             }],
             cb: function () {
-                this.lateWid('xxx')
+                this.lateWid('xyz')
                 this.done();
             }
         };
@@ -109,7 +108,7 @@
 
     window.onload = function() {
         hokuto.renderWithComponents(config, true, 'xxx').then(function(t) {
-            // console.log(t)
+            console.log(t)
         })
     }
 

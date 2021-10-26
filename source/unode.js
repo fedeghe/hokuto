@@ -53,7 +53,6 @@ Unode.prototype.prepareState = function() {
 Unode.prototype.initialize = function() {
     this.rendered = false;
     this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs');
-    // debugger
     typeof this.config[Unode.identifier] !== TYPES.U &&
         typeof this.config.map.elements[this.config[Unode.identifier]] === TYPES.U &&
         this.map.add(this.config[Unode.identifier], this);

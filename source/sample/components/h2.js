@@ -15,9 +15,11 @@ var t = {
     },
     onClick: function() {
         this.state.times++;
-        this.node.innerHTML = `${this.state.html} - ${this.state.times}`
-        this.node.style.color = this.rndColor();
-        this.node.blur()
+        const n = this.node;
+        n.innerHTML = `${this.state.html} (clicked #${this.state.times} time${this.state.times > 1 ? 's' : ''})`
+        n.style.color = this.rndColor();
+        n.style.backgroundColor = this.rndColor();
+        n.blur()
     },
     cb: function() {
         this.node.innerHTML = this.state.html
