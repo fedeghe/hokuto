@@ -29,74 +29,74 @@
                     cols: 20 // 7
                 },
                 children: function() {
-                    // console.log('table ctx', this);
-                    return new Array(this.data.rows).fill().map(function(_, i) {
-                        return {
-                            tag: 'tr',
-                            children: function() {
-                                // console.log('tr ctx', this);
-                                var self = this
-                                return new Array(this.parentNode.data.cols).fill().map(function(_, j) {
-                                    return {
-                                        tag: 'td',
-                                        style: {
-                                            minWidth: '20px',
-                                            width: '60px',
-                                            height: '20px',
-                                            textAlign: 'center',
-                                            fontSize: '18px',
-                                            userSelect: 'none',
-                                            cursor: 'pointer'
-                                        },
-                                        state: function() {
-                                            return {
-                                                tab1: self.getNode('tab1')
-                                            }
-                                        },
-                                        html: self.rootNode.rnd(),
-                                        onMouseover: function() {
-                                            this.setStyle({
-                                                backgroundColor: 'gray',
-                                            });
-                                        },
-                                        onMouseout: function() {
-                                            this.setStyle({
-                                                backgroundColor: 'black',
-                                            });
-                                        },
-                                        onClick: function(e) {
-                                            var table = this.state.tab1,
-                                                rootNode = this.rootNode;
-                                            this.setHtml(rootNode.rnd());
-                                            this.setStyle({
-                                                backgroundColor: rootNode.rndColor(),
-                                                color: rootNode.rndRGB()
-                                            });
-                                            table.setStyle({
-                                                backgroundColor: rootNode.rndColor()
-                                            });
-                                            this.killEvent(e);
-                                        },
-                                        cb: function() {
-                                            var self = this;
-                                            
-                                            // var id = requestAnimationFrame(function() {
-                                            //     self.setHtml(self.rootNode.rnd());
-                                            //     self.setStyle({
-                                            //         backgroundColor: self.rootNode.rndColor(),
-                                            //         color: self.rootNode.rndRGB()
-                                            //     });
-                                            //     cancelAnimationFrame(id)
-                                            //     self.render();
-                                            // });
+                    const self = this;
+                    return new Array(self.data.rows).fill().map(
+                        (_, i) => ({
+                                tag: 'tr',
+                                children: function() {
+                                    var self = this
+                                    return new Array(self.parentNode.data.cols).fill().map(
+                                        (_, j) => ({
+                                                tag: 'td',
+                                                style: {
+                                                    minWidth: '20px',
+                                                    width: '60px',
+                                                    height: '20px',
+                                                    textAlign: 'center',
+                                                    fontSize: '18px',
+                                                    userSelect: 'none',
+                                                    cursor: 'pointer'
+                                                },
+                                                state: function() {
+                                                    return {
+                                                        tab1: self.getNode('tab1')
+                                                    }
+                                                },
+                                                html: `${i} - ${j}`,
+                                                // html: self.rootNode.rnd(),
+                                                onMouseover: function() {
+                                                    this.setStyle({
+                                                        backgroundColor: 'gray',
+                                                    });
+                                                },
+                                                onMouseout: function() {
+                                                    this.setStyle({
+                                                        backgroundColor: 'black',
+                                                    });
+                                                },
+                                                onClick: function(e) {
+                                                    var table = this.state.tab1,
+                                                        rootNode = this.rootNode;
+                                                    this.setHtml(rootNode.rnd());
+                                                    this.setStyle({
+                                                        backgroundColor: rootNode.rndColor(),
+                                                        color: rootNode.rndRGB()
+                                                    });
+                                                    table.setStyle({
+                                                        backgroundColor: rootNode.rndColor()
+                                                    });
+                                                    this.killEvent(e);
+                                                },
+                                                cb: function() {
+                                                    var self = this;
+                                                    
+                                                    // var id = requestAnimationFrame(function() {
+                                                    //     self.setHtml(self.rootNode.rnd());
+                                                    //     self.setStyle({
+                                                    //         backgroundColor: self.rootNode.rndColor(),
+                                                    //         color: self.rootNode.rndRGB()
+                                                    //     });
+                                                    //     cancelAnimationFrame(id)
+                                                    //     self.render();
+                                                    // });
 
-                                            self.done();
-                                        }
-                                    }
-                                })
-                            }
-                        }
-                    })
+                                                    self.done();
+                                                }
+                                        })
+                                    )
+                                }
+                            })
+                    )
                 }
             }],
             cb: function () {
@@ -105,11 +105,7 @@
             }
         };
 
-
     window.onload = function() {
-        hokuto.renderWithComponents(config, true, 'xxx').then(function(t) {
-            console.log(t)
-        })
-    }
-
+        hokuto.renderWithComponents(config, true, 'xxx').then(console.log)
+    };
 })();
