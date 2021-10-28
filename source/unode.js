@@ -47,7 +47,7 @@ Unode.prototype.prepareState = function() {
         state = statePassed ? this.config.state : {};
 
     this.state = typeof state === TYPES.F ?
-        state() :
+        state.call(this) :
         state;
 }
 Unode.prototype.initialize = function() {

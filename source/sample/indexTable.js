@@ -61,7 +61,8 @@
                                                 },
                                                 onMouseout: function() {
                                                     this.setStyle({
-                                                        backgroundColor: 'black',
+                                                        // backgroundColor: 'black',
+                                                        'outline': '1px dotted red'
                                                     });
                                                 },
                                                 onClick: function(e) {
