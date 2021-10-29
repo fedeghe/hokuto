@@ -66,6 +66,7 @@
                                                     });
                                                 },
                                                 onClick: function(e) {
+                                                    // debugger
                                                     var table = this.state.tab1,
                                                         rootNode = this.rootNode;
                                                     this.setHtml(rootNode.rnd());
@@ -77,6 +78,11 @@
                                                         backgroundColor: rootNode.rndColor()
                                                     });
                                                     this.killEvent(e);
+                                                },
+                                                onDblclick: () => {
+                                                    console.log('2 clickzzz', this)
+                                                    // this.render();
+                                                    // debugger
                                                 },
                                                 cb: function() {
                                                     var self = this;
