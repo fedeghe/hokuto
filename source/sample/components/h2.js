@@ -23,6 +23,7 @@ var t = {
     onClick: function() {
         var state = this.state;
         state.add();
+        
         var n = this.node,
             times = state.get();
 

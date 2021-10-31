@@ -15,6 +15,13 @@
             method_rnd: function() {
                 return 1e3 * Math.random().toFixed(3)
             },
+            data: {
+                nums: []
+            },
+            method_save : function (i,j,col) {
+                console.log(i,j,col)
+                console.log(this)
+            },
             children: [{
                 component: 'h2',
                 params: {
@@ -68,11 +75,14 @@
                                                 onClick: function(e) {
                                                     // debugger
                                                     var table = this.state.tab1,
-                                                        rootNode = this.rootNode;
+                                                        rootNode = this.rootNode,
+                                                        newColor = rootNode.rndRGB();
+                                                    rootNode.save(i, j, newColor);
+                                                    
                                                     this.setHtml(rootNode.rnd());
                                                     this.setStyle({
                                                         backgroundColor: rootNode.rndColor(),
-                                                        color: rootNode.rndRGB()
+                                                        color: newColor
                                                     });
                                                     table.setStyle({
                                                         backgroundColor: rootNode.rndColor()
