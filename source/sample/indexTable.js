@@ -18,8 +18,8 @@
             data: {
                 nums: []
             },
-            method_save : function (i,j,col) {
-                console.log(i,j,col)
+            method_save: function(i, j, col) {
+                console.log(i, j, col)
                 console.log(this)
             },
             children: [{
@@ -39,85 +39,85 @@
                     const self = this;
                     return new Array(self.data.rows).fill().map(
                         (_, i) => ({
-                                tag: 'tr',
-                                children: function() {
-                                    var self = this
-                                    return new Array(self.parentNode.data.cols).fill().map(
-                                        (_, j) => ({
-                                                tag: 'td',
-                                                style: {
-                                                    minWidth: '20px',
-                                                    width: '60px',
-                                                    height: '20px',
-                                                    textAlign: 'center',
-                                                    fontSize: '18px',
-                                                    userSelect: 'none',
-                                                    cursor: 'pointer'
-                                                },
-                                                state: function() {
-                                                    return {
-                                                        tab1: self.getNode('tab1')
-                                                    }
-                                                },
-                                                html: `${i} - ${j}`,
-                                                // html: self.rootNode.rnd(),
-                                                onMouseover: function() {
-                                                    this.setStyle({
-                                                        backgroundColor: 'gray',
-                                                    });
-                                                },
-                                                onMouseout: function() {
-                                                    this.setStyle({
-                                                        backgroundColor: 'black',
-                                                        'outline': '1px dotted red'
-                                                    });
-                                                },
-                                                onClick: function(e) {
-                                                    // debugger
-                                                    var table = this.state.tab1,
-                                                        rootNode = this.rootNode,
-                                                        newColor = rootNode.rndRGB();
-                                                    rootNode.save(i, j, newColor);
-                                                    
-                                                    this.setHtml(rootNode.rnd());
-                                                    this.setStyle({
-                                                        backgroundColor: rootNode.rndColor(),
-                                                        color: newColor
-                                                    });
-                                                    table.setStyle({
-                                                        backgroundColor: rootNode.rndColor()
-                                                    });
-                                                    this.killEvent(e);
-                                                },
-                                                onDblclick: () => {
-                                                    console.log('2 clickzzz', this)
-                                                    // this.render();
-                                                    // debugger
-                                                },
-                                                cb: function() {
-                                                    var self = this;
-                                                    
-                                                    // var id = requestAnimationFrame(function() {
-                                                    //     self.setHtml(self.rootNode.rnd());
-                                                    //     self.setStyle({
-                                                    //         backgroundColor: self.rootNode.rndColor(),
-                                                    //         color: self.rootNode.rndRGB()
-                                                    //     });
-                                                    //     cancelAnimationFrame(id)
-                                                    //     self.render();
-                                                    // });
+                            tag: 'tr',
+                            children: function() {
+                                var self = this
+                                return new Array(self.parentNode.data.cols).fill().map(
+                                    (_, j) => ({
+                                        tag: 'td',
+                                        style: {
+                                            minWidth: '20px',
+                                            width: '60px',
+                                            height: '20px',
+                                            textAlign: 'center',
+                                            fontSize: '18px',
+                                            userSelect: 'none',
+                                            cursor: 'pointer'
+                                        },
+                                        state: function() {
+                                            return {
+                                                tab1: self.getNode('tab1')
+                                            }
+                                        },
+                                        html: `${i} - ${j}`,
+                                        // html: self.rootNode.rnd(),
+                                        onMouseover: function() {
+                                            this.setStyle({
+                                                backgroundColor: 'gray',
+                                            });
+                                        },
+                                        onMouseout: function() {
+                                            this.setStyle({
+                                                backgroundColor: 'black',
+                                                'outline': '1px dotted red'
+                                            });
+                                        },
+                                        onClick: function(e) {
+                                            // debugger
+                                            var table = this.state.tab1,
+                                                rootNode = this.rootNode,
+                                                newColor = rootNode.rndRGB();
+                                            rootNode.save(i, j, newColor);
 
-                                                    self.done();
-                                                }
-                                        })
-                                    )
-                                }
-                            })
+                                            this.setHtml(rootNode.rnd());
+                                            this.setStyle({
+                                                backgroundColor: rootNode.rndColor(),
+                                                color: newColor
+                                            });
+                                            table.setStyle({
+                                                backgroundColor: rootNode.rndColor()
+                                            });
+                                            this.killEvent(e);
+                                        },
+                                        onDblclick: () => {
+                                            console.log('2 clickzzz', this)
+                                                // this.render();
+                                                // debugger
+                                        },
+                                        cb: function() {
+                                            var self = this;
+
+                                            // var id = requestAnimationFrame(function() {
+                                            //     self.setHtml(self.rootNode.rnd());
+                                            //     self.setStyle({
+                                            //         backgroundColor: self.rootNode.rndColor(),
+                                            //         color: self.rootNode.rndRGB()
+                                            //     });
+                                            //     cancelAnimationFrame(id)
+                                            //     self.render();
+                                            // });
+
+                                            self.done();
+                                        }
+                                    })
+                                )
+                            }
+                        })
                     )
                 }
             }],
-            cb: function () {
-                this.lateWid('xyz')
+            cb: function() {
+                this.lateWid('xyzy')
                 this.done();
             }
         };
