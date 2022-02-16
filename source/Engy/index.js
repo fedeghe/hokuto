@@ -49,4 +49,5 @@ Engy.solve = function(config, clean, name) {
         })
     );
 }
+Engy.configSet = _configSet;
 export default Engy
