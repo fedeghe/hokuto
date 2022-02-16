@@ -2,6 +2,7 @@
     var target = document.getElementById('target'),
         config = {
             target,
+            engy:{componentsUrl: 'jsss/components'},
             method_rndColor: function() {
                 return '#' + [0, 1, 2, 3, 4, 5, 6, 7].sort(function(a, b) {
                     return Math.random() > 0.5 ? 1 : -1;

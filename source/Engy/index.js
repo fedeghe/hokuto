@@ -1,18 +1,20 @@
 import Balle from 'balle'
 import Processor from './Processor'
-const Engy = {};
-const _configSet = cnf => {
-    for (let j in config) {
-        if (j in cnf) {
-            config[j] = cnf[j];
-        }
+const Engy = {
+    solve: (config, clean, name) => {
+        const t = +new Date();
+        return Balle.one((resolve) => 
+            _process(config).then( r => {
+                r[1] && report(r[1]);
+                const now = +new Date();
+                console.log('Engy process tot: ' + (now - t));
+                resolve([r[0], clean, name])
+            })
+        );
     }
-    return this;
-}
+};
 
-function _process(a) {
-    return (new Processor(a)).run();
-}
+function _process(a) { return (new Processor(a)).run();}
 
 function report(stats) {
     let j;
@@ -38,16 +40,5 @@ function report(stats) {
     );
     console.log(ln);
 }
-Engy.solve = function(config, clean, name) {
-    const t = +new Date();
-    return Balle.one((resolve) => 
-        _process(config).then( r => {
-            r[1] && report(r[1]);
-            const now = +new Date();
-            console.log('Engy process tot: ' + (now - t));
-            resolve([r[0], clean, name])
-        })
-    );
-}
-Engy.configSet = _configSet;
+
 export default Engy

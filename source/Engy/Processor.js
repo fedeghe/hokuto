@@ -7,13 +7,7 @@ import i18n from '../i18n'
 import CONF from '../config'
 
 const components = {},
-    preloadedComponents = {},
-    config = {
-        fileNameSeparator: CONF.ENGY.COMPONENTS.PATH_SEPARATOR,
-        fileNamePrepend: CONF.ENGY.COMPONENTS.NAME_PREPEND,
-        ext: CONF.ENGY.COMPONENTS.EXT,
-        componentsUrl: CONF.ENGY.COMPONENTS.URL
-    };
+    preloadedComponents = {};
 
 const cmp404 = componentName => JSON.stringify({
     tag: 'h2',
@@ -23,6 +17,13 @@ const cmp404 = componentName => JSON.stringify({
 export default class Processor {
     constructor(conf) {
         this.config = conf;
+        conf.engy = conf.engy || {}
+        this.engyConf = {
+            fileNameSeparator: conf.engy.fileNameSeparator || CONF.ENGY.COMPONENTS.PATH_SEPARATOR,
+            fileNamePrepend: conf.engy.fileNamePrepend ||  CONF.ENGY.COMPONENTS.NAME_PREPEND,
+            ext: conf.engy.ext ||  CONF.ENGY.COMPONENTS.EXT,
+            componentsUrl: conf.engy.componentsUrl ||  CONF.ENGY.COMPONENTS.URL
+        },
         this.endPromise = Balle.one();
         this.stats = {
             time: 0,
@@ -32,20 +33,21 @@ export default class Processor {
         }
     }
 
-    static getFileName(n) {
+    getFileName(n) {
         let els = n.split(/\/|\|/),
-            res = n;
-
+            res = n,
+            engyConf = this.engyConf;
+    
         const len = els.length - 1;
 
-        els[len] = config.fileNamePrepend + els[len];
-        res = els.join(config.fileNameSeparator);
+        els[len] = engyConf.fileNamePrepend + els[len];
+        res = els.join(engyConf.fileNameSeparator);
 
         return [
-            config.componentsUrl,
-            config.componentsUrl.match(/\/$/) ? '' : '/',
+            engyConf.componentsUrl,
+            engyConf.componentsUrl.match(/\/$/) ? '' : '/',
             res,
-            config.ext
+            engyConf.ext
         ].join('');
     }
 
@@ -81,7 +83,7 @@ export default class Processor {
                 self.endPromise.resolve([self.config, computeStats && self.stats]);
             } else {
                 component = component[0];
-                componentName = Processor.getFileName(component.value);
+                componentName = self.getFileName(component.value);
                 if (component.value in requested) {
                     requested[component.value]++;
                 } else {

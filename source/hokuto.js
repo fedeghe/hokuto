@@ -53,7 +53,7 @@ window.hokuto = (function() {
             });
         },
         renderWithComponents = (config, clean, name) =>
-        Engy.solve(config, clean, name).then(r => render.apply(null, r)),
+            Engy.solve(config, clean, name).then(r => render.apply(null, r)),
 
         cleanup = (trg, msg) => render({ target: trg, children: [{ html: msg || '' }] }, true),
         get = params => {
@@ -70,8 +70,7 @@ window.hokuto = (function() {
             s.src = src;
         },
         getElement = n => n in __renders ? __renders[n] : false,
-        getElements = () => __renders,
-        configSet = Engy.configSet;
+        getElements = () => __renders;
 
     return {
         render,
@@ -80,7 +79,6 @@ window.hokuto = (function() {
         get,
         preload,
         getElement,
-        getElements,
-        configSet
+        getElements
     };
 })();
