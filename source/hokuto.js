@@ -49,7 +49,6 @@ window.hokuto = (function() {
             return rootNode.render().then(() => {
                 if (!active) return rootNode
                 target.appendChild(fragment);
-                timeEnd = +new Date();
                 while (map.endFunctions.length) map.endFunctions.pop()();
             });
         },
