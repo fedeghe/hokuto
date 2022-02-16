@@ -70,7 +70,8 @@ window.hokuto = (function() {
             s.src = src;
         },
         getElement = n => n in __renders ? __renders[n] : false,
-        getElements = () => __renders;
+        getElements = () => __renders,
+        configSet = Engy.configSet;
 
     return {
         render,
@@ -80,5 +81,6 @@ window.hokuto = (function() {
         preload,
         getElement,
         getElements,
+        configSet
     };
 })();
