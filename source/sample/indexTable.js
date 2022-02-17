@@ -118,6 +118,7 @@
                 }
             }],
             cb: function() {
+                hokuto.channel.get('math').sub('mult', (...a) => console.log(a.reduce((ac, c) => ac*c, 1)))
                 this.lateWid('xyzy')
                 this.done();
             }

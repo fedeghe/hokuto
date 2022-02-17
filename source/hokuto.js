@@ -1,3 +1,4 @@
+import channeljs from "@fedeghe/channeljs";
 import './poly'
 import Unode from './unode'
 import Engy from './Engy'
@@ -79,6 +80,7 @@ window.hokuto = (function() {
         get,
         preload,
         getElement,
-        getElements
+        getElements,
+        channel: channeljs
     };
 })();
