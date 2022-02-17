@@ -217,13 +217,17 @@ Unode.prototype.setState = function(o) {
 
 Unode.prototype.done =
     Unode.prototype.solve = function() {
+        var n = this.node
         const args = [].slice.call(arguments, 0);
         if (args.length) {
             this.parentNode.paramsFromChildren.push(args);
         }
         this.parentNode.toSolve--;
         if (this.toSolve <= 0) {
-            this.parent.appendChild(this.node)
+            // render or rerender
+            this.node.parentNode
+                ? this.parent.replaceChild(n, this.node)
+                : this.parent.appendChild(this.node)
             this.rendered = true;
             this.resolve(this);
         }

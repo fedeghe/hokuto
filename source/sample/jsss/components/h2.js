@@ -27,6 +27,11 @@ var t = {
         var n = this.node,
             times = state.get();
 
+
+            
+                this.render();
+            
+
         n.innerHTML = `${this.data.html} (clicked #${times} time${times > 1 ? 's' : ''})`
         n.style.color = this.rndColor();
         n.style.backgroundColor = this.rndColor();
