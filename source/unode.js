@@ -214,7 +214,9 @@ Unode.prototype.setState = function(o) {
         }
     }
 };
-
+Unode.prototype.dox = function () {
+    alert('x')
+};
 Unode.prototype.done =
     Unode.prototype.solve = function() {
         var n = this.node
