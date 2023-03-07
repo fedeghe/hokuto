@@ -5,13 +5,13 @@
     <title>demo</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/npm/web-page-monitor@0.0.14/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web-page-monitor@0.0.24/dist/index.js"></script>
 
     <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 
 <body>
-    <div id="target">something here</div>
+    <div id="target" />
     <script>
         WebPageMonitor
             .showNET()
@@ -26,6 +26,8 @@
                 frequency: 10,
                 exclude: [
                     'onmousemove',
+                    'onpointerrawupdate',
+                    'onpointermove'
                 ]
             })
             .render({
@@ -33,7 +35,8 @@
             });
     </script>
 
-    <script src="./indexTable.js"></script>
+    <!-- <script src="./indexTable.js"></script> -->
+    <script src="./devilRightHand/index.js"></script>
 
 </body>
 

@@ -1,0 +1,24 @@
+@keyframes example {
+    from {
+        color: black;
+        background-color: white;
+    }
+    to {
+        color: white;
+        background-color: black;
+    }
+}
+
+body {
+    /* background-color: black; */
+    padding: 0;
+    color: white;
+    background-color: black;
+    animation-name: example;
+    animation-duration: 2s;
+    font-family: verdana;
+}
+
+h2 {
+    text-align: center
+}

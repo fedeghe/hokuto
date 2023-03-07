@@ -7,7 +7,9 @@ import i18n from '../i18n'
 import CONF from '../config'
 
 const components = {},
-    preloadedComponents = {};
+    preloadedComponents = {},
+    // PARAMETERS_RX = /#PARAM{([^}|]*)?\|?([^}]*)}/;
+    PARAMETERS_RX = /{([^}|]*)?\|?([^}]*)}/;
 
 const cmp404 = componentName => JSON.stringify({
     tag: 'h2',
@@ -117,7 +119,7 @@ export default class Processor {
                     // before merging the object check for the presence of parameters
                     if (params) {
                         // check if into the component are used var placeholders
-                        usedParams = SearchHash.forValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+                        usedParams = SearchHash.forValue(obj, PARAMETERS_RX);
                         l = usedParams.length;
                         if (l) {
                             for (i = 0; i < l; i++) {
@@ -129,11 +131,8 @@ export default class Processor {
                                 if ((typeof foundParamValue).match(/string/i)) {
                                     foundParamValueReplaced = checkns(usedParams[i].path, obj)
                                         .replace(usedParams[i].regexp[0], foundParamValue);
-
-                                    _overwrite(obj, usedParams[i].path, foundParamValueReplaced);
-                                } else {
-                                    _overwrite(obj, usedParams[i].path, foundParamValue);
                                 }
+                                _overwrite(obj, usedParams[i].path, foundParamValueReplaced || foundParamValue);
                             }
                         }
                     }
