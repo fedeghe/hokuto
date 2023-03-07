@@ -214,7 +214,9 @@ Unode.prototype.setState = function(o) {
         }
     }
 };
-
+Unode.prototype.dox = function () {
+    alert('x')
+};
 Unode.prototype.done =
     Unode.prototype.solve = function() {
         var n = this.node
@@ -225,9 +227,12 @@ Unode.prototype.done =
         this.parentNode.toSolve--;
         if (this.toSolve <= 0) {
             // render or rerender
-            this.node.parentNode
-                ? this.parent.replaceChild(n, this.node)
-                : this.parent.appendChild(this.node)
+            if (this.node.parentNode) {
+                this.setData() // should be the only one needed (since provided func by default)
+                this.parent.replaceChild(n, this.node)
+            } else {
+                this.parent.appendChild(this.node)
+            }
             this.rendered = true;
             this.resolve(this);
         }
