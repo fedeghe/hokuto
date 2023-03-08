@@ -34,7 +34,13 @@
                 collapsible: true
             });
     </script>
-
+    <script>
+        window.load = function (fn) {
+            document.readyState === "complete"
+                ? fn()
+                : window.addEventListener('load', fn);
+        }
+    </script>
     <!-- <script src="./indexTable.js"></script> -->
     <script src="./devilRightHand/index.js"></script>
 

@@ -1,9 +1,13 @@
 (function() {
-    var target = document.getElementById('target'),
+    var viewPath = './devilRightHand/components/views',
+        target = document.getElementById('target'),
         config1 = {
             target,
             engy:{componentsUrl: 'devilRightHand/components'},
             state: function (){},
+            lang: {
+                ciccio: 'chubby'
+            },
             data: {
                 nums: []
             },
@@ -26,6 +30,7 @@
                     style:{display:'flex', alignSelf:'center'},
                     params: {
                         text: 'Devil\'s right hand'
+                        // text: 'i18n(ciao|xxx)'
                     },
                 },{
                     tag: 'div',
@@ -33,23 +38,17 @@
                         id: 'main'
                     },
                     ref: 'xxx',
-                    style:{
-                        display:'flex',
-                        flexGrow: 1,
-                        flexWrap: 'wrap',
-                        justifyContent: 'center',
-                        alignItems:'flex-start',
-                        alignContent:'flex-start',
-                        width:'100%',
-                        outline:'1px dashed #fff'
-                    },
+                    className: 'container',
                     children: Array.from({length:50}, function (){
                         return {
                             component: 'square',
                             onClick: function () {
-                                config2.target = this.getNode('xxx').node;
-                                hokuto.renderWithComponents(config2, true, 'xxx')
-                                //.then(console.log)
+                                
+                                hokuto.load(viewPath + '/xxx.js')
+                                // hokuto.i18n.load({ciao:'halo'})
+                                // config2.target = this.getNode('xxx').node;
+                                // hokuto.renderWithComponents(config2, true, 'xxx')
+                                
                             }
                         }
                     })
@@ -59,19 +58,9 @@
                 this.lateWid('xyzy')
                 this.done();
             }
-        },
-        config2 = {
-            
-            engy:{componentsUrl: 'devilRightHand/components'},
-            html : 'hello',
-            cb: function() {
-                this.lateWid('xyzxyz')
-                this.done();
-            }
         };
-
-    window.onload = function() {
+    window.load(function() {
+        hokuto.i18n.load({ciao:'hello'})
         hokuto.renderWithComponents(config1, true, 'xxx')
-        //.then(console.log)
-    };
+    });
 })();

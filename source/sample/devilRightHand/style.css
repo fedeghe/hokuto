@@ -14,8 +14,8 @@ body {
     padding: 0;
     color: white;
     background-color: black;
-    animation-name: example;
-    animation-duration: 2s;
+    /* animation-name: example; */
+    /* animation-duration: 5s; */
     font-family: verdana;
 }
 
@@ -23,14 +23,28 @@ h2 {
     text-align: center
 }
 
+.container {
+    padding-top: 10px;
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: flex-start;
+    width: 100%;
+    outline: 1px dashed #fff;
+}
+
 .square,
 .expl {
     width: 200px;
     height: 200px;
-    outline: 1px solid red;
+    /* outline: 1px solid red; */
     text-align: center;
     vertical-align: middle;
-    cursor: pointer
+    cursor: pointer;
+    border-radius: 15px;
+    filter: blur(5px) grayscale(100%)
 }
 
 .expl:before {
@@ -51,9 +65,11 @@ h2 {
     text-align: center;
     font-size: 5em;
     line-height: 200px;
+    filter: drop-shadow(8px 8px 10px black);
 }
 
 .square:hover,
 .expl:hover {
     background-color: #555;
+    filter: none
 }

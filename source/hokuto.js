@@ -2,6 +2,7 @@ import channeljs from "@fedeghe/channeljs";
 import './poly'
 import Unode from './unode'
 import Engy from './Engy'
+import i18n from './i18n'
 import { TYPES } from './core'
 
 window.hokuto = (function() {
@@ -64,7 +65,7 @@ window.hokuto = (function() {
             unode = render(params);
             return [r, unode.value];
         },
-        preload = src => {
+        load = src => {
             const s = document.createElement('script');
             document.getElementsByTagName('head')[0].appendChild(s);
             s.onload = () => s.parentNode.removeChild(s);
@@ -78,9 +79,10 @@ window.hokuto = (function() {
         renderWithComponents,
         cleanup,
         get,
-        preload,
+        load,
         getElement,
         getElements,
-        channel: channeljs
+        channel: channeljs,
+        i18n,
     };
 })();
