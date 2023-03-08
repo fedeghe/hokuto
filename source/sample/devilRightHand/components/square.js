@@ -1,5 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 var t = {
     
-    className:''
+    className:'expl',
+    onClick: function (e) {
+        console.log(e)
+    }
 }
