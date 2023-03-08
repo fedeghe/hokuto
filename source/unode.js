@@ -3,9 +3,6 @@ import { TYPES } from './core'
 import DOM from './dom'
 import EVENTS from './events'
 
-
-
-
 function Unode(config, map) {
     this.config = config;
     this.map = map
@@ -52,7 +49,7 @@ Unode.prototype.prepareState = function() {
 }
 Unode.prototype.initialize = function() {
     this.rendered = false;
-    this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs');
+    this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs,Classname');
     typeof this.config[Unode.identifier] !== TYPES.U &&
         typeof this.config.map.elements[this.config[Unode.identifier]] === TYPES.U &&
         this.map.add(this.config[Unode.identifier], this);
@@ -122,6 +119,10 @@ Unode.prototype.setCbs = function() {
     this.cb = ('cb' in this.config && typeof this.config.cb === TYPES.F) ?
         this.config.cb.bind(this) :
         this.solve.bind(this);
+};
+
+Unode.prototype.setClassname = function() {
+    this.config.className && DOM.setClass(this.node, this.config.className);
 };
 
 Unode.prototype.setStyle = function(style) {

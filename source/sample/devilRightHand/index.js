@@ -28,10 +28,10 @@
                     height:'100vh'
                 },
                 children: [{
-                    component: 'h2',
-                    style:{display:'flex', height:'auto', alignSelf:'center'},
+                    component: 'title',
+                    style:{display:'flex', alignSelf:'center'},
                     params: {
-                        html: 'Devil\'s right hand'
+                        text: 'Devil\'s right hand'
                     },
                     cb: function (){console.log ('done'); this.done()}
                 },{
