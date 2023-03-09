@@ -66,7 +66,7 @@ export default class Processor {
 
         const computeStats = CONF.ENGY.STATS;
 
-        // (function SolveChildrenFucntions(){
+        // (function SolveChildrenFunctions(){
         //     let funcs = SearchHash.forKey(
         //         self.config,
         //         'children'
@@ -77,7 +77,7 @@ export default class Processor {
         //         funcs.forEach(function (func) {
         //             func.obj.children = func.obj.children()
         //         })
-        //         SolveChildrenFucntions();
+        //         SolveChildrenFunctions();
         //     }
         // })();
 
