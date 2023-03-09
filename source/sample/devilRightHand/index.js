@@ -1,6 +1,7 @@
 (function() {
     var viewPath = './devilRightHand/components/views',
         target = document.getElementById('target'),
+        loadSquareView = function (){hokuto.load(viewPath + '/xxx.js')},
         config1 = {
             target,
             engy:{componentsUrl: 'devilRightHand/components'},
@@ -39,19 +40,25 @@
                     },
                     ref: 'xxx',
                     className: 'container',
-                    children: Array.from({length:50}, function (){
+                    children: Array.from({length:10}, function (){
                         return {
                             component: 'square',
-                            onClick: function () {
-                                
-                                hokuto.load(viewPath + '/xxx.js')
-                                // hokuto.i18n.load({ciao:'halo'})
-                                // config2.target = this.getNode('xxx').node;
-                                // hokuto.renderWithComponents(config2, true, 'xxx')
-                                
-                            }
+                            onClick: loadSquareView
                         }
-                    })
+                    }),
+                    // children: function (){
+                    //     return Array.from({length:10}, function (){
+                    //         return {
+                    //             component: 'square',
+                    //             onClick: loadSquareView
+                    //         }
+                    //     })
+                    // },
+                    end: function (){
+                        this.data.bb = this.node.getBoundingClientRect()
+                        console.log(this.data.bb)
+                        // this.done();
+                    }
                 }]
             }],
             cb: function() {
@@ -59,8 +66,14 @@
                 this.done();
             }
         };
-    window.load(function() {
+
+    function render() {
         hokuto.i18n.load({ciao:'hello'})
         hokuto.renderWithComponents(config1, true, 'xxx')
-    });
+    }
+
+    document.readyState === "complete"
+        ? render()
+        : window.addEventListener('load', render);
+    
 })();

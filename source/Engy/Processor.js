@@ -2,7 +2,7 @@ import Balle from 'balle'
 import SearchHash from 'searchhash'
 import { _clone, _overwrite, _mergeComponent } from './utilities'
 import io from '../io'
-import { checkns, _U_ } from '../core'
+import { checkns, _U_, TYPES} from '../core'
 import i18n from '../i18n'
 import CONF from '../config'
 
@@ -65,6 +65,23 @@ export default class Processor {
             cback;
 
         const computeStats = CONF.ENGY.STATS;
+
+        // (function SolveChildrenFucntions(){
+        //     let funcs = SearchHash.forKey(
+        //         self.config,
+        //         'children'
+        //     ).filter(function (func){
+        //         return typeof func.obj.children === TYPES.F
+        //     })
+        //     if (funcs.length) {
+        //         funcs.forEach(function (func) {
+        //             func.obj.children = func.obj.children()
+        //         })
+        //         SolveChildrenFucntions();
+        //     }
+        // })();
+
+
 
         (function solve() {
             let component = SearchHash.forKey(

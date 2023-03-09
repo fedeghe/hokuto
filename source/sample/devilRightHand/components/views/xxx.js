@@ -23,13 +23,16 @@
             }
         };
 
-    window.load(function() {
+    function render() {
         // console.log(main)
         // var target = document.getElementById('target')
         // config2.target = main
         hokuto.i18n.load({ciao:'hello'})
         hokuto.renderWithComponents(config2, true, 'xxx')
-    });
+    }
+    document.readyState === "complete"
+        ? render()
+        : window.addEventListener('load', render);
     
     
 })();
