@@ -54,11 +54,7 @@
                     //         }
                     //     })
                     // },
-                    end: function (){
-                        this.data.bb = this.node.getBoundingClientRect()
-                        console.log(this.data.bb)
-                        // this.done();
-                    }
+                    
                 }]
             }],
             cb: function() {
