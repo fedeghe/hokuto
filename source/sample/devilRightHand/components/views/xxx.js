@@ -14,7 +14,7 @@
                 },
             },{
                 tag: 'h1',
-                html : 'i18n(ciao) everyone',
+                html : 'i18n(ciao) fede',
             },{
                 tag: 'a',
                 html: 'back',
