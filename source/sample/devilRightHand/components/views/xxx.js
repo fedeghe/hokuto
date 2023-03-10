@@ -2,6 +2,7 @@
     var basePath = './devilRightHand'
         componentsUrl = basePath + '/components',
         target = document.getElementById('target'),
+        // target = document.getElementById('main'),
         config = {
             target: target,
             engy:{componentsUrl: componentsUrl},
