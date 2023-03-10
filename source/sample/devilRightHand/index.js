@@ -2,10 +2,11 @@
     var viewPath = './devilRightHand/components/views',
         target = document.getElementById('target'),
         loadSquareView = function (){
-            hokuto.load(viewPath + '/xxx.js',
-            '/xxx',
-            {}, 'details'
-        )},
+            hokuto.load(viewPath + '/xxx.js', '/xxx',{}, 'details')
+
+            // hokuto.history.push('/xxx', {}, 'square')
+
+        },
         config = {
             target,
             engy:{componentsUrl: 'devilRightHand/components'},
@@ -67,13 +68,11 @@
             }
         };
 
-    function render() {
-        hokuto.i18n.load({ciao:'hello'})
+    // function render() {
+    //     hokuto.i18n.load({ciao:'hello'})
         hokuto.renderWithComponents(config, true, 'xxx')
-    }
+    // }
 
-    document.readyState === "complete"
-        ? render()
-        : window.addEventListener('load', render);
+    
     
 })();

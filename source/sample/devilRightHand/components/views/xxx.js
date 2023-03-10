@@ -20,8 +20,9 @@
                 html: 'back',
                 className: "backButton",
                 onClick: function (){
-                    history.back()
-                    hokuto.load(basePath + '/index.js')
+                    
+                    hokuto.load(basePath + '/index.js', '/', {}, 'home')
+                    // hokuto.history.push('/', {}, 'index')
                 }
             }],
             cb: function() {
@@ -30,13 +31,13 @@
             }
         };
 
-    function render() {
+    // function render() {
         hokuto.i18n.load({ciao:'hello'})
         hokuto.renderWithComponents(config, true, 'xxx')
-    }
-    document.readyState === "complete"
-        ? render()
-        : window.addEventListener('load', render);
+    // }
+    // document.readyState === "complete"
+    //     ? render()
+    //     : window.addEventListener('load', render);
     
     
 })();

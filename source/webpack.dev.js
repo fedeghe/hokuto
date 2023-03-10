@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
     entry: {
-        index: path.resolve(__dirname, './hokuto.js'),
+        main: path.resolve(__dirname, './hokuto.js'),
     },
     output: {
         path: path.resolve(__dirname, '../dist'),
@@ -47,6 +47,9 @@ module.exports = {
         port: 9000,
         hot: true,
         host: 'localhost',
+        historyApiFallback: {
+            index: '/'
+        }
     },
     mode: 'development',
     watch: true

@@ -88,5 +88,6 @@ window.hokuto = (function() {
         getElements,
         channel: channeljs,
         i18n,
+        history: h
     };
 })();

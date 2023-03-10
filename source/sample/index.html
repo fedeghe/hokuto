@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>demo</title>
+    <title>First home</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/web-page-monitor@0.0.25/dist/index.js"></script>
@@ -12,6 +12,7 @@
 <body>
     <div id="target" />
     <script>
+
         WebPageMonitor
             .showNET()
             .showFPS()
@@ -34,7 +35,32 @@
             });
     </script>
     <!-- <script src="./indexTable.js"></script> -->
-    <script src="./devilRightHand/index.js"></script>
+    <!-- <script src="./devilRightHand/index.js"></script> -->
+    <script>
+        const basePath = './devilRightHand';
+
+        function onReady(fn) {
+            document.readyState === "complete"
+                ? fn()
+                : window.addEventListener('load', fn);
+        }
+
+        function loadIndexPage() {
+            hokuto.load(basePath + '/index.js')
+        }
+        function loadSquarePage() {
+            hokuto.load(basePath + '/components/views/xxx.js', '/xxx', {}, 'details')
+        }
+
+        switch (document.location.pathname) {
+            case '/':
+                onReady(loadIndexPage);
+                break;
+            case '/xxx':
+                onReady(loadSquarePage);
+                break;
+        }
+    </script>
 
 </body>
 
