@@ -1,10 +1,11 @@
 import { H } from './core'
 const handlers = [],
-    spread = (url, state, title) => 
-        handlers.forEach(
+    spread = (url, state, title) => {
+        document.title = title
+        return handlers.forEach(
             handler=> handler(url, state, title)
         );
-
+    };
 export default {
     push: (url, state, title) => {
         H.pushState(state || {}, title || '', url);
