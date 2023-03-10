@@ -15,6 +15,9 @@ export default {
         H.replaceState(state || {}, title || '', url);
         spread(url, state, title);
     },
+    back: () => {
+        H.back()
+    },
     resetHandlers: () => {
         handlers = [];
     },

@@ -4,6 +4,7 @@ import Unode from './unode'
 import Engy from './Engy'
 import i18n from './i18n'
 import { TYPES } from './core'
+import h from './history'
 
 window.hokuto = (function() {
     const __renders = {},
@@ -65,11 +66,14 @@ window.hokuto = (function() {
             unode = render(params);
             return [r, unode.value];
         },
-        load = src => {
-            const s = document.createElement('script');
-            document.getElementsByTagName('head')[0].appendChild(s);
-            s.onload = () => s.parentNode.removeChild(s);
-            s.src = src;
+        load = (src, u,s,t) => {
+            const script = document.createElement('script');
+            script.onload = () => script.parentNode.removeChild(script);
+            script.src = src;
+            document.getElementsByTagName('head')[0].appendChild(script);
+            if (u && s && t) {
+                h.push(u,s,t)
+            }
         },
         getElement = n => n in __renders ? __renders[n] : false,
         getElements = () => __renders;

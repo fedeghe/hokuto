@@ -73,3 +73,10 @@ h2 {
     background-color: #555;
     filter: none
 }
+
+.backButton {
+    cursor: pointer;
+    border: 1px solid black;
+    padding: 0.5em;
+    background-color: steelblue;
+}

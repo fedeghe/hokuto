@@ -2,18 +2,25 @@
     var basePath = './devilRightHand'
         componentsUrl = basePath + '/components',
         target = document.getElementById('target'),
-        config2 = {
+        config = {
             target: target,
             engy:{componentsUrl: componentsUrl},
             children:[{
-                html : 'i18n(ciao)',
+                tag: 'link',
+                attrs: {
+                    rel: "stylesheet",
+                    type: "text/css",
+                    href: "./devilRightHand/style.css"
+                },
+            },{
+                tag: 'h1',
+                html : 'i18n(ciao) everyone',
             },{
                 tag: 'a',
                 html: 'back',
-                style:{
-                    cursor: 'pointer'
-                },
+                className: "backButton",
                 onClick: function (){
+                    history.back()
                     hokuto.load(basePath + '/index.js')
                 }
             }],
@@ -24,11 +31,8 @@
         };
 
     function render() {
-        // console.log(main)
-        // var target = document.getElementById('target')
-        // config2.target = main
         hokuto.i18n.load({ciao:'hello'})
-        hokuto.renderWithComponents(config2, true, 'xxx')
+        hokuto.renderWithComponents(config, true, 'xxx')
     }
     document.readyState === "complete"
         ? render()

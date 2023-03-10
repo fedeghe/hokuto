@@ -1,8 +1,12 @@
 (function() {
     var viewPath = './devilRightHand/components/views',
         target = document.getElementById('target'),
-        loadSquareView = function (){hokuto.load(viewPath + '/xxx.js')},
-        config1 = {
+        loadSquareView = function (){
+            hokuto.load(viewPath + '/xxx.js',
+            '/xxx',
+            {}, 'details'
+        )},
+        config = {
             target,
             engy:{componentsUrl: 'devilRightHand/components'},
             state: function (){},
@@ -65,7 +69,7 @@
 
     function render() {
         hokuto.i18n.load({ciao:'hello'})
-        hokuto.renderWithComponents(config1, true, 'xxx')
+        hokuto.renderWithComponents(config, true, 'xxx')
     }
 
     document.readyState === "complete"
