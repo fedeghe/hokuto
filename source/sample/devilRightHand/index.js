@@ -2,10 +2,8 @@
     var viewPath = './devilRightHand/components/views',
         target = document.getElementById('target'),
         loadSquareView = function (){
-            hokuto.load(viewPath + '/xxx.js', '/xxx',{}, 'details')
-
-            // hokuto.history.push('/xxx', {}, 'square')
-
+            console.log('load 1 xxx' )
+            hokuto.load('square')
         },
         config = {
             target,
@@ -45,7 +43,7 @@
                     },
                     ref: 'xxx',
                     className: 'container',
-                    children: Array.from({length:10}, function (){
+                    children: Array.from({length:20}, function (){
                         return {
                             component: 'square',
                             onClick: loadSquareView

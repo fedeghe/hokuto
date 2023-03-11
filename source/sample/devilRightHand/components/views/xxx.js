@@ -22,7 +22,7 @@
                 className: "backButton",
                 onClick: function (){
                     
-                    hokuto.load(basePath + '/index.js', '/', {}, 'home')
+                    hokuto.load('home')
                     // hokuto.history.push('/', {}, 'index')
                 }
             }],

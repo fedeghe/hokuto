@@ -66,13 +66,16 @@ window.hokuto = (function() {
             unode = render(params);
             return [r, unode.value];
         },
-        load = (src, u,s,t) => {
+        load = route => {
+            const {src, url, state, title, replace} = 
+                (typeof route === 'string')
+                ? hokuto.routes[route] : route
             const script = document.createElement('script');
             script.onload = () => script.parentNode.removeChild(script);
             script.src = src;
             document.getElementsByTagName('head')[0].appendChild(script);
-            if (u && s && t) {
-                h.push(u,s,t)
+            if (url && state && title) {
+                h[replace ? 'replace' : 'push'](url, {src, url, state, title}, title)
             }
         },
         getElement = n => n in __renders ? __renders[n] : false,
@@ -91,3 +94,19 @@ window.hokuto = (function() {
         history: h
     };
 })();
+
+window.addEventListener('popstate', (e) => {
+    hokuto.load({
+        src: e.state.src,
+        url: e.state.url,
+        state: e.state.state,
+        title: e.state.title,
+        replace: true
+    });
+});
+window.addEventListener('load', function(){
+    var r = Object.entries(hokuto.routes).find(function ([k, route]) {
+        return route.url === document.location.pathname
+    })
+    if (r) hokuto.load(r[0])
+})
