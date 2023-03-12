@@ -11,63 +11,8 @@
 
 <body>
     <div id="target" />
-    <script>
-
-        WebPageMonitor
-            // .showNET()
-            .showFPS({ height: 20 })
-            // .showVIEW()
-            .showMEM({
-                height: 10,
-            })
-            .showTAGS({
-                frequency: 10,
-                height: 10
-            })
-            // .showEVENTS({
-            //     frequency: 10,
-            //     exclude: [
-            //         'onmousemove',
-            //         'onpointerrawupdate',
-            //         'onpointermove'
-            //     ]
-            // })
-            .render({
-                collapsible: true
-            });
-    </script>
-    <!-- <script src="./indexTable.js"></script> -->
-    <!-- <script src="./devilRightHand/index.js"></script> -->
-    <script>
-        (function () {
-            const basePath = './devilRightHand',
-                routes = {
-                    home: {
-                        src: basePath + '/index.js',
-                        url: '/',
-                        state: {},
-                        title: 'Hooome'
-                    },
-                    square: {
-                        src: basePath + '/components/views/xxx.js',
-                        url: '/xxx',
-                        state: {},
-                        title: 'details'
-                    }
-                };
-
-            function onReady(fn) {
-                document.readyState === "complete"
-                    ? fn()
-                    : window.addEventListener('load', fn);
-            }
-            onReady(function () {
-                hokuto.routes = routes;
-            });
-
-
-        })()
-    </script>
+    <script src="./initWPM.js"></script>
+    <script src="./initDRH.js"></script>
 
 </body>
 

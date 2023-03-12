@@ -1,8 +1,6 @@
 (function() {
-    var viewPath = './devilRightHand/components/views',
-        target = document.getElementById('target'),
+    var target = document.getElementById('target'),
         loadSquareView = function (){
-            console.log('load 1 xxx' )
             hokuto.load('square')
         },
         config = {
@@ -24,14 +22,10 @@
                     href: "./devilRightHand/style.css"
                 },
             },{
-                style:{
-                    display:'flex',
-                    flexDirection:'column',
-                    height:'100vh'
-                },
+                className: 'container',
                 children: [{
                     component: 'title',
-                    style:{display:'flex', alignSelf:'center'},
+                    className: 'title',
                     params: {
                         text: 'Devil\'s right hand'
                         // text: 'i18n(ciao|xxx)'
@@ -42,7 +36,7 @@
                         id: 'main'
                     },
                     ref: 'xxx',
-                    className: 'container',
+                    className: 'squaresContainer',
                     children: Array.from({length:20}, function (){
                         return {
                             component: 'square',
@@ -65,12 +59,5 @@
                 this.done();
             }
         };
-
-    // function render() {
-    //     hokuto.i18n.load({ciao:'hello'})
-        hokuto.renderWithComponents(config, true, 'xxx')
-    // }
-
-    
-    
+    hokuto.renderWithComponents(config, true, 'xxx')
 })();
