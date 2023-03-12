@@ -3,6 +3,8 @@ body {
     color: white;
     padding: 0;
     margin: 0;
+    /* border: 15px solid red; */
+    /* border-radius: 15px */
 }
 
 * {

@@ -9,12 +9,12 @@ var t = {
         }
     },
     data: {
-        html: '#PARAM{html}',
+        html: '{html}',
     },
     style: {
         cursor: 'pointer'
     },
-    html : '#PARAM{html} jssssssss',
+    html : '{html} jssssssss',
     method_rndColor: function() {
         return '#' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'].sort(function(a, b) {
             return Math.random() > 0.5 ? 1 : -1;
@@ -27,10 +27,7 @@ var t = {
         var n = this.node,
             times = state.get();
 
-
-            
-                this.render();
-            
+        this.render();
 
         n.innerHTML = `${this.data.html} (clicked #${times} time${times > 1 ? 's' : ''})`
         n.style.color = this.rndColor();

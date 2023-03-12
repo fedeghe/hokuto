@@ -6090,10 +6090,10 @@ schema-utils@^4.0.0:
     ajv-formats "^2.1.1"
     ajv-keywords "^5.0.0"
 
-searchhash@^1.2.0:
-  version "1.2.8"
-  resolved "https://registry.yarnpkg.com/searchhash/-/searchhash-1.2.8.tgz#9a5a48663de234929f0f08c0c51cb216f0c9f7c5"
-  integrity sha512-EbL85iq1nkIXp2K9mCbvegFPiuxGlFjjgekHTXuPOi7R7iZ+3BBEJftM0ylKQBlDX0B7qBpRbrQyZo09mDfKXw==
+searchhash@^1.2.11:
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/searchhash/-/searchhash-1.2.11.tgz#3c6a37d2459ca7ad4cf73fd6c86e891d33fcb086"
+  integrity sha512-0BcLzz1bROLEzNwJl4EE0Fb6/SkiFY4S98fImkgLS8UCtDRCdxdiBK9JLXs8QARFzxaxIJ46raxhnH5h6+F6tA==
 
 select-hose@^2.0.0:
   version "2.0.0"

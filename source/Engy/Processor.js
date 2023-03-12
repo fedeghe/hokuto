@@ -2,12 +2,14 @@ import Balle from 'balle'
 import SearchHash from 'searchhash'
 import { _clone, _overwrite, _mergeComponent } from './utilities'
 import io from '../io'
-import { checkns, _U_ } from '../core'
+import { checkns, _U_, TYPES} from '../core'
 import i18n from '../i18n'
 import CONF from '../config'
 
 const components = {},
-    preloadedComponents = {};
+    preloadedComponents = {},
+    // PARAMETERS_RX = /#PARAM{([^}|]*)?\|?([^}]*)}/;
+    PARAMETERS_RX = /{([^}|]*)?\|?([^}]*)}/;
 
 const cmp404 = componentName => JSON.stringify({
     tag: 'h2',
@@ -64,6 +66,23 @@ export default class Processor {
 
         const computeStats = CONF.ENGY.STATS;
 
+        // (function SolveChildrenFunctions(){
+        //     let funcs = SearchHash.forKey(
+        //         self.config,
+        //         'children'
+        //     ).filter(function (func){
+        //         return typeof func.obj.children === TYPES.F
+        //     })
+        //     if (funcs.length) {
+        //         funcs.forEach(function (func) {
+        //             func.obj.children = func.obj.children()
+        //         })
+        //         SolveChildrenFunctions();
+        //     }
+        // })();
+
+
+
         (function solve() {
             let component = SearchHash.forKey(
                     self.config,
@@ -117,7 +136,7 @@ export default class Processor {
                     // before merging the object check for the presence of parameters
                     if (params) {
                         // check if into the component are used var placeholders
-                        usedParams = SearchHash.forValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+                        usedParams = SearchHash.forValue(obj, PARAMETERS_RX);
                         l = usedParams.length;
                         if (l) {
                             for (i = 0; i < l; i++) {
@@ -129,11 +148,8 @@ export default class Processor {
                                 if ((typeof foundParamValue).match(/string/i)) {
                                     foundParamValueReplaced = checkns(usedParams[i].path, obj)
                                         .replace(usedParams[i].regexp[0], foundParamValue);
-
-                                    _overwrite(obj, usedParams[i].path, foundParamValueReplaced);
-                                } else {
-                                    _overwrite(obj, usedParams[i].path, foundParamValue);
                                 }
+                                _overwrite(obj, usedParams[i].path, foundParamValueReplaced || foundParamValue);
                             }
                         }
                     }

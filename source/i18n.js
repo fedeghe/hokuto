@@ -2,38 +2,32 @@ import SearchHash from 'searchhash'
 import { checkns } from './core'
 import config from './config';
 
-const data = {},
+let data = {};
+const RX_LANG = /i18n\(([^}|]*)?\|?([^}]*)\)/,
     i18n = {
         lang: config.lang,
-        check: lab => lab.match(/i18n\(([^}|]*)?\|?([^}]*)\)/),
-
+        check: lab => lab.match(RX_LANG),
         dynamicLoad: (lo, _label) => {
             for (_label in lo) {
                 i18n.lang in lo[_label] && (data[_label] = lo[_label][i18n.lang]);
             }
         },
-
         get: (k, fallback) => checkns(k, data) || fallback || 'no Value',
-
-        load: dict => {
-            data = dict;
-        },
-
+        load: dict => { data = dict;},
         parse: obj => {
-            const replacing = SearchHash.forValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/),
+            const replacing = SearchHash.forValue(obj, RX_LANG),
                 l = replacing.length;
                 
-            let mayP, ref, i = 0;
+            let mayP, ref, i = 0, r;
+            for (null; i < l; i++) {
+                r = replacing[i];
+                if ((typeof r.regexp).match(/boolean/i)) continue;
 
-            for (; i < l; i++) {null
-                if ((typeof replacing[i].regexp).match(/boolean/i)) continue;
-
-                mayP = i18n.check(replacing[i].regexp[0]);
+                mayP = i18n.check(r.regexp[0]);
 
                 if (mayP) {
-                    ref = checkns(replacing[i].container, obj);
-                    // ref[replacing[i].key] = mayP;
-                    ref[replacing[i].key] = i18n.get(mayP[1], mayP[2]);
+                    ref = checkns(r.container, obj);
+                    ref[r.key] = r.value.replace(mayP[0], i18n.get(mayP[1], mayP[2]));
                 }
             }
         }

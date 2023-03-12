@@ -43,6 +43,12 @@ function setData(node, data) {
     }
 }
 
+function setClass(node, data) {
+    data.split(',').forEach(function (cls){
+        node.classList.add(cls)
+    });
+}
+
 function unsetData(node, data) {
     if (typeof data === TYPES.U)
         throw new Error('ERR: data needed')
@@ -70,6 +76,7 @@ function setHtml(node, html) {
 
 export default {
     remove,
+    setClass,
     setText,
     setHtml,
     setStyle,
