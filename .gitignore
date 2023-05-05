@@ -3,3 +3,4 @@
 /sample
 .printVersion
 .buildNum.json
+.DS_Store
