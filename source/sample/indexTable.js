@@ -1,6 +1,6 @@
 (function() {
     var target = document.getElementById('target'),
-        live = false,
+        live = true,
         config = {
             target,
             engy:{componentsUrl: 'jsss/components'},
@@ -57,11 +57,9 @@
                                             userSelect: 'none',
                                             cursor: 'pointer'
                                         },
-                                        state: function() {
-                                            return {
-                                                tab1: self.getNode('tab1')
-                                            }
-                                        },
+                                        state: () => ({
+                                            tab1: self.getNode('tab1')
+                                        }),
                                         html: `${i} - ${j}`,
                                         // html: self.rootNode.rnd(),
                                         onMouseover: function() {
