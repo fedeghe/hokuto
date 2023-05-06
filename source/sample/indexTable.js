@@ -1,5 +1,6 @@
 (function() {
     var target = document.getElementById('target'),
+        live = false,
         config = {
             target,
             engy:{componentsUrl: 'jsss/components'},
@@ -17,7 +18,8 @@
                 return 1e3 * Math.random().toFixed(3)
             },
             data: {
-                nums: []
+                nums: [],
+                live: live
             },
             method_save: function(i, j, col) {
                 console.log(i, j, col)
@@ -78,7 +80,10 @@
                                             var table = this.state.tab1,
                                                 rootNode = this.rootNode,
                                                 newColor = rootNode.rndRGB();
+
                                             rootNode.save(i, j, newColor);
+
+                                            console.log(rootNode.data)
 
                                             this.setHtml(rootNode.rnd());
                                             this.setStyle({
@@ -96,18 +101,20 @@
                                                 // debugger
                                         },
                                         cb: function() {
-                                            var self = this;
+                                            var self = this,
+                                                root = this.rootNode,
+                                                id = root.data.live ? requestAnimationFrame(beLive) : null;
 
-                                            // var id = requestAnimationFrame(function() {
-                                            //     self.setHtml(self.rootNode.rnd());
-                                            //     self.setStyle({
-                                            //         backgroundColor: self.rootNode.rndColor(),
-                                            //         color: self.rootNode.rndRGB()
-                                            //     });
-                                            //     cancelAnimationFrame(id)
-                                            //     self.render();
-                                            // });
-
+                                            function beLive() {
+                                                self.setHtml(self.rootNode.rnd());
+                                                self.setStyle({
+                                                    backgroundColor: self.rootNode.rndColor(),
+                                                    color: self.rootNode.rndRGB()
+                                                });
+                                                cancelAnimationFrame(id)
+                                                self.render();
+                                            }
+                                        
                                             self.done();
                                         }
                                     })

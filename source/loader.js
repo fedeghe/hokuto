@@ -1,4 +1,4 @@
-window.addEventListener('popstate', (e) => {
+window.addEventListener('popstate', function(e){
     hokuto.load({
         src: e.state.src,
         url: e.state.url,
@@ -8,8 +8,10 @@ window.addEventListener('popstate', (e) => {
     });
 });
 window.addEventListener('load', function(){
-    var r = Object.entries(hokuto.routes).find(function ([k, route]) {
-        return route.url === document.location.pathname
-    })
-    if (r) hokuto.load(r[0])
+    if ('routes' in hokuto) {
+        var r = Object.entries(hokuto.routes).find(function ([k, route]) {
+            return route.url === document.location.pathname
+        })
+        if (r) hokuto.load(r[0])
+    }
 })

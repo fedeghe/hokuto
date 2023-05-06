@@ -1,14 +1,9 @@
 WebPageMonitor
-// .showNET()
-.showFPS({ height: 20 })
-// .showVIEW()
-.showMEM({
-    height: 10,
-})
-.showTAGS({
-    frequency: 10,
-    height: 10
-})
+.showNET()
+.showFPS()
+.showVIEW()
+.showMEM()
+.showTAGS()
 // .showEVENTS({
 //     frequency: 10,
 //     exclude: [

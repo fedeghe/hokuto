@@ -6704,10 +6704,10 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-web-page-monitor@^0.0.24:
-  version "0.0.24"
-  resolved "https://registry.yarnpkg.com/web-page-monitor/-/web-page-monitor-0.0.24.tgz#c3cab5775e1d30f0139e222c4d20c7c1525e5d46"
-  integrity sha512-aLBJvOPNC3ju1e0zFjU08pKVINE5HkA/chBeOQnfsoyUw1tZSxkYpav3Cx9AUfMwvm5leUSqyJarWVadhLKSMA==
+web-page-monitor@^0.0.26:
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/web-page-monitor/-/web-page-monitor-0.0.26.tgz#7b6a0fc2a1fb78aec2b4e81fc832154acf414084"
+  integrity sha512-foAGJvlmPTZxratU0drepUEpvRLEWb//uQdaITOQpkdOBjo9Qq6NmXqbcdDbcITIv++6hGS2d4i+v70YmQ9aFw==
 
 webpack-cli@^5.0.1:
   version "5.0.1"
