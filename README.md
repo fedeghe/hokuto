@@ -22,7 +22,8 @@ hokuto.render({
   text: 'Hello world'
 })
 ```
-and get
+and get  
+
 ![img](./img/1.png)
 
 easy, but this is not enough right 😂 ?
@@ -45,7 +46,8 @@ hokuto.render({
   ]
 })
 ```
-and get
+and get  
+
 ![img](./img/2.png)
 
 in this case the root level object will have as target the `document.body` but the inner elements will have as target the node rendered starting from the _Unode_ of their corresponding parent object in the config.  
