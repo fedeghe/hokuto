@@ -17,6 +17,7 @@ Hokuto exposes one single object named `hokuto` which allows you first to render
 
 First let's see how to _salute our world_
 
+`inner/howto1.js`
 ``` js
 hokuto.render({
   text: 'Hello world'
@@ -36,6 +37,8 @@ Before proceeding I need to give a sneak peeck of what was passed to the _render
 - children: an array of other Unodes
 
 let's make a simple example to clarify:
+
+`inner/howto2.js`
 ``` js
 hokuto.render({
   tag: 'ul',
@@ -56,7 +59,7 @@ Ad you can see in the html there's a _div#target_ which comes originally from th
 ``` html
 <body>
     <div id="target"></div>
-    <script src="./inner/howto1.js"></script>
+    <script src="./inner/howto2.js"></script>
 </body>
 ```
 and this element is neither removed neither used as target (indeed the default target is the `document.body` and we are not passing _target_ to the root node config)
