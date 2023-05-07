@@ -15,7 +15,7 @@ module.exports = {
         new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
         new HtmlWebpackPlugin({
             title: 'development',
-            template: 'source/sample/index.html'
+            template: 'source/sample/index2.html'
         }),
     ],
     module: {

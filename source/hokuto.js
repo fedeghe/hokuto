@@ -12,7 +12,7 @@ window.hokuto = (function() {
         render = (config, clear, name) => {
             let active = true;
 
-            const target = config.target,
+            const target = config.target || document.body,
                 originalHTML = target.innerHTML,
                 fragment = document.createDocumentFragment(),
                 map = {
