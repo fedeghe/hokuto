@@ -21,9 +21,7 @@ function Unode(config, map) {
 
     this.paramsFromChildren = [];
 
-    if ('willRender' in config) {
-        this.willRender = config.willRender
-    }
+    
 
     //from map
     this.root = this.map.rootNode;
@@ -36,6 +34,7 @@ function Unode(config, map) {
 
     this.resolve = function() {};
     this.reset = function() {};
+    this.checkWillRender(); //just once
     this.setMethods(); //just once
     this.prepareState(); //just once
     this.initialize();
@@ -178,6 +177,11 @@ Unode.prototype.checkInit = function(e) {
     return this;
 };
 
+Unode.prototype.checkWillRender = function() {
+    if ('willRender' in this.config) {
+        this.willRender = this.config.willRender;
+    }
+};
 Unode.prototype.checkEnd = function(e) {
     const self = this;
     'end' in this.config &&
@@ -239,8 +243,8 @@ Unode.prototype.done =
                 } else {
                     this.parent.appendChild(this.node)
                 }
+                this.rendered = true;
             }
-            this.rendered = true;
             this.resolve(this);
         }
     };
