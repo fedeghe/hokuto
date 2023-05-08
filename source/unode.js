@@ -21,7 +21,7 @@ function Unode(config, map) {
 
     this.paramsFromChildren = [];
 
-    
+    this.renders = true;
 
     //from map
     this.root = this.map.rootNode;
@@ -34,7 +34,7 @@ function Unode(config, map) {
 
     this.resolve = function() {};
     this.reset = function() {};
-    this.checkWillRender(); //just once
+    
     this.setMethods(); //just once
     this.prepareState(); //just once
     this.initialize();
@@ -168,20 +168,13 @@ Unode.prototype.killEvent = function(e) {
     EVENTS.kill(e);
 };
 
-Unode.prototype.checkInit = function(e) {
-    var keepRunning = true;
+Unode.prototype.checkInit = function() {
     if ('init' in this.config && typeof this.config.init === TYPES.F) {
-        keepRunning = this.config.init.call(this);
-        !keepRunning && this.abort();
+        this.renders = this.config.init.call(this);
     }
     return this;
 };
 
-Unode.prototype.checkWillRender = function() {
-    if ('willRender' in this.config) {
-        this.willRender = this.config.willRender;
-    }
-};
 Unode.prototype.checkEnd = function(e) {
     const self = this;
     'end' in this.config &&
@@ -223,9 +216,7 @@ Unode.prototype.setState = function(o) {
         }
     }
 };
-Unode.prototype.dox = function () {
-    alert('x')
-};
+
 Unode.prototype.done =
     Unode.prototype.solve = function() {
         var n = this.node
@@ -236,7 +227,7 @@ Unode.prototype.done =
         this.parentNode.toSolve--;
         if (this.toSolve <= 0) {
             // render or rerender
-            if (!('willRender' in this) || this.willRender.call(this)) {
+            if (this.renders) {
                 if (this.node.parentNode) {
                     this.setData() // should be the only one needed (since provided func by default)
                     this.parent.replaceChild(n, this.node)
