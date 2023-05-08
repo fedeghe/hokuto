@@ -15,11 +15,15 @@ function Unode(config, map) {
     this.toSolve = 0;
     this.state = 'state' in config ? config.state : {};
     this.data = 'data' in config ? config.data : {};
-    this.init = 'init' in config && config.init;
+    // this.init = 'init' in config && config.init;
     this.rootNode = 'rootNode' in config ? config.rootNode : this;
     this.parentNode = 'parentNode' in config ? config.parentNode : this;
 
     this.paramsFromChildren = [];
+
+    if ('willRender' in config) {
+        this.willRender = config.willRender
+    }
 
     //from map
     this.root = this.map.rootNode;
@@ -228,11 +232,13 @@ Unode.prototype.done =
         this.parentNode.toSolve--;
         if (this.toSolve <= 0) {
             // render or rerender
-            if (this.node.parentNode) {
-                this.setData() // should be the only one needed (since provided func by default)
-                this.parent.replaceChild(n, this.node)
-            } else {
-                this.parent.appendChild(this.node)
+            if (!('willRender' in this) || this.willRender.call(this)) {
+                if (this.node.parentNode) {
+                    this.setData() // should be the only one needed (since provided func by default)
+                    this.parent.replaceChild(n, this.node)
+                } else {
+                    this.parent.appendChild(this.node)
+                }
             }
             this.rendered = true;
             this.resolve(this);
@@ -250,7 +256,7 @@ Unode.prototype.render = function() {
     if (this.toSolve > 0) {
         this.children.forEach(function(child, i) {
             child.render().then(function() {
-                self.node.appendChild(child.node);
+                // self.node.appendChild(child.node);
                 if (self.toSolve === 0) {
                     self.paramsFromChildren.length ?
                         self.cb(self.paramsFromChildren) :
