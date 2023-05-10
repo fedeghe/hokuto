@@ -1,7 +1,12 @@
-import Balle from 'balle'
 import { TYPES } from './core'
 import DOM from './dom'
 import EVENTS from './events'
+
+function setCall(self, fns) {
+    fns.split(/,/).forEach(function(f) {
+        self['set' + f]()
+    })
+};
 
 function Unode(config, map) {
     this.config = config;
@@ -52,17 +57,10 @@ Unode.prototype.prepareState = function() {
 }
 Unode.prototype.initialize = function() {
     this.rendered = false;
-    this.setCall('Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs,Classname');
+    setCall(this, 'Ref,Events,Text,Html,Style,Attrs,Data,Children,Cbs,Classname');
     typeof this.config[Unode.identifier] !== TYPES.U &&
         typeof this.config.map.elements[this.config[Unode.identifier]] === TYPES.U &&
         this.map.add(this.config[Unode.identifier], this);
-};
-
-Unode.prototype.setCall = function(fns) {
-    const self = this;
-    fns.split(/,/).forEach(function(f) {
-        self['set' + f]()
-    })
 };
 
 Unode.prototype.cleanup = function() {
@@ -242,7 +240,7 @@ Unode.prototype.done =
 
 Unode.prototype.render = function() {
     const self = this,
-        ret = new Balle(function(resolve, reject) {
+        ret = new Promise(function(resolve, reject) {
             self.resolve = resolve;
             self.reject = reject;
         });

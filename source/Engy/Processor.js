@@ -1,4 +1,3 @@
-import Balle from 'balle'
 import SearchHash from 'searchhash'
 import { _clone, _overwrite, _mergeComponent } from './utilities'
 import io from '../io'
@@ -26,7 +25,7 @@ export default class Processor {
             ext: conf.engy.ext ||  CONF.ENGY.COMPONENTS.EXT,
             componentsUrl: conf.engy.componentsUrl ||  CONF.ENGY.COMPONENTS.URL
         },
-        this.endPromise = Balle.one();
+        this.endPromise =new Promise();
         this.stats = {
             time: 0,
             elements: 0,

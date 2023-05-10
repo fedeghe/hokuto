@@ -1,9 +1,8 @@
-import Balle from 'balle'
 import Processor from './Processor'
 const Engy = {
     solve: (config, clean, name) => {
         const t = +new Date();
-        return Balle.one((resolve) => 
+        return new Promise((resolve) => 
             _process(config).then( r => {
                 r[1] && report(r[1]);
                 const now = +new Date();
