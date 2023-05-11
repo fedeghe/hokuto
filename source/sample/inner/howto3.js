@@ -6,5 +6,5 @@ window.onload = function () {
             { tag: 'li', text: 'two' },
             { tag: 'li', text: 'three' },
         ]
-    });
+    }, true)
 }

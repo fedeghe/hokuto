@@ -2743,11 +2743,6 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
-balle@^1.0.45:
-  version "1.0.45"
-  resolved "https://registry.yarnpkg.com/balle/-/balle-1.0.45.tgz#d7113fb0355eb2e44d9503b82388d93f60e3b85c"
-  integrity sha512-WbRkln2R3f89nPZCzmRc3qkGuO7kk0wu2ve1MUhPY7tuCWDoSBnFbiEMA8vZ+Du04fQP8WsXZGH3cYcfVZsNRA==
-
 batch@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
@@ -5096,6 +5091,11 @@ makeerror@1.0.12:
   integrity sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==
   dependencies:
     tmpl "1.0.5"
+
+malta@^4.1.36:
+  version "4.1.36"
+  resolved "https://registry.yarnpkg.com/malta/-/malta-4.1.36.tgz#a701835147551f6d775eea151378c4c1e76dd081"
+  integrity sha512-YPgvojmSXx80UDQ8tYSwL7U+eJXSSbHMUFVYqQkngmnvNyU5iOKAP3RWMWjtSn1etujNSiWmGt3rI7IfMiglPg==
 
 media-typer@0.3.0:
   version "0.3.0"

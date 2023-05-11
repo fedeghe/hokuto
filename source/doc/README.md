@@ -19,11 +19,7 @@ First let's see how to _salute our world_
 
 `inner/howto1.js`
 ``` js
-window.onload = function () {
-    hokuto.render({
-        text: 'Hello world',
-    });
-}
+$$../sample/inner/howto1.js$$
 ```
 and get  
 
@@ -57,16 +53,7 @@ a simple example to clarify the usage of those basic parameters:
 
 `inner/howto2.js`
 ``` js
-window.onload = function () {
-    hokuto.render({
-        tag: 'ul',
-        children: [
-            { tag: 'li', text: 'one' },
-            { tag: 'li', text: 'two' },
-            { tag: 'li', text: 'three' },
-        ]
-    });
-}
+$$../sample/inner/howto2.js$$
 ```
 and get  
 
@@ -87,22 +74,11 @@ As mentioned the default target is `document.body`, what is not being mentioned 
 
 `inner/howto3.js`
 ``` js
-window.onload = function () {
-    hokuto.render({
-        tag: 'ul',
-        children: [
-            { tag: 'li', text: 'one' },
-            { tag: 'li', text: 'two' },
-            { tag: 'li', text: 'three' },
-        ]
-    }, true)
-}
+$$../sample/inner/howto3.js$$
 ```
 and get a clean body, also the script itself is wipedout  
 
 ![img](./img/3.png)
-
-
 
 and with that we know everything about `hokuto.render`.
 
@@ -156,5 +132,40 @@ this is a generic way to set an event listener, might be _onClick_, _onMouseover
 **`method_{name}`**:  
 this is a way to add a method to the node
 
+
+### what hokuto
+
+The `hokuto` object does offer some other methods other than `render`:  
+
+**`renderWithComponents`**  
+_hokuto_ allows to use components which are rendered based on a specific config file (lazyloaded) and can accept properties. The only thing we have to take care is to allow _hokuto_ to know where to retrieve the components setting a _componentsUrl_
+
+**`cleanup(target)`**    
+cleanup the content of _target_
+**`get(ref)`**    
+
+**`load`**    
+do u have another script that renders something else in the target? maybe you would need to do it with a proper routing, this function allows to route the app among all of the configured routes. An example will show how easy it is.
+
+**`getElement(ref)`**    
+wherever you call this funtion it will allow to retrieve one node passins its _ref_
+
+**`getElements`**    
+wherever you call this funtion it will the list of all nodes with a _ref_
+
+**`channel`**    
+this is exactly [channeljs](https://www.npmjs.com/package/@fedeghe/channeljs) function
+
+**`i18n`**    
+internationalization utility object
+
+**`history`**    
+histoy object 
+
+---
+---
+---
+
+## More examples
 
 

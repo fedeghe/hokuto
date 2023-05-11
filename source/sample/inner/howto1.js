@@ -1,5 +1,5 @@
-window.onload = function() {
+window.onload = function () {
     hokuto.render({
-        text : 'Hello world'
-    })
+        text: 'Hello world',
+    });
 }

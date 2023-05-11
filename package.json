@@ -5,7 +5,8 @@
     "license": "MIT",
     "scripts": {
         "start": "webpack serve --open --config source/webpack.dev.js",
-        "build": "webpack --config source/webpack.prod.js"
+        "build": "webpack --config source/webpack.prod.js",
+        "readme": "malta source/buildreadme.json"
     },
     "devDependencies": {
         "@babel/core": "^7.21.0",
@@ -26,6 +27,7 @@
         "jest-dom": "^4.0.0",
         "less": "^4.1.3",
         "less-loader": "^11.1.0",
+        "malta": "^4.1.36",
         "perf-monitor": "^0.6.0",
         "react-testing-library": "^8.0.1",
         "regenerator-runtime": "^0.13.11",
@@ -38,7 +40,6 @@
     },
     "dependencies": {
         "@fedeghe/channeljs": "^1.2.7",
-        "balle": "^1.0.45",
         "ridof": "^1.3.0",
         "searchhash": "^1.2.11"
     }
