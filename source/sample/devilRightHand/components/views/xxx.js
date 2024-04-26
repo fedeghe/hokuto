@@ -20,11 +20,7 @@
                 tag: 'a',
                 html: 'back',
                 className: "backButton",
-                onClick: function (){
-                    
-                    hokuto.load('home')
-                    // hokuto.history.push('/', {}, 'index')
-                }
+                onClick: () => hokuto.load('home')
             }],
             cb: function() {
                 this.lateWid('xyzxyz')
