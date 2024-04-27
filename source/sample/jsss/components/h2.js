@@ -24,7 +24,6 @@ var t = {
         var state = this.state,
             n = this.node,
             times = state.get();
-
         state.add();
         hokuto.channel.get('math').pub('mult', [1,2,3,4,5]);
         this.render();

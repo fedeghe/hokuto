@@ -45,78 +45,77 @@
                             tag: 'tr',
                             children: function() {
                                 var self = this
-                                return new Array(self.parentNode.data.cols).fill().map(
-                                    (_, j) => ({
-                                        tag: 'td',
-                                        style: {
-                                            minWidth: '20px',
-                                            width: '60px',
-                                            height: '20px',
-                                            textAlign: 'center',
-                                            fontSize: '18px',
-                                            userSelect: 'none',
-                                            cursor: 'pointer'
-                                        },
-                                        state: () => ({
-                                            tab1: self.getNode('tab1')
-                                        }),
-                                        html: `${i} - ${j}`,
-                                        // html: self.rootNode.rnd(),
-                                        onMouseover: function() {
-                                            this.setStyle({
-                                                backgroundColor: 'gray',
-                                            });
-                                        },
-                                        onMouseout: function() {
-                                            this.setStyle({
-                                                backgroundColor: 'black',
-                                                'outline': '1px dotted red'
-                                            });
-                                        },
-                                        onClick: function(e) {
+                                return Array.from({length: self.parentNode.data.cols}, (_, j) => ({
+                                    tag: 'td',
+                                    style: {
+                                        minWidth: '20px',
+                                        width: '60px',
+                                        height: '20px',
+                                        textAlign: 'center',
+                                        fontSize: '18px',
+                                        userSelect: 'none',
+                                        cursor: 'pointer'
+                                    },
+                                    state: () => ({
+                                        tab1: self.getNode('tab1')
+                                    }),
+                                    html: self.rootNode.rnd(), //`${i} - ${j}`,
+                                    // html: self.rootNode.rnd(),
+                                    onMouseover: function() {
+                                        this.setStyle({
+                                            backgroundColor: 'gray',
+                                        });
+                                    },
+                                    onMouseout: function() {
+                                        this.setStyle({
+                                            backgroundColor: 'black',
+                                            'outline': '1px dotted red'
+                                        });
+                                    },
+                                    onClick: function(e) {
+                                        // debugger
+                                        var table = this.state.tab1,
+                                            rootNode = this.rootNode,
+                                            newColor = rootNode.rndRGB();
+
+                                        rootNode.save(i, j, newColor);
+
+                                        console.log(rootNode.data)
+
+                                        this.setHtml(rootNode.rnd());
+                                        this.setStyle({
+                                            backgroundColor: rootNode.rndColor(),
+                                            color: newColor
+                                        });
+                                        table.setStyle({
+                                            backgroundColor: rootNode.rndColor()
+                                        });
+                                        this.killEvent(e);
+                                    },
+                                    onDblclick: () => {
+                                        console.log('2 clickzzz', this)
+                                            // this.render();
                                             // debugger
-                                            var table = this.state.tab1,
-                                                rootNode = this.rootNode,
-                                                newColor = rootNode.rndRGB();
+                                    },
+                                    cb: function() {
+                                        var self = this,
+                                            root = this.rootNode,
+                                            id = root.data.live ? requestAnimationFrame(beLive) : null;
 
-                                            rootNode.save(i, j, newColor);
-
-                                            console.log(rootNode.data)
-
-                                            this.setHtml(rootNode.rnd());
-                                            this.setStyle({
-                                                backgroundColor: rootNode.rndColor(),
-                                                color: newColor
+                                        function beLive() {
+                                            self.setHtml(self.rootNode.rnd());
+                                            self.setStyle({
+                                                backgroundColor: self.rootNode.rndColor(),
+                                                color: self.rootNode.rndRGB()
                                             });
-                                            table.setStyle({
-                                                backgroundColor: rootNode.rndColor()
-                                            });
-                                            this.killEvent(e);
-                                        },
-                                        onDblclick: () => {
-                                            console.log('2 clickzzz', this)
-                                                // this.render();
-                                                // debugger
-                                        },
-                                        cb: function() {
-                                            var self = this,
-                                                root = this.rootNode,
-                                                id = root.data.live ? requestAnimationFrame(beLive) : null;
-
-                                            function beLive() {
-                                                self.setHtml(self.rootNode.rnd());
-                                                self.setStyle({
-                                                    backgroundColor: self.rootNode.rndColor(),
-                                                    color: self.rootNode.rndRGB()
-                                                });
-                                                cancelAnimationFrame(id)
-                                                self.render();
-                                            }
-                                        
-                                            self.done();
+                                            cancelAnimationFrame(id)
+                                            self.render();
                                         }
-                                    })
-                                )
+                                    
+                                        self.done();
+                                    }
+                                }))
+                                
                             }
                         })
                     )
