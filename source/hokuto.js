@@ -68,9 +68,9 @@ window.hokuto = (function() {
             return [r, unode.value];
         },
         load = route => {
-            const {src, url, state, title, replace} = 
-                (typeof route === 'string')
-                ? hokuto.routes[route] : route
+            const rx = (typeof route === 'string')? hokuto.routes[route] : route;
+            if (!rx) throw 'No such route available';
+            const {src, url, state, title, replace} = rx;
             const script = document.createElement('script');
             script.onload = () => script.parentNode.removeChild(script);
             script.src = src;
