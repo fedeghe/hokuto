@@ -3,11 +3,9 @@ import { _U_ } from './core'
 const strMap = (o, fn) => {
         let ret = '',
             j;
-        for (j in o) {
-            if (o.hasOwnProperty(j)) {
+        for (j in o) 
+            if (o.hasOwnProperty(j)) 
                 ret += fn(o, j, ret);
-            }
-        }
         return ret;
     },
         
@@ -20,7 +18,7 @@ const strMap = (o, fn) => {
             && typeof o.nodeType === 'number'
             && typeof o.nodeName === 'string',
 
-    extract = (data, where) => {
+    extract = (data, where) => {                
         const g = where
             || ( typeof global !== 'undefined'
                 ? global
