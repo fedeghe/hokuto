@@ -68,7 +68,7 @@ window.hokuto = (function() {
             }
             n.rootNodeUnhandlersCollector.forEach(unhandler => unhandler());
             n.node.parentNode.removeChild(n.node);
-            n.node.parentNode.innerHTML = '';
+            // n.node.parentNode.innerHTML = '';
         },
         get = params => {
             const r = document.createElement('div');
