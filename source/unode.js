@@ -133,10 +133,14 @@ Unode.prototype.setStyle = function(style) {
 };
 
 Unode.prototype.setAttrs = function(attrs) {
+    // console.log(this.config.attrs);
+    var a = typeof this.config.attrs === 'function'
+        ? this.config.attrs.call(this)
+        : this.config.attrs;
     if (attrs) {
-        this.config.attrs = Object.assign({}, this.config.attrs, attrs)
+        a = Object.assign({}, a, attrs)
     }
-    this.config.attrs && DOM.setAttrs(this.node, this.config.attrs);
+    this.config.attrs && DOM.setAttrs(this.node, a);
 };
 
 Unode.prototype.setData = function(data) {

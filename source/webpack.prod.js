@@ -13,7 +13,12 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: '[name].js',
-        libraryTarget: "commonjs-module"
+        // libraryTarget: "commonjs-module"
+        // libraryTarget: "var",
+        library: {
+            name:"Hokuto",
+            type: 'var'
+        }
     },
     optimization: {
         minimize: true,

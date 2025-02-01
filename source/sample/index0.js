@@ -72,6 +72,12 @@
                 console.log('ul arguments', arguments)
                 this.done([].slice.call(arguments, 0))
             }
+        },{
+            tag:'input',
+            attrs:function () {
+                console.log(this);
+                return {type:'range'};
+            }
         }],
         cb: function() {
             console.log('root arguments', arguments)
