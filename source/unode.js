@@ -4,6 +4,7 @@ import DOM from './dom'
 import EVENTS from './events'
 
 function Unode(config, map) {
+    this.rootNodeUnhandlersCollector = [];
     this.config = config;
     this.map = map
     this.parent = config.target;
@@ -195,20 +196,31 @@ Unode.prototype.unhandle = function(el) {
 Unode.prototype.setEvents = function() {
     const self = this;
     let mat, ev;
+    self.unhandlers = {};
 
     for (let i in self.config) {
         mat = i.match(/^(on(ce)?)([A-Z]{1}[a-z]*)$/);
         if (mat) {
             ev = mat[3].toLowerCase();
             (function(eventName) {
+                var handler = e => self.config[eventName].call(self, e)
                 EVENTS[mat[1]](
                     self.node,
                     ev,
-                    e => self.config[eventName].call(self, e)
+                    handler
                 );
+                self.unhandlers[ev] = handler;
             })(i);
         }
     }
+    this.unhandleEvents = function () {
+        Object.entries(self.unhandlers).forEach(function (entry) {
+            console.log('unhandle');
+            EVENTS.off(self.node, entry[0], entry[1]);
+        });
+        return self;
+    };
+    this.rootNode.rootNodeUnhandlersCollector.push(this.unhandleEvents);
     return this;
 };
 

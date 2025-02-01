@@ -1,5 +1,8 @@
 
 %NAME%
 
-version %VERSION%
-%DATE%
+version: %VERSION%
+ author: %AUTHOR%
+   date: %DATE%
+
+made with love

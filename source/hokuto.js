@@ -50,16 +50,22 @@ window.hokuto = (function() {
             if (clear === true) {
                 target.innerHTML = '';
             }
-            return rootNode.render().then(() => {
+            // return rootNode.render().then(() => {
+            rootNode.render().then(() => {
                 if (!active) return rootNode
                 target.appendChild(fragment);
                 while (map.endFunctions.length) map.endFunctions.pop()();
             });
+            return rootNode;
         },
         renderWithComponents = (config, clean, name) =>
             Engy.solve(config, clean, name).then(r => render.apply(null, r)),
 
-        cleanup = (trg, msg) => render({ target: trg, children: [{ html: msg || '' }] }, true),
+        cleanup = (trg, msg) => render({ target: trg, html: msg || ''}, true),
+        clear = n => {
+            n.rootNodeUnhandlersCollector.forEach(unhandler => unhandler());
+            n.node.parentNode.innerHTML = '';
+        },
         get = params => {
             const r = document.createElement('div');
             let unode;
@@ -86,6 +92,7 @@ window.hokuto = (function() {
         render,
         renderWithComponents,
         cleanup,
+        clear,
         get,
         load,
         getElement,
