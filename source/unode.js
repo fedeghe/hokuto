@@ -30,6 +30,7 @@ function Unode(config, map) {
     this.lateWid = this.map.lateWid;
     this.getElements = this.map.getElements;
     this.getElement = this.map.getElement;
+    this.ender = null;
 
     this.resolve = function() {};
     this.reset = function() {};
@@ -184,7 +185,7 @@ Unode.prototype.checkEnd = function(e) {
     'end' in this.config &&
         typeof this.config.end === TYPES.F &&
         this.map.endFunctions.push(function() {
-            self.config.end.call(self);
+            self.ender = self.config.end.call(self);
         });
     return this;
 };

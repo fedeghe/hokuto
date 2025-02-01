@@ -63,7 +63,11 @@ window.hokuto = (function() {
 
         cleanup = (trg, msg) => render({ target: trg, html: msg || ''}, true),
         clear = n => {
+            if(typeof n.ender === 'function') {
+                n.ender.call(n);
+            }
             n.rootNodeUnhandlersCollector.forEach(unhandler => unhandler());
+            n.node.parentNode.removeChild(n.node);
             n.node.parentNode.innerHTML = '';
         },
         get = params => {
