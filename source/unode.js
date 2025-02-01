@@ -215,7 +215,6 @@ Unode.prototype.setEvents = function() {
     }
     this.unhandleEvents = function () {
         Object.entries(self.unhandlers).forEach(function (entry) {
-            console.log('unhandle');
             EVENTS.off(self.node, entry[0], entry[1]);
         });
         return self;
