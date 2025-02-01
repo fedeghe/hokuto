@@ -2,9 +2,9 @@
  * 
  * hokuto
  *
- * version: 0.0.11
- *  author: undefined
- *    date: Sat Feb 01 2025 19:33:35 GMT+0100 (Central European Standard Time)
+ * version: 0.0.12
+ *  author: Federico Ghedina <fedeghe@gmail.com>
+ *    date: Sat Feb 01 2025 19:36:01 GMT+0100 (Central European Standard Time)
  *
  * made with love
  */
