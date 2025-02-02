@@ -6,6 +6,7 @@ import EVENTS from './events'
 function Unode(config, map) {
     this.rootNodeUnhandlersCollector = [];
     this.config = config;
+    this.isRoot = !!config.isRoot;
     this.map = map
     this.parent = config.target;
     this.tag = config.tag || 'div'
@@ -171,13 +172,20 @@ Unode.prototype.killEvent = function(e) {
     EVENTS.kill(e);
 };
 
-Unode.prototype.checkInit = function(e) {
+Unode.prototype.checkInit = function() {
     var keepRunning = true;
     if ('init' in this.config && typeof this.config.init === TYPES.F) {
         keepRunning = this.config.init.call(this);
         !keepRunning && this.abort();
     }
     return this;
+};
+
+Unode.prototype.checkSkip = function() {
+    if ('skip' in this.config && typeof this.config.skip === TYPES.F) {
+        return this.config.skip.call(this);
+    }
+    return false;
 };
 
 Unode.prototype.checkEnd = function(e) {
@@ -231,9 +239,6 @@ Unode.prototype.setState = function(o) {
         }
     }
 };
-Unode.prototype.dox = function () {
-    alert('x')
-};
 Unode.prototype.done =
     Unode.prototype.solve = function() {
         var n = this.node
@@ -265,14 +270,19 @@ Unode.prototype.render = function() {
     this.rendered = false
     if (this.toSolve > 0) {
         this.children.forEach(function(child, i) {
-            child.render().then(function() {
-                self.node.appendChild(child.node);
-                if (self.toSolve === 0) {
-                    self.paramsFromChildren.length ?
-                        self.cb(self.paramsFromChildren) :
-                        self.cb()
-                }
-            });
+            if(child.checkSkip()){
+                self.solve();
+            } else {
+                child.render().then(function() {
+                    self.node.appendChild(child.node);
+                    if (self.toSolve === 0) {
+                        self.paramsFromChildren.length ?
+                            self.cb(self.paramsFromChildren) :
+                            self.cb()
+                    }
+                });
+            }
+
         })
     } else {
         this.rendered = true;

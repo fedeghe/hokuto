@@ -6,6 +6,7 @@ import i18n from './i18n'
 import { TYPES } from './core'
 import h from './history'
 import './loader'
+import io from './io'
 
 window.hokuto = (function() {
     const __renders = {},
@@ -14,11 +15,13 @@ window.hokuto = (function() {
 
             const target = config.target,
                 originalHTML = target.innerHTML,
+                originalText = target.innerText,
                 fragment = document.createDocumentFragment(),
                 map = {
                     abort: () => {
                         active = false;
                         target.innerHTML = originalHTML;
+                        target.inneText = originalText;
                         'onAbort' in config
                             &&
                             (typeof config.onAbort === TYPES.F) &&
@@ -38,6 +41,7 @@ window.hokuto = (function() {
                 rootNode = new Unode(
                     Object.assign({},
                         config, {
+                            isRoot: true,
                             target: fragment,
                         }
                     ),
@@ -103,7 +107,8 @@ window.hokuto = (function() {
         getElements,
         channel: channeljs,
         i18n,
-        history: h
+        history: h,
+        io,
     };
 })();
 
