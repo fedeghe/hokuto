@@ -9,7 +9,8 @@ import CONF from '../config'
 const components = {},
     preloadedComponents = {},
     // PARAMETERS_RX = /#PARAM{([^}|]*)?\|?([^}]*)}/;
-    PARAMETERS_RX = /{([^}|]*)?\|?([^}]*)}/;
+    PARAMETERS_RX = /\${([^}|]*)?\|?([^}]*)}/;
+    
 
 const cmp404 = componentName => JSON.stringify({
     tag: 'h2',

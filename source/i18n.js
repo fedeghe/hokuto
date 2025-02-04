@@ -5,7 +5,7 @@ import config from './config';
 let data = {};
 const RX_LANG = /i18n\(([^}|]*)?\|?([^}]*)\)/,
     i18n = {
-        lang: config.lang,
+        lang: config.LANG,
         check: lab => lab.match(RX_LANG),
         dynamicLoad: (lo, _label) => {
             for (_label in lo) {

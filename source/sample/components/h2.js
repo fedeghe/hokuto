@@ -9,7 +9,7 @@ var t = {
         }
     },
     data: {
-        html: '{html}',
+        html: '${html}',
     },
     style: {
         cursor: 'pointer'

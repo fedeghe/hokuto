@@ -95,6 +95,6 @@
         }
     };
     window.onload = function() {
-        hokuto.render(config, true, 'xxx');
+        hokuto.renderWithComponents(config, true, 'xxx');
     }
 })();
