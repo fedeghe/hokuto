@@ -70,9 +70,12 @@ window.hokuto = (function() {
             if(typeof n.ender === 'function') {
                 n.ender.call(n);
             }
-            n.rootNodeUnhandlersCollector.forEach(unhandler => unhandler());
-            n.node.parentNode.removeChild(n.node);
-            // n.node.parentNode.innerHTML = '';
+            n.rootNodeUnhandlersCollector?.forEach(unhandler => unhandler());
+            if(n.node){
+                n.node.parentNode.removeChild(n.node);
+            } else {
+                n.target.innerHTML = '';
+            }
         },
         get = params => {
             const r = document.createElement('div');

@@ -94,7 +94,20 @@
             console.log(this.report())
         }
     };
-    window.onload = function() {
-        hokuto.renderWithComponents(config, true, 'xxx');
+    var config2 = {
+        target: target,
+        component: 'h2',
+        params: {
+            html: '<i>hello</i>'
+        }
     }
-})();
+    window.onload = function() {
+        var t
+        hokuto.renderWithComponents(config2, true, 'xxx').then(r => {
+            console.log({r});
+            setTimeout(function (){
+                hokuto.clear(r[0]);
+            },3000)
+        });
+    }
+})();       

@@ -157,7 +157,10 @@ export default class Processor {
                     if (component.container) {
                         _mergeComponent(self.config, component.container, obj);
                     } else {
-                        self.config = obj;
+                        
+                        self.config = Object.assign({}, obj, self.config);
+                        delete self.config.component;
+                        delete self.config.params;
                     }
                     solve();
                 };
