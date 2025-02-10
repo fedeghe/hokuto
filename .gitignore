@@ -1,6 +1,7 @@
 
 /node_modules
 /sample
+/coverage
 .printVersion
 .buildNum.json
 .DS_Store
