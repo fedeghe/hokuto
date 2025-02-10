@@ -1,0 +1,8 @@
+{
+    "EXE": [
+        "rm -rf demo/components",
+        "mkdir -p demo/components"
+    ],
+    "source/demo/*.html": "demo  -plugins=malta-browser-refresh...malta-dev-srv[folder:\"demo\"] -options=placeholderMode:'func' -options=placeholderMode:'func',verbose:2,showPath:false -vars=source/vars.json",
+    "source/demo/components/*.js": "demo/components"
+}

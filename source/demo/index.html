@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test hokuto</title>
+    <style>*{font-family: Verdana, Geneva, Tahoma, sans-serif;}</style>
+    <script>
+        maltaF('../../dist/index.js')
+        </script>
+</head>
+<body>
+    <h1>title here</h1>
+    <div id="target">
+        ...loading
+    </div>
+    
+    <script>
+        (function () {
+            hokuto.i18n.load({
+                hello: 'ciao'
+            })
+            var target  = document.getElementById('target');
+            // var r = hokuto.render({
+            //     target,
+            //     tag: 'p',
+            //     html: 'hello there'
+            // });
+
+            // setTimeout(function(){
+            //     r.clear();
+            // },3000)
+
+            // setTimeout(function(){
+            //     hokuto.render({
+            //         target,
+            //         tag: 'strong',
+            //         html: 'hello there again'
+            //     });
+            // },6000)
+            hokuto.render({
+                target: target,
+                tag: 'ul',
+                initCheck: () => Promise.resolve(),
+                children: [{
+                    component: 'xxx',
+                    params:{
+                        name: 'Federico Ghedina'
+                    },
+                    html : 'cristiana'
+                },{
+                    component: 'xxx',
+                    html:'test',
+                    style:{
+                        color:'red'
+                    },
+                    data:{hello:'fede'},
+                    state: {name:'fedexxx'},
+                    attrs:{id:'stocazzo'},
+                    onClick:function(e) {
+                        // this.clear();
+                        
+                        // console.log(
+                        //     this.getById('hei').clear()
+                        // )
+                        console.log(this)
+                        this.setState({
+                            name: 'jeff'
+                        });
+                        this.unhandle('click');
+                        
+                        this.setHtml(this.state.name);
+                    },
+                    end: function (){
+                        var self = this,
+                            closeOnEscape = function (e) {
+                                // console.log(e.key)
+                                if(e.key === 'Escape') self.clear();
+                            };
+                            document.addEventListener("keydown", closeOnEscape);
+                            return function () {
+                                document.removeEventListener("keydown", closeOnEscape);
+                            };
+                    }
+                },{
+                    tag:  'li',
+                    children:[{
+                        tag:'p',
+                        html: 'test 1',
+                        kid: 'hei'
+                    },{
+                        tag: 'ul',
+                        children:[{
+                            tag:'li',
+                            html: 'one',
+                            initCheck: function(){
+                                // console.log(this);
+                                hokuto.dom.setStyle(this.rootKnot.node, {
+                                    backgroundColor:'blue'
+                                })
+                                
+
+                                return Promise.resolve();
+                            },
+                            // cb: function() {
+                            //     console.log(this);
+                            //     var self = this;
+                            //     return new Promise(res => {
+                            //         setTimeout(() => res(), 3000);
+                            //         setTimeout(() => self.clear(), 6000)
+                            //     })
+                            // },
+                        },{
+                            tag:'li',
+                            html: 'i18n(hello)',
+                            // html: 'cri',
+                            abort: function () {
+                                // console.log({abort: this})
+                                return Promise.resolve();
+                            }
+                        }]
+                    }]
+                },{
+                    tag:  'li',
+                    html: 'test 2',
+                }]
+            },true).then(r=> {
+                
+                console.log(r)
+                /*
+                setTimeout(function(){
+                    r.clear();
+                    // hokuto.getElement('xxx').clear();
+                    },3000)
+                    */
+            });
+        })();
+
+    </script>
+</body>
+
+</html>

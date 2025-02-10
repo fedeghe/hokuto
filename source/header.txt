@@ -1,8 +1,24 @@
+    *        *
+    
 
-%NAME%
 
-version: %VERSION%
- author: %AUTHOR%
-   date: %DATE%
+               *
+        *
+        
+        
+      *  
+    
 
-made with love
+    *
+
+
+
+      *
+
+
+
+maltaV('PACKAGE.name') v. maltaV('PACKAGE.version')
+
+with __SIZE__ of ❤️
+
+maltaV('PACKAGE.author')

@@ -1,27 +1,31 @@
-import { H } from './core'
-const handlers = [],
-    spread = (url, state, title) => {
-        document.title = title
-        return handlers.forEach(
-            handler=> handler(url, state, title)
-        );
+
+
+Hok.history = (function(){
+    var handlers = [],
+        spread = function(url, state, title) {
+            document.title = title;
+            return handlers.forEach(
+                function(handler){
+                    handler(url, state, title);
+                }
+            );
+        };
+    return {
+        push: function(url, state, title) {
+            Hok.H.pushState(state || {}, title || '', url);
+            spread(url, state, title);
+        },
+        registerHandler: function(f) {return handlers.push(f)},
+        replace: function(url, state, title) {
+            Hok.H.replaceState(state || {}, title || '', url);
+            spread(url, state, title);
+        },
+        back: function() {
+            Hok.H.back();
+        },
+        resetHandlers: function(){
+            handlers = [];
+        },
+        state: function() { return Hok.H.state; }
     };
-export default {
-    push: (url, state, title) => {
-        H.pushState(state || {}, title || '', url);
-        spread(url, state, title);
-    },
-    registerHandler: f => handlers.push(f),
-    replace: (url, state, title) => {
-        H.replaceState(state || {}, title || '', url);
-        spread(url, state, title);
-    },
-    back: () => {
-        H.back()
-    },
-    resetHandlers: () => {
-        handlers = [];
-    },
-    state: () => H.state 
-    //
-};
+})();

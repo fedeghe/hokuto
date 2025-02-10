@@ -1,87 +1,69 @@
-import {
-    TYPES
-} from './core'
-
-
-var noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
-
-function setStyle(node, styles) {
-    if (typeof styles === TYPES.U)
+Hok.dom.noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
+Hok.dom.setStyle = function(node, styles) {
+    if (typeof styles === Hok.TYPES.U)
         throw new Error('ERR: styles needed')
-    for (let tmp in styles) {
+    for (var tmp in styles) {
         if (tmp === 'float') {
             node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
         } else {
             node.style[tmp] = styles[tmp];
         }
     }
-}
+};
 
-function setAttrs(node, attrs) {
-    if (typeof attrs === TYPES.U)
-        throw new Error('ERR: attrs needed')
-    for (let tmp in attrs) {
-        if (noAttrs.indexOf(tmp) < 0)
+Hok.dom.setAttrs = function(node, attrs) {
+    if (typeof attrs === Hok.TYPES.U)
+        throw new Error('ERR: attrs needed');
+    for (var tmp in attrs) {
+        if (Hok.dom.noAttrs.indexOf(tmp) < 0)
             node.setAttribute(tmp, attrs[tmp]);
     }
-}
+};
 
-function unsetAttrs(node, attrs) {
-    if (typeof attrs === TYPES.U)
-        throw new Error('ERR: attrs needed')
-    for (let tmp in attrs) {
-        noAttrs.indexOf(tmp) < 0
+Hok.dom.unsetAttrs = function(node, attrs) {
+    if (typeof attrs === Hok.TYPES.U)
+        throw new Error('ERR: attrs needed');
+    for (var tmp in attrs) {
+        Hok.dom.noAttrs.indexOf(tmp) < 0
         && node.removeAttribute(tmp, attrs[tmp]);
     }
-}
+};
 
-function setData(node, data) {
-    if (typeof data === TYPES.U)
-        throw new Error('ERR: data needed')
-    for (let tmp in data) {
+Hok.dom.setData = function(node, data) {
+    if (typeof data === Hok.TYPES.U)
+        throw new Error('ERR: data needed');
+    for (var tmp in data) {
         node.dataset[tmp] = data[tmp];
     }
-}
+};
 
-function setClass(node, data) {
+Hok.dom.setClass = function(node, data) {
     data.split(',').forEach(function (cls){
-        node.classList.add(cls)
+        node.classList.add(cls);
     });
-}
+};
 
-function unsetData(node, data) {
-    if (typeof data === TYPES.U)
-        throw new Error('ERR: data needed')
-    for (let tmp in data) {
-        delete node.dataset[tmp]
+Hok.dom.unsetData = function(node, data) {
+    if (typeof data === Hok.TYPES.U)
+        throw new Error('ERR: data needed');
+    for (var tmp in data) {
+        delete node.dataset[tmp];
     }
-}
+};
 
-function remove(el) {
+Hok.dom.remove = function(el) {
     return el.parentNode && el.parentNode.removeChild(el);
-}
+};
 
 //TODO
-function filterHtml(html) {
+Hok.dom.filterHtml = function(html) {
     return '' + html;
-}
+};
 
-function setText(node, text) {
+Hok.dom.setText = function(node, text) {
     node.appendChild(document.createTextNode(text));
-}
+};
 
-function setHtml(node, html) {
-    node.innerHTML = filterHtml(html);
-}
-
-export default {
-    remove,
-    setClass,
-    setText,
-    setHtml,
-    setStyle,
-    setAttrs,
-    unsetAttrs,
-    setData,
-    unsetData
+Hok.dom.setHtml = function(node, html) {
+    node.innerHTML = Hok.dom.filterHtml(html);
 };

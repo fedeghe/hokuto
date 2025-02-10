@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test hokuto</title>
+    <style>*{font-family: Verdana, Geneva, Tahoma, sans-serif;}</style>
+    <script>
+        maltaF('../../dist/index.js')
+        </script>
+</head>
+<body>
+    <h1>title here</h1>
+    <div id="target">
+        ...loading
+    </div>
+    
+    <script>
+        (function () {
+            hokuto.i18n.load({
+                hello: 'ciao'
+            })
+            
+            hokuto.render({
+                target: document.getElementById('target'),
+                children:[{
+                    tag:'p',
+                    html:'test'
+                }]
+            }).then((r, s)=>{
+                console.log({r})
+            });
+        })();
+
+    </script>
+</body>
+
+</html>
