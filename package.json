@@ -12,13 +12,13 @@
         "dev": "malta source/buildev.json",
         "test": "jest --coverage --verbose $PWD/tests",
         "watch": "jest --watch --coverage $PWD/tests",
-        "cover": "jest --coverage $PWD/tests  --coverageReporters=text",
-        "coveralls": "jest --coverage $PWD/tests --coverageReporters=text && cat ./test/coverage/lcov.info | coveralls"
+        "cover": "jest --coverage $PWD/tests",
+        "coveralls": "jest --coverage $PWD/tests --coverage && cat ./coverage/lcov.info | coveralls"
     },
     "jest": {
         "testEnvironment": "jest-environment-jsdom",
         "collectCoverage": true,
-        "coverageReporters": ["json", "html"]
+        "coverageReporters": ["lcov", "json", "html"]
     },
     "devDependencies": {
         "coveralls": "^3.1.1",
