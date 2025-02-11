@@ -72,15 +72,15 @@ Knot.prototype.initialize = function(){
     this.map.add(this.config[Knot.identifier], this);
 };
 
-Knot.prototype.setById = function() {
+Knot.prototype.setByRef = function() {
     if(Knot.byIdIdentifier in this.config) {
-        var kid = this.config[Knot.byIdIdentifier]
-        this.nodes[kid] = this;
+        var ref = this.config[Knot.byIdIdentifier]
+        this.nodes[ref] = this;
     }
 };
-Knot.prototype.getById = function(kid) {
-    return kid in this.nodes
-        ? this.nodes[kid]
+Knot.prototype.getByRef = function(ref) {
+    return ref in this.nodes
+        ? this.nodes[ref]
         : null
 };
 Knot.prototype.setRef = function(ref, ctx) {
@@ -292,4 +292,4 @@ Knot.prototype.report = function() {
 
 Knot.isknot = function(n){return n instanceof Knot};
 Knot.identifier = 'id';
-Knot.byIdIdentifier = 'kid';
+Knot.byIdIdentifier = 'ref';
