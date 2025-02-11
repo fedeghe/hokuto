@@ -235,7 +235,7 @@ Unode.prototype.setEvents = function() {
 Unode.prototype.setState = function(o) {
     for (let i in o) {
         if (o.hasOwnProperty(i)) {
-            this.state[i] = o;
+            this.state[i] = o[i];
         }
     }
 };
