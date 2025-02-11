@@ -1,5 +1,5 @@
 var x = {
-    tag:'li',
+    tag:'p',
     children:[{
         tag: 'strong',
         html: '${name}'

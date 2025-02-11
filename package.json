@@ -10,6 +10,7 @@
     },
     "scripts": {
         "dev": "malta source/buildev.json",
+        "dist": "malta source/build.json",
         "test": "jest --coverage --verbose $PWD/tests",
         "watch": "jest --watch --coverage $PWD/tests",
         "cover": "jest --coverage $PWD/tests",

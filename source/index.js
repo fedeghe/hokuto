@@ -23,10 +23,9 @@ var hokuto = (function (_) {
 
     var __renders = {};
     var __nodes = {};
-    function render(cnf, clear, name) {      
-    
+    function render(cnf, clear, name) {
         return Hok.solve(cnf).then(function (config, stats){
-            console.log({stats})
+            
             config.endFunctions = [];
             config.saveKnotRef = function (id, knot) {
                 __nodes[id] = knot;
@@ -38,7 +37,7 @@ var hokuto = (function (_) {
                 }
                 return n;
             }).catch(function (r){
-                console.log({r:r});
+                console.log({r : r});
             });
             // .finally(function () {
             //     console.log(config.endFunctions);
@@ -68,8 +67,8 @@ var hokuto = (function (_) {
                 ? __nodes[id]
                 :null
         },
-        getElement : function(n){return n in __renders ? __renders[n] : false},
-        getElements : function() {return  __renders},
+        getElement: function(n){return n in __renders ? __renders[n] : false},
+        getElements: function() {return  __renders},
     };
 })(window);
 (typeof exports === 'object') && (module.exports = hokuto);
