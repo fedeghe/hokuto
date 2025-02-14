@@ -97,6 +97,21 @@ Hok.events.eventTarget = function(e) {
     return targetElement;
 };
 
+Hok.events.noEvents = function (el, fn, t) {
+    t = t || 3000;
+    fn = fn || function(){};
+    var to;
+    function inner (e) {
+        to && window.clearTimeout(to);
+        to = window.setTimeout(function () {
+            fn(e);
+        }, t);
+    }
+    Hok.events.on(el, 'mousemove', inner);
+    Hok.events.on(el, 'click', inner);
+    Hok.events.on(el, 'touchstart', inner);
+};
+
 Hok.events.ready = (function() {
     var comp = 'complete',
         readyStateCheckInterval = setInterval(function() {

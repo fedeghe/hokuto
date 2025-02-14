@@ -1,11 +1,13 @@
 var resolutive = function () {
     return Promise.resolve();
 };
+var isDefined = function (x){return typeof x !== Hok.TYPES.U};
+var isFunction = function (f){return typeof f === Hok.TYPES.F};
 
 function Knot(config, clearTarget) {
     this.config = config;
     this.clearTarget = clearTarget;
-    this.rendered = false;
+    this.rendered = !!config.rendered;
     this.frag = document.createDocumentFragment();
     this.target = this.config.target || document.body;
     this.children = this.config.children || [];
@@ -37,7 +39,7 @@ Knot.prototype.prepareState = function() {
     const statePassed = 'state' in this.config,
         state = statePassed ? this.config.state : {};
 
-    this.state = typeof state === Hok.TYPES.F ?
+    this.state = isFunction(state) ?
         state.call(this) :
         state;
 };
@@ -65,11 +67,11 @@ Knot.prototype.lateKid = function(id) {
 };
 
 Knot.prototype.initialize = function(){
-    this.rendered = false;
-    this.setCall('Ref,Events,Html,Text,Style,Attrs,Data,Classname,End,ById');
-    typeof this.config[Knot.identifier] !== Hok.TYPES.U &&
-        typeof this.config.map.elements[this.config[Knot.identifier]] === Hok.TYPES.U &&
-    this.map.add(this.config[Knot.identifier], this);
+    this.setCall('Ref,Events,Html,Text,Style,Attrs,Data,Classname,End,ByRef,Methods');
+    if(
+        isDefined(this.config[Knot.identifier]) &&
+        !isDefined(this.config.nodes[this.config[Knot.identifier]])
+    ) this.nodes[this.config[Knot.identifier]] = this;
 };
 
 Knot.prototype.setByRef = function() {
@@ -87,10 +89,10 @@ Knot.prototype.setRef = function(ref, ctx) {
     // allow the node to set a ref on itself
     // or to another node it can reference
     if (ref) {
-        (ctx || this).map[ref] = ctx || this
+        (ctx || this).nodes[ref] = ctx || this
             // or incase is in the config, just set it
-    } else if (typeof this.config.ref !== Hok.TYPES.U) {
-        this.map.add(this.config.ref, this)
+    } else if (isDefined(this.config.ref)) {
+        this.nodes[this.config.ref] = this;
     }
 };
 
@@ -106,7 +108,7 @@ Knot.prototype.setStyle = function(style) {
 };
 
 Knot.prototype.setAttrs = function(attrs) {
-    var a = typeof this.config.attrs === 'function'
+    var a = isFunction(this.config.attrs)
         ? this.config.attrs.call(this)
         : this.config.attrs;
     if (attrs) {
@@ -126,15 +128,14 @@ Knot.prototype.setData = function(data) {
 };
 
 Knot.prototype.setText = function(text) {
-    if (typeof text !== Hok.TYPES.U) this.config.text = text;
-    typeof this.config.text !== Hok.TYPES.U
+    if (isDefined(text)) this.config.text = text;
+    isDefined(this.config.text)
         && Hok.dom.setText(this.node, this.config.text);
 };
 
 Knot.prototype.setHtml = function(html) {
-    if (typeof html !== Hok.TYPES.U) this.config.html = html;
-    typeof this.config.html !== Hok.TYPES.U
-        && Hok.dom.setHtml(this.node, this.config.html);
+    if (isDefined(html)) this.config.html = html;
+    isDefined(this.config.html) && Hok.dom.setHtml(this.node, this.config.html);
 };
 
 Knot.prototype.setMethods = function() {
@@ -205,7 +206,7 @@ Knot.prototype.initTag = function(){
 
 Knot.prototype.setEnd = function(e) {
     const self = this;
-    if(!this.rendered && 'end' in this.config && typeof this.config.end === Hok.TYPES.F){
+    if(!this.rendered && 'end' in this.config && isFunction(this.config.end)){
         this.ender = self.config.end.call(self);
     }
     return this;
@@ -225,38 +226,46 @@ Knot.prototype.setEnd = function(e) {
 
 Knot.prototype.render = function(){
     var self = this;
-
+    if(this.rendered){
+        this.initialize();
+    }
     // this.unhandleEvents();
-    this.frag.appendChild(this.node);
+    
+    !this.rendered && this.frag.appendChild(this.node);
+    
     /**
      * this node
      * - as parent
      *  might have a debt, thus needs to wait for its children to render an solve
      */
+    
     if(!this.debt){
         if(this.parentKnot){
             this.parentKnot.solve();
         }
         this.initCheck.call(this).then(function () {
-            if(self.clearTarget){
+            if(self.clearTarget && !self.rendered){
                 self.target.innerHTML = '';
             }
             self.cb.call(self).then(function() {
                 if(!self.aborted){
-                    self.target.appendChild(self.frag);
+                    if (!self.rendered) {
+                        self.target.appendChild(self.frag);
+                        self.rendered = true;
+                    }
                 }
             }).catch(function(){
                 console.log('cant render: ', self);
             });
         }).catch(function(){
-            //free mem
+            
             self.frag.removeChild(self.node);
         })
         
     } else {
         for(var i = 0, l = this.children.length; i < l; i++){
             var c = Object.assign(
-                {},
+                {rendered: self.rendered},
                 self.children[i],
                 {
                     target: self.node,
@@ -267,7 +276,7 @@ Knot.prototype.render = function(){
             new Knot(c).render();
         }
     }
-    this.rendered = true;
+    
     return Promise.resolve(this);
 };
 Knot.prototype.clear = function(){

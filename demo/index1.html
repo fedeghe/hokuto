@@ -1342,15 +1342,28 @@
     
     <script>
         (function () {
-            hokuto.i18n.load({
-                hello: 'ciao'
-            })
             
             hokuto.render({
                 target: document.getElementById('target'),
                 children:[{
-                    tag:'p',
-                    html:'test'
+                    tag:'ul',
+                    children:[{
+                        ref:'one',
+                        state:{n:1},
+                        tag:'li',
+                        html: 1
+                    },{
+                        tag:'li',
+                        children:[{
+                            tag:'button',
+                            text:'add',
+                            onClick:function(){
+                                var n = this.getByRef('one');
+                                n.config.html++;
+                                n.render();
+                            }
+                        }]
+                    }]
                 }]
             }).then((r, s)=>{
                 console.log({r})

@@ -25,7 +25,9 @@ var hokuto = (function (_) {
     var __nodes = {};
     function render(cnf, clear, name) {
         return Hok.solve(cnf).then(function (config, stats){
-            
+            if(!('target' in config)){
+                config.target = document.currentScript.parentNode;
+            }
             config.endFunctions = [];
             config.saveKnotRef = function (id, knot) {
                 __nodes[id] = knot;
@@ -60,6 +62,7 @@ var hokuto = (function (_) {
         io: Hok.io,
         i18n: Hok.i18n,
         dom: Hok.dom,
+        events: Hok.events,
         render: render,
         get: get,
         getKnotById: function(id){
