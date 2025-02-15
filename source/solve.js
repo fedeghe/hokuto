@@ -203,7 +203,7 @@ Hok.solve = (function() {
                             } else {    
                                 self.config = Object.assign({}, obj, self.config);
                             }
-                            // self.content = Object.assign({}, obj, self.content);
+                            self.content = Object.assign({}, obj, self.content);
                             delete self.content.component;
                             delete self.content.params;
                         }
