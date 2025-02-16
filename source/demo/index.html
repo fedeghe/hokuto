@@ -42,7 +42,34 @@
                 target: target,
                 tag: 'ul',
                 initCheck: () => Promise.resolve(),
-                children: [{
+                state: { n: 1 },
+                cb: function() {
+                    var self = this;
+                    self.config.state.n  = self.config.state.n + 1;
+                    // console.log(self.state);
+                    setTimeout(function(){
+                        // debugger
+                        // console.log('whaaat')
+                        // console.log(self)
+                        
+                        self.render();
+                    },1e3);
+                    return Promise.resolve();
+                },
+                children: [
+                    {ref: 'val',html : 50},
+                    {
+                        tag: 'input',
+                        attrs:{type:'range',step:5},
+                        onInput: function (e) {
+                            var r = this.getByRef('val');
+                            r.node.value = e.target.value;
+                            r.config.html = e.target.value;
+                            
+                            r.render();
+                        }
+                    },
+                    /*{
                     component: 'xxx',
                     params:{
                         name: 'Federico Ghedina K'
@@ -63,10 +90,7 @@
                         // console.log(
                             // this.getByRef('hei').clear()
                         // )
-                        console.log(this)
-                        this.setState({
-                            name: 'jeff'
-                        });
+                        this.state.name = 'jeff';
                         this.unhandle('click');
                         
                         this.setHtml(this.state.name);
@@ -82,12 +106,28 @@
                                 document.removeEventListener("keydown", closeOnEscape);
                             };
                     }
+                },*/{
+                    tag:'li',
+                    html:'0',
+                    cb: function (){
+                        // console.log('child 1')
+                        this.node.innerHTML = this.parentKnot.state.n;
+                        return Promise.resolve();
+                    }
+                },{
+                    tag:'li',
+                    html:'1',
+                    cb: function (){
+                        // console.log('child 2')
+                        this.node.innerHTML = this.parentKnot.state.n * 2;
+                        return Promise.resolve();
+                    }
                 },{
                     tag:  'li',
                     children:[{
                         tag:'p',
                         html: 'test 1',
-                        ref: 'hei'
+                        ref: 'hei',
                     },{
                         tag: 'ul',
                         children:[{
@@ -126,13 +166,13 @@
                 }]
             },true).then(r=> {
                 
-                console.log(r)
-                /*
+                console.log({r})
+
+                
                 setTimeout(function(){
                     r.clear();
-                    // hokuto.getElement('xxx').clear();
-                    },3000)
-                    */
+                },3000)
+                    
             });
         })();
 

@@ -29,9 +29,9 @@ var hokuto = (function (_) {
                 config.target = document.currentScript.parentNode;
             }
             config.endFunctions = [];
-            config.saveKnotRef = function (id, knot) {
-                __nodes[id] = knot;
-            };
+            // config.saveKnotRef = function (id, knot) {
+            //     __nodes[id] = knot;
+            // };
             config.nodes = __nodes;
             return new Knot(config, clear).render().then(function (n) {
                 if (name){

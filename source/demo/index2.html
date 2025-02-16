@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maltaV('PACKAGE.name') maltaV('tit')</title>
+    <style>*{font-family: Verdana, Geneva, Tahoma, sans-serif;}</style>
+    <script>
+        maltaF('../../dist/index.js')
+        </script>
+</head>
+<body>
+    <h1>title here</h1>
+    <div id="target">
+        <script>
+            (function () {
+                
+                hokuto.render({
+                    target: document.getElementById('target'),
+                    children:[{
+                        tag:'ul',
+                        children:[{
+                            tag:'li',
+                            children:[{
+                                tag:'ul',
+                                children:[{
+                                    tag:'li',
+                                    html:'1.1'
+
+                                },{
+                                    tag:'li',
+                                    html:'1.2'
+                                }]
+                            }]
+                        },{
+                            tag:'li',
+                            html :'test'
+                        },{
+                            tag:'li',
+                            children:[{
+                                tag:'ul',
+                                children:[{
+                                    tag:'li',
+                                    html:'2.1'
+
+                                },{
+                                    tag:'li',
+                                    html:'2.2'
+                                }]
+                            }]
+                        }]
+                    }]
+                }).then((r, s)=>{
+                    console.log({r})
+                });
+            })();
+    
+        </script>
+    </div>
+</body>
+
+</html>

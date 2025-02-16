@@ -11,6 +11,8 @@ function Knot(config, clearTarget) {
     this.frag = document.createDocumentFragment();
     this.target = this.config.target || document.body;
     this.children = this.config.children || [];
+    this.childrenKnots = [];
+
     this.debt = ~~(this.children.length);
     this.solved = this.debt === 0;
     this.cb = this.config.cb || resolutive;
@@ -31,17 +33,58 @@ function Knot(config, clearTarget) {
     });
 
     this.initTag();
-    this.prepareState();
     this.initialize();
 }
+Knot.prototype.initTag = function(){
+    this.tag = this.config.tag || 'div';
+    this.node = this.config.ns ?
+        document.createElementNS(this.config.ns, this.tag) :
+        document.createElement(this.tag);
+};
+Knot.prototype.initialize = function(){
+    this.setCall('Ref,Data,State,Events,Html,Text,Style,Attrs,Classname,End,ByRef,Methods');
+    if(
+        isDefined(this.config[Knot.identifier]) &&
+        !isDefined(this.config.nodes[this.config[Knot.identifier]])
+    ) this.nodes[this.config[Knot.identifier]] = this;
+};
+Knot.prototype.initRerender = function(){
+    this.setCall('Ref,Data,State,Html,Text,Style,Attrs,Classname,End,ByRef,Methods');
+    if(
+        isDefined(this.config[Knot.identifier]) &&
+        !isDefined(this.config.nodes[this.config[Knot.identifier]])
+    ) this.nodes[this.config[Knot.identifier]] = this;
+    this.cb && this.cb.call(this);
 
-Knot.prototype.prepareState = function() {
-    const statePassed = 'state' in this.config,
-        state = statePassed ? this.config.state : {};
+    this.childrenKnots.forEach(function (childrenKnot) {
+        childrenKnot.initRerender();
+    }) 
+};
 
-    this.state = isFunction(state) ?
-        state.call(this) :
-        state;
+/**
+ * SETTERS 
+ */
+
+/**
+ * 
+ * @param {*} state 
+ */
+Knot.prototype.setState = function(state) {
+    if (isDefined(state)){
+        for (var i in o) {
+            if (o.hasOwnProperty(i)) {
+                this.state[i] = o[i];
+            }
+        }
+    } else {
+        var statePassed = 'state' in this.config,
+            state = statePassed ? this.config.state : {};
+
+        this.state = isFunction(state) ?
+            state.call(this) :
+            state;
+    }
+    return this
 };
 Knot.prototype.setState = function(o) {
     for (var i in o) {
@@ -66,13 +109,7 @@ Knot.prototype.lateKid = function(id) {
     }
 };
 
-Knot.prototype.initialize = function(){
-    this.setCall('Ref,Events,Html,Text,Style,Attrs,Data,Classname,End,ByRef,Methods');
-    if(
-        isDefined(this.config[Knot.identifier]) &&
-        !isDefined(this.config.nodes[this.config[Knot.identifier]])
-    ) this.nodes[this.config[Knot.identifier]] = this;
-};
+
 
 Knot.prototype.setByRef = function() {
     if(Knot.byIdIdentifier in this.config) {
@@ -135,7 +172,14 @@ Knot.prototype.setText = function(text) {
 
 Knot.prototype.setHtml = function(html) {
     if (isDefined(html)) this.config.html = html;
-    isDefined(this.config.html) && Hok.dom.setHtml(this.node, this.config.html);
+    if(isDefined(this.config.html)) {
+        
+        if(isFunction(this.config.html)){
+            Hok.dom.setHtml(this.node, this.config.html.call(this));
+        } else {
+            Hok.dom.setHtml(this.node, this.config.html);
+        }
+    }
 };
 
 Knot.prototype.setMethods = function() {
@@ -146,7 +190,7 @@ Knot.prototype.setMethods = function() {
         tmp = k.match(/^method_(\w*)$/i);
         if (tmp) {
             if (!(tmp[1] in self)) {
-                self[tmp[1]] = self.config[tmp[0]].bind(self);
+                self['_' + tmp[1]] = self.config[tmp[0]].bind(self);
             } else {
                 console.warn('[WARNING] : method \'' + tmp[0] + '\' cant be added, would override existing element.')
             }
@@ -196,14 +240,6 @@ Knot.prototype.unhandle = function(eventType){
     }, {});
 };
 
-Knot.prototype.initTag = function(){
-    this.tag = this.config.tag || 'div';
-    this.node = this.config.ns ?
-        document.createElementNS(this.config.ns, this.tag) :
-        document.createElement(this.tag);
-    
-};
-
 Knot.prototype.setEnd = function(e) {
     const self = this;
     if(!this.rendered && 'end' in this.config && isFunction(this.config.end)){
@@ -212,73 +248,55 @@ Knot.prototype.setEnd = function(e) {
     return this;
 };
 
-
-
-
-
-
-// if html or text is used then children will be ignored
-// Knot.prototype.initContent = function(){
-//     if (this.config.html) {
-//         this.node.innerHTML = this.config.html;
-//     }
-// };
-
 Knot.prototype.render = function(){
     var self = this;
-    if(this.rendered){
-        this.initialize();
-    }
-    // this.unhandleEvents();
-    
-    !this.rendered && this.frag.appendChild(this.node);
-    
-    /**
-     * this node
-     * - as parent
-     *  might have a debt, thus needs to wait for its children to render an solve
-     */
-    
-    if(!this.debt){
-        if(this.parentKnot){
-            this.parentKnot.solve();
-        }
-        this.initCheck.call(this).then(function () {
-            if(self.clearTarget && !self.rendered){
-                self.target.innerHTML = '';
-            }
-            self.cb.call(self).then(function() {
-                if(!self.aborted){
-                    if (!self.rendered) {
-                        self.target.appendChild(self.frag);
+    if (this.rendered) {
+        this.initRerender();
+    } else {
+        this.frag.appendChild(this.node);
+        if (this.debt) {
+            return this.children.reduce(function (p, children) {
+                var c = Object.assign(
+                        {rendered: self.rendered},
+                        children,
+                        {
+                            target: self.node,
+                            parentKnot: self,
+                            rootKnot: self.rootKnot,
+                        }
+                    ),
+                    newChild = new Knot(c);
+                self.childrenKnots.push(newChild);
+                return p.then(function () { return newChild.render();});
+            }, Promise.resolve()).then(function(){return self;});
+        } else {
+            return this.initCheck.call(this).then(function () {
+                if(self.clearTarget && !self.rendered){
+                    self.target.innerHTML = '';
+                }
+                self.cb.call(self).then(function() {
+                    if(!self.aborted){
+                        if(!self.rendered) self.target.appendChild(self.frag);
                         self.rendered = true;
                     }
+                    return self
+                }).catch(function(){
+                    console.log('cant render: ', self);
+                });
+            }).then(function(){
+                if(self.parentKnot){
+                    self.parentKnot.solve();
                 }
+                return self;
             }).catch(function(){
-                console.log('cant render: ', self);
-            });
-        }).catch(function(){
-            
-            self.frag.removeChild(self.node);
-        })
-        
-    } else {
-        for(var i = 0, l = this.children.length; i < l; i++){
-            var c = Object.assign(
-                {rendered: self.rendered},
-                self.children[i],
-                {
-                    target: self.node,
-                    parentKnot: self,
-                    rootKnot: self.rootKnot,
-                }
-            );
-            new Knot(c).render();
+                self.frag.removeChild(self.node);
+            })
         }
     }
     
     return Promise.resolve(this);
 };
+
 Knot.prototype.clear = function(){
     if(this.ender) this.ender();
     this.target.removeChild(this.node);
