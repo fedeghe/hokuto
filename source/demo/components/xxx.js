@@ -1,7 +1,9 @@
-var x = {
-    tag:'p',
-    children:[{
-        tag: 'strong',
-        html: '${name}'
-    }]
-};
+function x(o){
+    return {
+        tag:'p',
+        children:[{
+            tag: 'strong',
+            html: o.name
+        }]
+    };
+}

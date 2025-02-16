@@ -169,11 +169,8 @@ Hok.solve = (function() {
                             if (!cached) {
                                 components[componentName] = _clone(cntORobj);
                             }
-                            cntORobj = cntORobj.replace(/^[^{]*/, '')
-                                // .replace(/;?\n?$/, '')
-                                .replace(/(;?([\n\s]*)?)$/, '');
-                            // obj = eval('(' + cntORobj + ')');
-                            obj = eval('(' + cntORobj + ')');
+                            var evaluator = eval('(function (){return '+cntORobj+';})()');
+                            obj = evaluator(params);
                         }
                         // before merging the object check for the presence of parameters
                         if (params) {

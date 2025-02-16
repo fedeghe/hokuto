@@ -32,7 +32,7 @@
         
         hokuto v. 0.1.0
         
-        with ~46.43KB of ❤️
+        with ~46.22KB of ❤️
         
         Federico Ghedina <fedeghe@gmail.com>
         
@@ -906,11 +906,8 @@
                                         if (!cached) {
                                             components[componentName] = _clone(cntORobj);
                                         }
-                                        cntORobj = cntORobj.replace(/^[^{]*/, '')
-                                            // .replace(/;?\n?$/, '')
-                                            .replace(/(;?([\n\s]*)?)$/, '');
-                                        // obj = eval('(' + cntORobj + ')');
-                                        obj = eval('(' + cntORobj + ')');
+                                        var evaluator = eval('(function (){return '+cntORobj+';})()');
+                                        obj = evaluator(params);
                                     }
                                     // before merging the object check for the presence of parameters
                                     if (params) {
@@ -1243,8 +1240,6 @@
                             self.childrenKnots.push(newChild);
                             return p.then(function () { return newChild.render();});
                         }, Promise.resolve()).then(function(){return self;});
-            
-                                
                     } else {
                         return this.initCheck.call(this).then(function () {
                             if(self.clearTarget && !self.rendered){
@@ -1514,9 +1509,9 @@
                 console.log({r})
 
                 
-                setTimeout(function(){
-                    r.clear();
-                },3000)
+                // setTimeout(function(){
+                //     r.clear();
+                // },3000)
                     
             });
         })();

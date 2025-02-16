@@ -21,7 +21,7 @@
 
 hokuto v. 0.1.0
 
-with ~21.26KB of ❤️
+with ~21.25KB of ❤️
 
 Federico Ghedina <fedeghe@gmail.com>
 
@@ -108,10 +108,9 @@ var self=this,langFunc=Hok.i18n.parse,elementsN=0,start=+new Date,end,xhrTot=0,r
 var component=searchHash.forKey(self.content,"component",{limit:1}),componentName,cached,preLoaded,xhrStart=0,xhrEnd=0;component.length?(component=component[0],
 componentName=self.getFileName(component.value),component.value in requested?requested[component.value]++:(requested[component.value]=1,elementsN++),cached=componentName in components,
 preLoaded=componentName in preloadedComponents,cback=function(cntORobj){xhrEnd=+new Date,xhrTot+=xhrEnd-xhrStart
-;var params=Hok.ns.check(component.container+"/params",self.content),obj,usedParams,foundParam,foundParamValue,foundParamValueReplaced,i,l
-;if(preLoaded?obj=_clone(cntORobj):(cached||(components[componentName]=_clone(cntORobj)),cntORobj=cntORobj.replace(/^[^{]*/,"").replace(/(;?([\n\s]*)?)$/,""),obj=eval("("+cntORobj+")")),
-params&&(usedParams=searchHash.forValue(obj,PARAMETERS_RX),l=usedParams.length))for(i=0;i<l;i++)foundParam=Hok.ns.check(usedParams[i].regexp[1],params),
-foundParamValue=typeof foundParam!==Hok._U_?foundParam:usedParams[i].regexp[2]||"",
+;var params=Hok.ns.check(component.container+"/params",self.content),obj,usedParams,foundParam,foundParamValue,foundParamValueReplaced,i,l;if(preLoaded)obj=_clone(cntORobj);else{
+cached||(components[componentName]=_clone(cntORobj));var evaluator=eval("(function (){return "+cntORobj+";})()");obj=evaluator(params)}if(params&&(usedParams=searchHash.forValue(obj,PARAMETERS_RX),
+l=usedParams.length))for(i=0;i<l;i++)foundParam=Hok.ns.check(usedParams[i].regexp[1],params),foundParamValue=typeof foundParam!==Hok._U_?foundParam:usedParams[i].regexp[2]||"",
 (typeof foundParamValue).match(/string/i)&&(foundParamValueReplaced=Hok.ns.check(usedParams[i].path,obj).replace(usedParams[i].regexp[0],foundParamValue)),
 _overwrite(obj,usedParams[i].path,foundParamValueReplaced||foundParamValue)
 ;component.container?_mergeComponent(self.content,component.container,obj):(obj.protected?self.config=Object.assign({},self.config,obj):self.config=Object.assign({},obj,self.config),
