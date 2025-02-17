@@ -1,9 +1,9 @@
-(function(){
+function x(o){
     return {
         tag:'p',
         children:[{
             tag: 'strong',
-            html: '${name}'
+            html: o.name
         }]
     };
-})()
+}

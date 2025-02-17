@@ -158,10 +158,10 @@ Hok.solve = (function() {
                         xhrEnd = +new Date();
                         xhrTot += xhrEnd - xhrStart;
                         var params = Hok.ns.check(component.container + '/params', self.content),
-                            obj,
-                            usedParams, foundParam,
-                            foundParamValue, foundParamValueReplaced,
-                            i, l;
+                            obj;
+                            // usedParams, foundParam,
+                            // foundParamValue, foundParamValueReplaced,
+                            // i, l;
                             
                         if (preLoaded) {
                             obj = _clone(cntORobj);
@@ -173,6 +173,7 @@ Hok.solve = (function() {
                             obj = evaluator(params);
                         }
                         // before merging the object check for the presence of parameters
+                        /*
                         if (params) {
                             // check if into the component are used var placeholders
                             usedParams = searchHash.forValue(obj, PARAMETERS_RX);
@@ -191,7 +192,7 @@ Hok.solve = (function() {
                                     _overwrite(obj, usedParams[i].path, foundParamValueReplaced || foundParamValue);
                                 }
                             }
-                        }
+                        }*/
                         if (component.container) {
                             _mergeComponent(self.content, component.container, obj);
                         } else {

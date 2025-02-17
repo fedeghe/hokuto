@@ -32,7 +32,7 @@
         
         hokuto v. 0.1.0
         
-        with ~46.22KB of ❤️
+        with ~46.26KB of ❤️
         
         Federico Ghedina <fedeghe@gmail.com>
         
@@ -895,10 +895,10 @@
                                     xhrEnd = +new Date();
                                     xhrTot += xhrEnd - xhrStart;
                                     var params = Hok.ns.check(component.container + '/params', self.content),
-                                        obj,
-                                        usedParams, foundParam,
-                                        foundParamValue, foundParamValueReplaced,
-                                        i, l;
+                                        obj;
+                                        // usedParams, foundParam,
+                                        // foundParamValue, foundParamValueReplaced,
+                                        // i, l;
                                         
                                     if (preLoaded) {
                                         obj = _clone(cntORobj);
@@ -910,6 +910,7 @@
                                         obj = evaluator(params);
                                     }
                                     // before merging the object check for the presence of parameters
+                                    /*
                                     if (params) {
                                         // check if into the component are used var placeholders
                                         usedParams = searchHash.forValue(obj, PARAMETERS_RX);
@@ -928,7 +929,7 @@
                                                 _overwrite(obj, usedParams[i].path, foundParamValueReplaced || foundParamValue);
                                             }
                                         }
-                                    }
+                                    }*/
                                     if (component.container) {
                                         _mergeComponent(self.content, component.container, obj);
                                     } else {
