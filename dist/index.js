@@ -21,7 +21,7 @@
 
 hokuto v. 0.1.0
 
-with ~46.26KB of ❤️
+with ~46.1KB of ❤️
 
 Federico Ghedina <fedeghe@gmail.com>
 
@@ -160,7 +160,7 @@ var hokuto = (function (_) {
         NS: "hokuto",
     
         NAME: "hokuto",
-        VERSION: "maltaV('package.version')"
+        VERSION: "0.1.0"
     };
     Hok.object = (function(){
     
@@ -966,6 +966,7 @@ var hokuto = (function (_) {
     var isFunction = function (f){return typeof f === Hok.TYPES.F};
     
     function Knot(config, clearTarget) {
+        var self = this;
         this.config = config;
         this.clearTarget = clearTarget;
         this.rendered = !!config.rendered;
@@ -1003,18 +1004,15 @@ var hokuto = (function (_) {
             document.createElement(this.tag);
     };
     Knot.prototype.initialize = function(){
-        this.setCall('Ref,Data,State,Events,Html,Text,Style,Attrs,Classname,End,ByRef,Methods');
-        if(
-            isDefined(this.config[Knot.identifier]) &&
-            !isDefined(this.config.nodes[this.config[Knot.identifier]])
-        ) this.nodes[this.config[Knot.identifier]] = this;
+        this.setCall('Id,Ref,Data,State,Events,Html,Text,Style,Attrs,Classname,End,ByRef,Methods');
+        
     };
     Knot.prototype.initRerender = function(){
         this.setCall('Ref,Data,State,Html,Text,Style,Attrs,Classname,End,ByRef,Methods');
-        if(
-            isDefined(this.config[Knot.identifier]) &&
-            !isDefined(this.config.nodes[this.config[Knot.identifier]])
-        ) this.nodes[this.config[Knot.identifier]] = this;
+        // if(
+        //     isDefined(this.config[Knot.identifier]) &&
+        //     !isDefined(this.config.nodes[this.config[Knot.identifier]])
+        // ) this.nodes[this.config[Knot.identifier]] = this;
         this.cb && this.cb.call(this);
     
         this.childrenKnots.forEach(function (childrenKnot) {
@@ -1047,14 +1045,17 @@ var hokuto = (function (_) {
         }
         return this
     };
-    Knot.prototype.setState = function(o) {
-        for (var i in o) {
-            if (o.hasOwnProperty(i)) {
-                this.state[i] = o[i];
-            }
-        }
-    };
     
+    Knot.prototype.setId = function(id) {
+        var fromConf = isDefined(this.config[Knot.identifier]),
+            val;
+        if ( fromConf || id ) {
+            val = fromConf
+                ? this.config[Knot.identifier]
+                : id
+            this.setAttrs({[Knot.identifier]: val});
+        }
+    }
     Knot.prototype.setCall = function(fns) {
         var self = this;
         fns.split(/,/).forEach(function(f) {
@@ -1112,7 +1113,7 @@ var hokuto = (function (_) {
         if (attrs) {
             a = Object.assign({}, a, attrs)
         }
-        this.config.attrs && Hok.dom.setAttrs(this.node, a);
+        a && Hok.dom.setAttrs(this.node, a);
     };
     
     Knot.prototype.setData = function(data) {
@@ -1232,17 +1233,16 @@ var hokuto = (function (_) {
                 }, Promise.resolve()).then(function(){return self;});
             } else {
                 return this.initCheck.call(this).then(function () {
-                    if(self.clearTarget && !self.rendered){
-                        self.target.innerHTML = '';
-                    }
-                    self.cb.call(self).then(function() {
+                    
+                    return self.cb.call(self).then(function() {
                         if(!self.aborted){
+                            if(self.clearTarget && !self.rendered){
+                                self.target.innerHTML = '';
+                            }
                             if(!self.rendered) self.target.appendChild(self.frag);
                             self.rendered = true;
                         }
                         return self
-                    }).catch(function(){
-                        console.log('cant render: ', self);
                     });
                 }).then(function(){
                     if(self.parentKnot){
@@ -1300,8 +1300,6 @@ var hokuto = (function (_) {
                     __renders[name] = n;
                 }
                 return n;
-            }).catch(function (r){
-                console.log({r : r});
             });
             // .finally(function () {
             //     console.log(config.endFunctions);

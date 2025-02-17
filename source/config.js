@@ -18,5 +18,5 @@ Hok.CONFIG = {
     NS: "hokuto",
 
     NAME: "hokuto",
-    VERSION: "maltaV('package.version')"
+    VERSION: "maltaV('PACKAGE.version')"
 };

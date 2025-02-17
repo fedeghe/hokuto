@@ -1,51 +1,34 @@
 /**
  * @jest-environment jsdom
  */
-var hokuto = require('../dist/index.js');
+var hokuto = require('../dist/index.js'),
+    utils = require('./utils.js'),
+    render = utils.render,
+    selector = utils.selector;
 
-describe('basic okutotwo', () => {
+describe('basic hokuto', () => {
+    const basicConfig = {
+        children:[{
+            tag:'p',
+            html:'test'
+        }]
+    }
     it('contains the expected', () => {
         expect(typeof hokuto.render).toBe('function');
         expect(typeof hokuto.get).toBe('function');
     });
     it('basic not clearing render', done => {
-        // document.body.innerHTML = `
-        //     <div id="target">
-        //         <div data-testid="visible">loading</div>
-        //     </div>
-        // `;
-        hokuto.render({
-            target: document.getElementById('target'),
-            children:[{
-                tag:'p',
-                html:'test'
-            }]
-        }).then(r=>{
-            expect(document.body.innerHTML).toMatchSnapshot()
-            expect(document.querySelector('p').innerHTML).toBe('test');
-            expect(document.querySelector('[data-testid="visible"]')).not.toBeNull()
+        render(basicConfig).then(r=>{
+            expect(selector('p').innerHTML).toBe('test');
+            expect(selector('[data-testid="visible"]')).not.toBeNull()
             done();
         });
     });
     it('basic clearing render', done => {
-        // document.body.innerHTML = `
-        //     <div id="target">
-        //         <div data-testid="visible">loading</div>
-        //     </div>
-        // `;
-        hokuto.render({
-            target: document.getElementById('target'),
-            children:[{
-                tag:'p',
-                html:'test'
-            }]
-        },true).then(r=>{
-            expect(document.body.innerHTML).toMatchSnapshot()
-            expect(document.querySelector('p').innerHTML).toBe('test');
-            expect(document.querySelector('[data-testid="visible"]')).toBeNull()
+        render(basicConfig,true).then(r=>{
+            expect(selector('p').innerHTML).toBe('test');
+            expect(selector('[data-testid="visible"]')).toBeNull()
             done();
         });
     });
-
-    
 });

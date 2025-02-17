@@ -38,8 +38,6 @@ var hokuto = (function (_) {
                     __renders[name] = n;
                 }
                 return n;
-            }).catch(function (r){
-                console.log({r : r});
             });
             // .finally(function () {
             //     console.log(config.endFunctions);

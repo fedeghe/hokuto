@@ -6,5 +6,5 @@
     "!source/index.js": "dist -plugins=malta-js-uglify[compress:true,output:{max_line_len:200}]...malta-header-comment[name:\"source/header.txt\"] -options=placeholderMode:'func',verbose:2,showPath:false -vars=vars.json",
     "source/index.js": "dist -plugins=malta-header-comment[name:\"source/header.txt\"] -options=placeholderMode:'func',verbose:2,showPath:false -vars=vars.json",
     "source/demo/build.json": true,
-    "source/tests/*.test.js": "tests -options=placeholderMode:'func'"
+    "source/tests/*.js": "tests -options=placeholderMode:'func'"
 }

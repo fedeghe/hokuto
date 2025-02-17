@@ -11,19 +11,12 @@
     "scripts": {
         "dev": "malta source/buildev.json",
         "dist": "malta source/build.json",
-        "test": "jest --coverage --verbose $PWD/tests",
-        "watch": "jest --watch --coverage $PWD/tests",
-        "cover": "jest --coverage $PWD/tests",
-        "coveralls": "jest --coverage $PWD/tests --coverage && cat ./coverage/lcov.info | coveralls"
+        "test": "jest --config ./jest.config.js --verbose $PWD/tests",
+        "watch": "jest --config ./jest.config.js --watch $PWD/tests",
+        "cover": "jest --config ./jest.config.js $PWD/tests",
+        "coveralls": "jest --config ./jest.config.js $PWD/tests && cat ./coverage/lcov.info | coveralls"
     },
-    "jest": {
-        "testEnvironment": "jest-environment-jsdom",
-        "testEnvironmentOptions": {
-            "html": "<html><div id='target'><div data-testid='visible'>loading</div></div></html>"
-        },
-        "collectCoverage": true,
-        "coverageReporters": ["lcov", "json", "html"]
-    },
+
     "devDependencies": {
         "coveralls": "^3.1.1",
         "jest": "^29.7.0",
