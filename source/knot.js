@@ -48,10 +48,7 @@ Knot.prototype.initialize = function(){
 };
 Knot.prototype.initRerender = function(){
     this.setCall('Ref,Data,State,Html,Text,Style,Attrs,Classname,End,ByRef,Methods');
-    // if(
-    //     isDefined(this.config[Knot.identifier]) &&
-    //     !isDefined(this.config.nodes[this.config[Knot.identifier]])
-    // ) this.nodes[this.config[Knot.identifier]] = this;
+
     this.cb && this.cb.call(this);
 
     this.childrenKnots.forEach(function (childrenKnot) {
@@ -69,9 +66,9 @@ Knot.prototype.initRerender = function(){
  */
 Knot.prototype.setState = function(state) {
     if (isDefined(state)){
-        for (var i in o) {
-            if (o.hasOwnProperty(i)) {
-                this.state[i] = o[i];
+        for (var i in state) {
+            if (state.hasOwnProperty(i)) {
+                this.state[i] = state[i];
             }
         }
     } else {
@@ -87,12 +84,14 @@ Knot.prototype.setState = function(state) {
 
 Knot.prototype.setId = function(id) {
     var fromConf = isDefined(this.config[Knot.identifier]),
-        val;
+        val,
+        attrs = {};
     if ( fromConf || id ) {
         val = fromConf
             ? this.config[Knot.identifier]
-            : id
-        this.setAttrs({[Knot.identifier]: val});
+            : id;
+        attrs[Knot.identifier] = val;
+        this.setAttrs(attrs);
     }
 }
 Knot.prototype.setCall = function(fns) {
@@ -242,7 +241,7 @@ Knot.prototype.unhandle = function(eventType){
 };
 
 Knot.prototype.setEnd = function(e) {
-    const self = this;
+    var self = this;
     if(!this.rendered && 'end' in this.config && isFunction(this.config.end)){
         this.ender = self.config.end.call(self);
     }
@@ -312,7 +311,7 @@ Knot.prototype.solve = function(){
     }
 };
 Knot.prototype.report = function() {
-    const  jsonSize = JSON.stringify(this.config).length,
+    var jsonSize = JSON.stringify(this.config).length,
         htmlSize = this.node.innerHTML.length;
     return (htmlSize / jsonSize).toFixed(2) + " (html:" + htmlSize + " / json:" + jsonSize + ")"
 };
