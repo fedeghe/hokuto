@@ -1,4 +1,4 @@
-export default {
+Hok.CONFIG = {
     AUTHOR: "Federico Ghedina",
     LANG: 'en',
     ENGY: {
@@ -15,11 +15,8 @@ export default {
             PATH_SEPARATOR: "/"
         }
     },
-    NS: "Widgzard",
+    NS: "hokuto",
 
-    NAME: "Widgzard",
-    VERSION: {
-        WIDGZARD: "2.0.0",
-        ENGY: "1.0.0"
-    }
-}
+    NAME: "hokuto",
+    VERSION: "maltaV('PACKAGE.version')"
+};

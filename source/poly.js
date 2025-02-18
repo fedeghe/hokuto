@@ -1,5 +1,4 @@
-import { TYPES } from './core'
-if (typeof Object.assign !== TYPES.F) {
+if (typeof Object.assign !== Hok.TYPES.F) {
     // Must be writable: true, enumerable: false, configurable: true
     Object.defineProperty(Object, "assign", {
         value: function assign(target, varArgs) {
