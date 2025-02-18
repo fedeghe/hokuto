@@ -9,8 +9,8 @@
         "url": "https://fedeghe@github.com/fedeghe/hokuto.git"
     },
     "scripts": {
-        "dev": "malta source/buildev.json",
-        "dist": "malta source/build.json",
+        "start": "malta source/buildev.json",
+        "build": "malta source/build.json",
         "test": "jest --config ./jest.config.js --verbose $PWD/tests",
         "watch": "jest --config ./jest.config.js --watch $PWD/tests",
         "cover": "jest --config ./jest.config.js $PWD/tests",
