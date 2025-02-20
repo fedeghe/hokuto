@@ -33,6 +33,7 @@ Hok.solve = (function() {
             destObj[pathEls[l - 1]] = obj;
         },
         _mergeComponent = function(ns, path, o){
+
             var componentPH = Hok.ns.check(path, ns),
                 // start from the replacement
                 merged = Object.assign({}, o),
@@ -125,6 +126,8 @@ Hok.solve = (function() {
             cback;
         return new Promise(function(resolve, reject){
             (function solve() {
+                console.log(+new Date)
+                console.log(JSON.parse(JSON.stringify(self.content.children[0].children[0].children[0])))
                 var component = searchHash.forKey(
                         self.content,
                         'component', { limit: 1 }
@@ -140,6 +143,7 @@ Hok.solve = (function() {
                         self.stats.requested = requested;
                         self.stats.xhrTot = xhrTot;
                     };
+                console.log(component)
                 if (!component.length) {
                     trackEnd();
                     langFunc && langFunc(self.content);
@@ -157,6 +161,7 @@ Hok.solve = (function() {
                     preLoaded = componentName in preloadedComponents;
     
                     cback = function(cntORobj){
+                        debugger
                         xhrEnd = +new Date();
                         xhrTot += xhrEnd - xhrStart;
                         var params = Hok.ns.check(component.container + '/params', self.content),
@@ -174,27 +179,6 @@ Hok.solve = (function() {
                             var evaluator = eval('(function (){return '+cntORobj+';})()');
                             obj = evaluator(params);
                         }
-                        // before merging the object check for the presence of parameters
-                        /*
-                        if (params) {
-                            // check if into the component are used var placeholders
-                            usedParams = searchHash.forValue(obj, PARAMETERS_RX);
-                            l = usedParams.length;
-                            if (l) {
-                                for (i = 0; i < l; i++) {
-                                    // check if the label of the placeholder is in the params
-                                    foundParam = Hok.ns.check(usedParams[i].regexp[1], params);
-                                    // in case use it otherwise, the fallback otherwise cleanup
-                                    foundParamValue = typeof foundParam !== Hok._U_ ? foundParam : (usedParams[i].regexp[2] || '');
-                                    // string or an object?
-                                    if ((typeof foundParamValue).match(/string/i)) {
-                                        foundParamValueReplaced = Hok.ns.check(usedParams[i].path, obj)
-                                            .replace(usedParams[i].regexp[0], foundParamValue);
-                                    }
-                                    _overwrite(obj, usedParams[i].path, foundParamValueReplaced || foundParamValue);
-                                }
-                            }
-                        }*/
                         if (component.container) {
                             _mergeComponent(self.content, component.container, obj);
                         } else {
@@ -219,7 +203,6 @@ Hok.solve = (function() {
                     if (preLoaded) {
                         cback(preloadedComponents[componentName]);
                     } else if (cached) {
-                        
                         cback(components[componentName]);
                     } else {
                         Hok.io.get(componentName, cback, function(e) {
@@ -231,28 +214,24 @@ Hok.solve = (function() {
         });
     };
     function report (stats) {
-        var j, ln = new Array(37).join('-');
+        var j, ln = new Array(37).join('-'), cl = console.log;
 
-        console.log(ln);
-        console.log(
-            'Hokuto used ' + stats.elements + ' component' + (stats.elements === 1 ? '' : 's')
-        );
-        console.log('usage: ');
+        cl(ln);
+        cl(['Hokuto used', stats.elements, 'component' + (stats.elements === 1 ? '' : 's')].join(' '));
+        cl('usage: ');
         for (j in stats.requested) {
-            console.log(
-                '> ' + j + ': ' + stats.requested[j] + ' time' + (stats.requested[j] > 1 ? 's' : '')
-            );
+            cl(['•', j, ':', stats.requested[j], 'time' + (stats.requested[j] > 1 ? 's' : '')].join(' '));
         }
-        console.log(
-            'Hokuto total time: '
-            + stats.time
-            + 'ms (unfolding: '
-            + (stats.time - stats.xhrTot)
-            + 'ms; xhr: '
-            + stats.xhrTot
-            + 'ms)'
-        );
-        console.log(ln);
+        cl(['total time:',
+            stats.time+'ms'
+        ].join(' '));
+        cl(['◦ unfolding:',
+            (stats.time - stats.xhrTot)+'ms'
+        ].join(' '));
+        cl(['◦ xhr:',
+            stats.xhrTot+'ms'
+        ].join(' '));
+        cl(ln);
     }
 
     return function(cnf) {

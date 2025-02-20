@@ -21,7 +21,7 @@
 
 hokuto v. 0.1.0
 
-with ~17.93KB of ❤️
+with ~18.07KB of ❤️
 
 Federico Ghedina <fedeghe@gmail.com>
 
@@ -78,18 +78,19 @@ return Hok.ns.check(e,t)||n||e+"<sup>&#2417;</sup>"},load:function(e){t=e},parse
 (typeof r.regexp).match(/boolean/i)||(n=Hok.i18n.check(r.regexp[0]))&&(o=Hok.ns.check(r.container,t),o[r.key]=r.value.replace(n[0],Hok.i18n.get(n[1],n[2])))}}}(),Hok.solve=function(){
 function Processor(t){this.content=t,this.stats={};var e=t.engy;this.config={fileNameSeparator:e&&e.fileNameSeparator?e.fileNameSeparator:Hok.CONFIG.ENGY.COMPONENTS.PATH_SEPARATOR,
 fileNamePrepend:e&&e.fileNamePrepend?e.fileNamePrepend:Hok.CONFIG.ENGY.COMPONENTS.NAME_PREPEND,ext:e&&e.ext?e.ext:Hok.CONFIG.ENGY.COMPONENTS.EXT,
-componentsUrl:e&&e.componentsUrl?e.componentsUrl:Hok.CONFIG.ENGY.COMPONENTS.URL}}function report(t){var e,n=new Array(37).join("-");console.log(n),
-console.log("Hokuto used "+t.elements+" component"+(1===t.elements?"":"s")),console.log("usage: ");for(e in t.requested)console.log("> "+e+": "+t.requested[e]+" time"+(t.requested[e]>1?"s":""))
-;console.log("Hokuto total time: "+t.time+"ms (unfolding: "+(t.time-t.xhrTot)+"ms; xhr: "+t.xhrTot+"ms)"),console.log(n)}var _clone=function(t){if(null==t||"object"!=typeof t)return t
+componentsUrl:e&&e.componentsUrl?e.componentsUrl:Hok.CONFIG.ENGY.COMPONENTS.URL}}function report(t){var e,n=new Array(37).join("-"),o=console.log;o(n),
+o(["Hokuto used",t.elements,"component"+(1===t.elements?"":"s")].join(" ")),o("usage: ");for(e in t.requested)o(["•",e,":",t.requested[e],"time"+(t.requested[e]>1?"s":"")].join(" "))
+;o(["total time:",t.time+"ms"].join(" ")),o(["◦ unfolding:",t.time-t.xhrTot+"ms"].join(" ")),o(["◦ xhr:",t.xhrTot+"ms"].join(" ")),o(n)}var _clone=function(t){if(null==t||"object"!=typeof t)return t
 ;var e,n=t.constructor();for(e in t)t.hasOwnProperty(e)&&(n[e]=_clone(t[e]));return n},_overwrite=function(t,e,n){for(var o=e.split(/\.|\//),r=o.length,i=0;i<r-1;)t=t[o[i++]];t[o[r-1]]=n
 },_mergeComponent=function(t,e,n){var o,r=Hok.ns.check(e,t),i=Object.assign({},n);for(o in r)!o.match(/component|params/)&&(i[o]=r[o]);n.protected?_overwrite(t,e,n):_overwrite(t,e,i)
 },components={},preloadedComponents={},computeStats=Hok.CONFIG.ENGY.STATS,PARAMETERS_RX=/\${([^}|]*)?\|?([^}]*)}/,cmp404=function(t){return JSON.stringify({tag:"div",style:{border:"1px solid red",
 backgroundColor:"pink",color:"red",padding:"10px"},html:"no component found ("+t+")",protected:!0})};return Processor.prototype.getFileName=function(t){
 var e=t.split(/\/|\|/),n=t,o=this.config,r=e.length-1;return e[r]=o.fileNamePrepend+e[r],n=e.join(o.fileNameSeparator),[o.componentsUrl,o.componentsUrl.match(/\/$/)?"":"/",n,o.ext].join("")},
 Processor.prototype.resetStats=function(){this.stats={time:0,elements:0,requested:{},xhrTot:0}},Processor.prototype.parse=function(){
-var self=this,langFunc=Hok.i18n.parse,elementsN=0,start=+new Date,end,xhrTot=0,requested={},cback;return new Promise(function(resolve,reject){!function solve(){
-var component=searchHash.forKey(self.content,"component",{limit:1}),componentName,cached,preLoaded,xhrStart=0,xhrEnd=0,trackEnd=function(){end=+new Date,self.stats.time=end-start,
-self.stats.elements=elementsN,self.stats.requested=requested,self.stats.xhrTot=xhrTot};component.length?(component=component[0],componentName=self.getFileName(component.value),
+var self=this,langFunc=Hok.i18n.parse,elementsN=0,start=+new Date,end,xhrTot=0,requested={},cback;return new Promise(function(resolve,reject){!function solve(){console.log(+new Date),
+console.log(JSON.parse(JSON.stringify(self.content.children[0].children[0].children[0])));var component=searchHash.forKey(self.content,"component",{limit:1
+}),componentName,cached,preLoaded,xhrStart=0,xhrEnd=0,trackEnd=function(){end=+new Date,self.stats.time=end-start,self.stats.elements=elementsN,self.stats.requested=requested,self.stats.xhrTot=xhrTot}
+;console.log(component),component.length?(component=component[0],componentName=self.getFileName(component.value),
 component.value in requested?requested[component.value]++:(requested[component.value]=1,elementsN++),cached=componentName in components,preLoaded=componentName in preloadedComponents,
 cback=function(cntORobj){xhrEnd=+new Date,xhrTot+=xhrEnd-xhrStart;var params=Hok.ns.check(component.container+"/params",self.content),obj;if(preLoaded)obj=_clone(cntORobj);else{
 cached||(components[componentName]=_clone(cntORobj));var evaluator=eval("(function (){return "+cntORobj+";})()");obj=evaluator(params)}

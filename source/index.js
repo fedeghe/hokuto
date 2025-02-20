@@ -28,6 +28,7 @@ var hokuto = (function (_) {
     function render(cnf, clear, name) {
         return Hok.solve(cnf).then(
             function (r){
+                // debugger
                 var config = r[0],
                     stats = r[1];
                 
@@ -36,6 +37,7 @@ var hokuto = (function (_) {
                 }
                 config.endFunctions = [];
                 config.nodes = __nodes;
+                
                 return new Knot(config, clear).render().then(function (n) {
                     if (name){
                         __renders[name] = n;
