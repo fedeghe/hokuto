@@ -18,14 +18,14 @@ describe('basic hokuto', () => {
         expect(typeof hokuto.get).toBe('function');
     });
     it('basic not clearing render', done => {
-        render(basicConfig).then(r=>{
+        render(basicConfig).then(()=>{
             expect(selector('p').innerHTML).toBe('test');
             expect(selector('[data-testid="visible"]')).not.toBeNull()
             done();
         });
     });
     it('basic clearing render', done => {
-        render(basicConfig,true).then(r=>{
+        render(basicConfig,true).then(()=>{
             expect(selector('p').innerHTML).toBe('test');
             expect(selector('[data-testid="visible"]')).toBeNull()
             done();

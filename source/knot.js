@@ -1,8 +1,13 @@
 var resolutive = function () {
-    return Promise.resolve();
-};
-var isDefined = function (x){return typeof x !== Hok.TYPES.U};
-var isFunction = function (f){return typeof f === Hok.TYPES.F};
+        return Promise.resolve();
+    },
+    isDefined = function (x){return typeof x !== Hok.TYPES.U},
+    isFunction = function (f){return typeof f === Hok.TYPES.F},
+    functionize = function (instance, what){
+        return isFunction(what)
+            ? what.call(instance)
+            : what;
+    };
 
 function Knot(config, clearTarget) {
     var self = this;
@@ -36,21 +41,21 @@ function Knot(config, clearTarget) {
     this.initTag();
     this.initialize();
 }
+
 Knot.prototype.initTag = function(){
     this.tag = this.config.tag || 'div';
     this.node = this.config.ns ?
         document.createElementNS(this.config.ns, this.tag) :
         document.createElement(this.tag);
 };
+
 Knot.prototype.initialize = function(){
     this.setCall('Id,Ref,Data,State,Events,Html,Text,Style,Attrs,Classname,End,ByRef,Methods');
-    
 };
+
 Knot.prototype.initRerender = function(){
     this.setCall('Ref,Data,State,Html,Text,Style,Attrs,Classname,End,ByRef,Methods');
-
     this.cb && this.cb.call(this);
-
     this.childrenKnots.forEach(function (childrenKnot) {
         childrenKnot.initRerender();
     }) 
@@ -67,17 +72,12 @@ Knot.prototype.initRerender = function(){
 Knot.prototype.setState = function(state) {
     if (isDefined(state)){
         for (var i in state) {
-            if (state.hasOwnProperty(i)) {
-                this.state[i] = state[i];
-            }
+            if (state.hasOwnProperty(i)) this.state[i] = state[i];
         }
     } else {
         var statePassed = 'state' in this.config,
             state = statePassed ? this.config.state : {};
-
-        this.state = isFunction(state) ?
-            state.call(this) :
-            state;
+        this.state = functionize(this, state);
     }
     return this
 };
@@ -86,7 +86,7 @@ Knot.prototype.setId = function(id) {
     var fromConf = isDefined(this.config[Knot.identifier]),
         val,
         attrs = {};
-    if ( fromConf || id ) {
+    if (fromConf || id) {
         val = fromConf
             ? this.config[Knot.identifier]
             : id;
@@ -109,19 +109,19 @@ Knot.prototype.lateKid = function(id) {
     }
 };
 
-
-
 Knot.prototype.setByRef = function() {
-    if(Knot.byIdIdentifier in this.config) {
+    if (Knot.byIdIdentifier in this.config) {
         var ref = this.config[Knot.byIdIdentifier]
         this.nodes[ref] = this;
     }
 };
+
 Knot.prototype.getByRef = function(ref) {
     return ref in this.nodes
         ? this.nodes[ref]
         : null
 };
+
 Knot.prototype.setRef = function(ref, ctx) {
     // allow the node to set a ref on itself
     // or to another node it can reference
@@ -139,20 +139,29 @@ Knot.prototype.setClassname = function() {
 
 Knot.prototype.setStyle = function(style) {
     if (style) {
-        this.config.style = Object.assign({}, this.config.style, style)
+        this.config.style = Object.assign(
+            {},
+            this.config.style,
+            functionize(this, style)
+        )
     }
     this.config.style && Hok.dom.setStyle(this.node, this.config.style);
 };
 
 Knot.prototype.setAttrs = function(attrs) {
-    var a = isFunction(this.config.attrs)
-        ? this.config.attrs.call(this)
-        : this.config.attrs;
     if (attrs) {
-        a = Object.assign({}, a, attrs)
+        this.config.attrs = Object.assign(
+            {},
+            this.config.attrs,
+            functionize(this, attrs)
+        )
     }
-    a && Hok.dom.setAttrs(this.node, a);
+    this.config.attrs && Hok.dom.setAttrs(this.node, this.config.attrs);
 };
+
+Knot.prototype.unsetAttrs = function(attrs) {
+    attrs && Hok.dom.unsetAttrs(this.node, attrs);
+}
 
 Knot.prototype.setData = function(data) {
     if (data) {
@@ -164,6 +173,10 @@ Knot.prototype.setData = function(data) {
     }
 };
 
+Knot.prototype.unsetData = function(data) {
+    data && Hok.dom.unsetData(this.node, data);
+};
+
 Knot.prototype.setText = function(text) {
     if (isDefined(text)) this.config.text = text;
     isDefined(this.config.text)
@@ -172,9 +185,9 @@ Knot.prototype.setText = function(text) {
 
 Knot.prototype.setHtml = function(html) {
     if (isDefined(html)) this.config.html = html;
-    if(isDefined(this.config.html)) {
+    if (isDefined(this.config.html)) {
         
-        if(isFunction(this.config.html)){
+        if (isFunction(this.config.html)) {
             Hok.dom.setHtml(this.node, this.config.html.call(this));
         } else {
             Hok.dom.setHtml(this.node, this.config.html);
@@ -231,7 +244,7 @@ Knot.prototype.setEvents = function() {
 Knot.prototype.unhandle = function(eventType){
     var self = this;
     self.unhandlers = Object.entries(self.unhandlers).reduce(function (acc, entry){
-        if(entry[0] === eventType){
+        if (entry[0] === eventType) {
             Hok.events.off(self.node, entry[0], entry[1]);
         } else {
             acc[entry[0]] = entry[1];
@@ -242,7 +255,7 @@ Knot.prototype.unhandle = function(eventType){
 
 Knot.prototype.setEnd = function(e) {
     var self = this;
-    if(!this.rendered && 'end' in this.config && isFunction(this.config.end)){
+    if (!this.rendered && 'end' in this.config && isFunction(this.config.end)) {
         this.ender = self.config.end.call(self);
     }
     return this;
@@ -271,13 +284,12 @@ Knot.prototype.render = function(){
             }, Promise.resolve()).then(function(){return self;});
         } else {
             return this.initCheck.call(this).then(function () {
-                
                 return self.cb.call(self).then(function() {
                     if(!self.aborted){
-                        if(self.clearTarget && !self.rendered){
+                        if (self.clearTarget && !self.rendered) {
                             self.target.innerHTML = '';
                         }
-                        if(!self.rendered) self.target.appendChild(self.frag);
+                        if (!self.rendered) self.target.appendChild(self.frag);
                         self.rendered = true;
                     }
                     return self

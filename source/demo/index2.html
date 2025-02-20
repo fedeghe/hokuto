@@ -14,6 +14,9 @@
     <div id="target">
         <script>
             (function () {
+                hokuto.i18n.load({
+                    // hello: 'ciao'
+                })
                 
                 hokuto.render({
                     target: document.getElementById('target'),
@@ -30,6 +33,24 @@
                                 },{
                                     tag:'li',
                                     html:'1.2'
+                                },{
+                                    tag:'li',
+                                    children:[{
+
+                                        component:'xxx',
+                                        params:{
+                                            name:'i18n(hello)'
+                                        }
+                                    }]
+                                },{
+                                    tag:'li',
+                                    children:[{
+
+                                        component:'xxx',
+                                        params:{
+                                            name:' jeff'
+                                        }
+                                    }]
                                 }]
                             }]
                         },{
@@ -50,9 +71,10 @@
                             }]
                         }]
                     }]
-                }).then((r, s)=>{
-                    console.log({r})
                 });
+                // .then((r, s)=>{
+                //     console.log({r})
+                // });
             })();
     
         </script>

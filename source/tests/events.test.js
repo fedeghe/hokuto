@@ -12,6 +12,7 @@ describe('start hokuto', () => {
         basicConfig = {
             children:[{
                 tag:'div',
+                ref:'clickUp',
                 onClick: one,
                 attrs:{id:'n0'},
                 children:[{
@@ -37,7 +38,7 @@ describe('start hokuto', () => {
     });
 
     it('basic handler, upper', () => {
-        render(basicConfig).then(r=>{
+        render(basicConfig).then(()=>{
             var n0 = selector('[id="n0"]'),
                 n1 = selector('[id="n1"]'),
                 n2 = selector('[id="n2"]');
@@ -51,7 +52,7 @@ describe('start hokuto', () => {
     });
 
     it('basic handler, single deep', () => {
-        render(basicConfig).then(r=>{
+        render(basicConfig).then(()=>{
             var n0 = selector('[id="n0"]'),
                 n1 = selector('[id="n1"]'),
                 n2 = selector('[id="n2"]');
@@ -65,7 +66,7 @@ describe('start hokuto', () => {
     });
 
     it('basic handler, double deep', () => {
-        render(basicConfig).then(r=>{
+        render(basicConfig).then(()=>{
             var n0 = selector('[id="n0"]'),
                 n1 = selector('[id="n1"]'),
                 n2 = selector('[id="n2"]');
@@ -75,6 +76,30 @@ describe('start hokuto', () => {
             n2.click();
             expect(two).toBeCalled()
             expect(one).toBeCalled()
+        });
+    });
+
+    it('basic handler, unhandleEvents', done => {
+        render({
+            onClick: one,
+            html: 'test'
+        }).then(r=>{
+            r.unhandleEvents();
+            r.node.click();
+            expect(one).not.toBeCalled();
+            done();
+        });
+    });
+    
+    it('basic handler, unhandleEvents on clear', done => {
+        render({
+            onClick: one,
+            html: 'test'
+        }).then(r=>{
+            r.clear();
+            r.node.click();
+            expect(one).not.toBeCalled();
+            done();
         });
     });
 });

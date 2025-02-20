@@ -1,6 +1,6 @@
-Hok.io = (function (){
+(function (ctx){
 
-    function get(uri, onSuccess, onError){
+    ctx.get = function(uri, onSuccess, onError){
         return fetch(uri)
             .then(function (response){
                 if(!response.ok){
@@ -13,9 +13,28 @@ Hok.io = (function (){
                 return v.text()
             })
             .then(onSuccess)
-    }
+    };
+    ctx.post = function(uri, data, onSuccess, onError){
+        return fetch(uri,{
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                    
+                },
+                body: new URLSearchParams(data)
+            })
+            .then(function (response){
+                if(!response.ok){
+                    onError()
+                    return Promise.reject()
+                }
+                return response
+            })
+            .then(function (r){ return r.json()})
+            .then(onSuccess)
+    };
 
-    function getJson(uri, onSuccess, onError) {
+    ctx.getJson = function(uri, onSuccess, onError) {
         return fetch(uri)
             .then(function (response) {
                 if(!response.ok){
@@ -29,9 +48,9 @@ Hok.io = (function (){
             })
             .then(onSuccess)
             .catch(onError)
-    }
+    };
 
-    function getXML(uri, onSuccess, onError) {
+    ctx.getXML = function(uri, onSuccess, onError) {
         //'https://codetogo.io/api/users.xml'
         return fetch(uri)
             .then(function(response) {
@@ -47,10 +66,4 @@ Hok.io = (function (){
             .then(onSuccess)
             .catch(onError); 
     }
-
-    return {
-        get: get,
-        getJson: getJson,
-        getXML: getXML
-    };
-})();
+})(Hok.io);

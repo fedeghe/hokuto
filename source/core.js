@@ -16,4 +16,5 @@ var Hok = {
     history:{},
     i18n:{},
     io: {},
+    utils: {},
 };

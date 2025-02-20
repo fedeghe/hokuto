@@ -32,7 +32,7 @@
         
         hokuto v. 0.1.0
         
-        with ~46.1KB of ❤️
+        with ~49.84KB of ❤️
         
         Federico Ghedina <fedeghe@gmail.com>
         
@@ -67,33 +67,64 @@
                 history:{},
                 i18n:{},
                 io: {},
+                utils: {},
             };
             
-            if (typeof Object.assign !== Hok.TYPES.F) {
-                // Must be writable: true, enumerable: false, configurable: true
-                Object.defineProperty(Object, "assign", {
-                    value: function assign(target, varArgs) {
-                        'use strict';
-                        if (target === null || target === undefined) {
-                            throw new TypeError('Cannot convert undefined or null to object');
-                        }
+            (function(ctx){
             
-                        var to = Object(target);
+                ctx.type = {};
+                
+                ctx.type.isFunction = function (ƒ){
+                    return typeof ƒ === 'function'
+                };
             
-                        for (var i = 1, l = arguments.length; i < l; i++) {
-                            var nextSource = arguments[i];
+                ctx.type.isObject = function(o) {
+                    var t0 = String(o) !== o,
+                    t1 = o === Object(o),
+                    t2 = ctx.type.isFunction(o),
+                    t3 = {}.toString.call(o).match(/\[object\sObject\]/);
+                    return t0 && t1 && t2 && !!(t3 && t3.length);
+                };
             
-                            if (nextSource !== null && nextSource !== undefined)
-                                for (var nextKey in nextSource)
-                                    if ({}.hasOwnProperty.call(nextSource, nextKey))
-                                        to[nextKey] = nextSource[nextKey];
-                        }
-                        return to;
-                    },
-                    writable: true,
-                    configurable: true
-                });
-            }
+                ctx.type.isArray = function(o) {
+                    if (Array.isArray && Array.isArray(o)) {
+                        return true;
+                    }
+                    var t1 = String(o) !== o,
+                    t2 = ({}).toString.call(o).match(/\[object\sArray\]/);
+                    
+                    return t1 && !!(t2 && t2.length);
+                };
+            
+                
+                
+            })(Hok.utils)
+            // if (typeof Object.assign !== Hok.TYPES.F) {
+            //     // Must be writable: true, enumerable: false, configurable: true
+            //     Object.defineProperty(Object, "assign", {
+            //         value: function assign(target, varArgs) {
+            //             'use strict';
+            //             if (target === null || target === undefined) {
+            //                 throw new TypeError('Cannot convert undefined or null to object');
+            //             }
+            // 
+            //             var to = Object(target);
+            // 
+            //             for (var i = 1, l = arguments.length; i < l; i++) {
+            //                 var nextSource = arguments[i];
+            // 
+            //                 if (nextSource !== null && nextSource !== undefined)
+            //                     for (var nextKey in nextSource)
+            //                         if ({}.hasOwnProperty.call(nextSource, nextKey))
+            //                             to[nextKey] = nextSource[nextKey];
+            //             }
+            //             return to;
+            //         },
+            //         writable: true,
+            //         configurable: true
+            //     });
+            // }
+            /*
             Hok.ns.make = function(str, obj, ctx) {
                 str = str.replace(/^\//, '');
                 var els = str.split(/\.|\//),
@@ -115,6 +146,7 @@
                 ret = ctx[els[0]];
                 return (l > 1) ? Hok.ns.make(els.slice(1).join('.'), obj, ctx[els[0]]) : ret;
             };
+            */
             Hok.ns.check = function (ns, ctx) {
                 // remove stating slash
                 ns = ns.replace(/^\//, '');
@@ -139,6 +171,7 @@
                 }
                 return ctx;
             };
+            /*
             Hok.ns.extend = function (ns, objfn) {
                 var obj = typeof objfn === 'function' ? objfn() : objfn,
                     i;
@@ -150,7 +183,7 @@
                 }
             };
             
-            
+            */
             Hok.CONFIG = {
                 AUTHOR: "Federico Ghedina",
                 LANG: 'en',
@@ -173,238 +206,238 @@
                 NAME: "hokuto",
                 VERSION: "0.1.0"
             };
-            Hok.object = (function(){
-            
-                var strMap = function(o, fn) {
-                        var ret = '',
-                            j;
-                        for (j in o) 
-                            if (o.hasOwnProperty(j)) 
-                                ret += fn(o, j, ret);
-                        return ret;
-                    },
-                        
-            
-                    // Returns true if it is a DOM node
-                    isNode = function(o) {
-                        return  typeof Node === 'object'
-                            ? o instanceof Hok.W.Node
-                            : o
-                                && typeof o === 'object'
-                                && typeof o.nodeType === 'number'
-                                && typeof o.nodeName === 'string'
-                    },
-            
-                    extract = function(data, where){                
-                        var g = where || (
-                                typeof global !== 'undefined'
-                                    ? global
-                                    : (typeof window !== 'undefined' ? window : this)
-                            ), key;
-                        for (key in data) {
-                            if (data.hasOwnProperty(key)) {
-                                g[key] = data[key];
-                            }
-                        }
-                    },
-                    ret = {
-                        extract: extract,
-                        fromQs: function() {
-                            var els = document.location.search.substr(1).split('&'),
-                                len = els.length,
-                                i = 0,
-                                tmp,
-                                out = [];
-            
-                            for (null; i < len; i += 1) {
-                                tmp = els[i].split('=');
-                                // do not override extra path out
-                                //
-                                !out[tmp[0]] && (out[tmp[0]] = decodeURIComponent(tmp[1]));
-                            }
-                            return out;
-                        },
-            
-                        clone: function(obj){
-                            var copy,
-                                i, l;
-                            // Handle the 3 simple types, and null or undefined
-                            if (obj === null || typeof obj !== 'object') {
-                                return obj;
-                            }
-            
-                            // Handle Date
-                            if (obj instanceof Date) {
-                                copy = new Date();
-                                copy.setTime(obj.getTime());
-                                return copy;
-                            }
-            
-                            // Handle Array
-                            if (obj instanceof Array) {
-                                copy = [];
-                                for (i = 0, l = obj.length; i < l; i++) {
-                                    copy[i] = ret.clone(obj[i]);
-                                }
-                                return copy;
-                            }
-            
-                            // Handle Object
-                            if (obj instanceof Object) {
-                                copy = {};
-                                for (i in obj) {
-                                    if (obj.hasOwnProperty(i)) {
-                                        copy[i] = ret.clone(obj[i]);
-                                    }
-                                }
-                                return copy;
-                            }
-                            throw new Error('Unable to copy obj! Its type isn\'t supported.');
-                        },
-            
-                        extend: function(o, ext, force) {
-                            var obj = ret.clone(o),
-                                j;
-            
-                            for (j in ext) {
-                                if (ext.hasOwnProperty(j) && (!(j in obj) || force)) {
-                                    obj[j] = ext[j];
-                                }
-                            }
-                            return obj;
-                        },
-            
-                        keyize: function(objArr, k) {
-                            var objRet = {},
-                                i = 0,
-                                l = objArr.length;
-                            for (null; i < l; i++) {
-                                if (k in objArr[i] && !(objArr[i][k] in objRet)) {
-                                    objRet[objArr[i][k]] = objArr[i];
-                                }
-                            }
-                            return objRet;
-                        },
-            
-                        isString: function(o) {
-                            return typeof o === 'string' || o instanceof String;
-                        },
-            
-                        // avoid tags
-                        jCompare: function(obj1, obj2) {
-                            return !isNode(obj1) && typeof JSON !== Hok._U_
-                                ? JSON.stringify(obj1) === JSON.stringify(obj2)
-                                : obj1 === obj2
-                        },
-            
-                        toQs: function(obj) {
-                            return strMap(
-                                obj,
-                                function (o, i, r) {
-                                    return ([
-                                        r ? '&' : '?',
-                                        encodeURIComponent(i),
-                                        '=',
-                                        encodeURIComponent(o[i])
-                                    ].join('')).replace(/'/g, '%27');
-                                }
-                                
-            
-                            );
-                        }
-                    };
-            
-                return ret;
-            })();
-            
-            Hok.cookie = {
-                enabled: true,
-                cookie_nocookiesaround: false,
-                initCheck: function() {
-                    return Hok.W.navigator.cookieEnabled;
-                },
-                set: function(name, value, expires, copath, domain, secure) {
-                    if (!Hok.cookie.enabled) return false;
-                    Hok.cookie.cookie_nocookiesaround = false;
-                    var today = new Date(),
-                        expiresDate = new Date(today.getTime() + expires);
-                    // expires && (expires = expires * 1000 * 60 * 60 * 24);
-                    Hok.WD.cookie = [
-                        name, '=', Hok.W.escape(value),
-                        (expires ? ';expires=' + expiresDate.toGMTString() : ''),
-                        (copath ? ';path=' + copath : ''),
-                        (domain ? ';domain=' + domain : ''),
-                        (secure ? ';secure' : '')
-                    ].join();
-                    return true;
-                },
-                del: function(name, path, domain) {
-                    if (!Hok.cookie.enabled) return false;
-                    var ret = false;
-            
-                    if (Hok.cookie.get(name)) {
-                        Hok.WD.cookie = [
-                            name, '=',
-                            (path ? ';path=' + path : ''),
-                            (domain ? ';domain=' + domain : ''),
-                            ';expires=Thu, 01-Jan-1970 00:00:01 GMT'
-                        ].join('');
-                        ret = true;
-                    }
-                    return ret;
-                },
-                get: function(checkName) {
-                    var allCookies = Hok.WD.cookie.split(';'),
-                        l = allCookies.length,
-                        tempCookie = '',
-                        cookieName = '',
-                        cookieValue = '',
-                        cookieFound = false,
-                        i = 0;
-            
-                    if (!Hok.cookie.enabled) return false;
-            
-                    for (null; i < l; i += 1) {
-                        tempCookie = allCookies[i].split('=');
-                        cookieName = tempCookie[0].replace(/^\s+|\s+$/g, '');
-            
-                        if (cookieName === checkName) {
-                            cookieFound = true;
-                            tempCookie.length > 1 && (cookieValue = W.unescape(tempCookie[1].replace(/^\s+|\s+$/g, '')));
-                            return cookieValue;
-                        }
-            
-                        tempCookie = null;
-                        cookieName = '';
-                    }
-                    return cookieFound;
-                },
-                delall: function() {
-                    if (!Hok.cookie.enabled) return false;
-                    var thecookie = Hok.WD.cookie.split(/;/),
-                        l = thecookie.length,
-                        i = 0,
-                        name;
-                    for (null; i < l; i += 1) {
-                        name = thecookie[i].split(/=/);
-                        Hok.cookie.del(name[0], false, false);
-                    }
-                    Hok.cookie.cookie_nocookiesaround = true;
-                    return true;
-                },
-                getall: function() {
-                    if (!Hok.cookie.enabled) return false;
-                    if (Hok.WD.cookie === '') return [];
-                    return Hok.cookie.cookie_nocookiesaround
-                        ? []
-                        : Hok.WD.cookie.split(';').forEach(
-                            function(i) {
-                                var t = i.split('=');
-                                return { name: t[0], value: t[1] };
-                            }
-                        );
-                }
-            };
+            // Hok.object = (function(){
+            // 
+            //     var strMap = function(o, fn) {
+            //             var ret = '',
+            //                 j;
+            //             for (j in o) 
+            //                 if (o.hasOwnProperty(j)) 
+            //                     ret += fn(o, j, ret);
+            //             return ret;
+            //         },
+            //             
+            // 
+            //         // Returns true if it is a DOM node
+            //         isNode = function(o) {
+            //             return  typeof Node === 'object'
+            //                 ? o instanceof Hok.W.Node
+            //                 : o
+            //                     && typeof o === 'object'
+            //                     && typeof o.nodeType === 'number'
+            //                     && typeof o.nodeName === 'string'
+            //         },
+            // 
+            //         extract = function(data, where){                
+            //             var g = where || (
+            //                     typeof global !== 'undefined'
+            //                         ? global
+            //                         : (typeof window !== 'undefined' ? window : this)
+            //                 ), key;
+            //             for (key in data) {
+            //                 if (data.hasOwnProperty(key)) {
+            //                     g[key] = data[key];
+            //                 }
+            //             }
+            //         },
+            //         ret = {
+            //             extract: extract,
+            //             fromQs: function() {
+            //                 var els = document.location.search.substr(1).split('&'),
+            //                     len = els.length,
+            //                     i = 0,
+            //                     tmp,
+            //                     out = [];
+            // 
+            //                 for (null; i < len; i += 1) {
+            //                     tmp = els[i].split('=');
+            //                     // do not override extra path out
+            //                     //
+            //                     !out[tmp[0]] && (out[tmp[0]] = decodeURIComponent(tmp[1]));
+            //                 }
+            //                 return out;
+            //             },
+            // 
+            //             clone: function(obj){
+            //                 var copy,
+            //                     i, l;
+            //                 // Handle the 3 simple types, and null or undefined
+            //                 if (obj === null || typeof obj !== 'object') {
+            //                     return obj;
+            //                 }
+            // 
+            //                 // Handle Date
+            //                 if (obj instanceof Date) {
+            //                     copy = new Date();
+            //                     copy.setTime(obj.getTime());
+            //                     return copy;
+            //                 }
+            // 
+            //                 // Handle Array
+            //                 if (obj instanceof Array) {
+            //                     copy = [];
+            //                     for (i = 0, l = obj.length; i < l; i++) {
+            //                         copy[i] = ret.clone(obj[i]);
+            //                     }
+            //                     return copy;
+            //                 }
+            // 
+            //                 // Handle Object
+            //                 if (obj instanceof Object) {
+            //                     copy = {};
+            //                     for (i in obj) {
+            //                         if (obj.hasOwnProperty(i)) {
+            //                             copy[i] = ret.clone(obj[i]);
+            //                         }
+            //                     }
+            //                     return copy;
+            //                 }
+            //                 throw new Error('Unable to copy obj! Its type isn\'t supported.');
+            //             },
+            // 
+            //             extend: function(o, ext, force) {
+            //                 var obj = ret.clone(o),
+            //                     j;
+            // 
+            //                 for (j in ext) {
+            //                     if (ext.hasOwnProperty(j) && (!(j in obj) || force)) {
+            //                         obj[j] = ext[j];
+            //                     }
+            //                 }
+            //                 return obj;
+            //             },
+            // 
+            //             keyize: function(objArr, k) {
+            //                 var objRet = {},
+            //                     i = 0,
+            //                     l = objArr.length;
+            //                 for (null; i < l; i++) {
+            //                     if (k in objArr[i] && !(objArr[i][k] in objRet)) {
+            //                         objRet[objArr[i][k]] = objArr[i];
+            //                     }
+            //                 }
+            //                 return objRet;
+            //             },
+            // 
+            //             isString: function(o) {
+            //                 return typeof o === 'string' || o instanceof String;
+            //             },
+            // 
+            //             // avoid tags
+            //             jCompare: function(obj1, obj2) {
+            //                 return !isNode(obj1) && typeof JSON !== Hok._U_
+            //                     ? JSON.stringify(obj1) === JSON.stringify(obj2)
+            //                     : obj1 === obj2
+            //             },
+            // 
+            //             toQs: function(obj) {
+            //                 return strMap(
+            //                     obj,
+            //                     function (o, i, r) {
+            //                         return ([
+            //                             r ? '&' : '?',
+            //                             encodeURIComponent(i),
+            //                             '=',
+            //                             encodeURIComponent(o[i])
+            //                         ].join('')).replace(/'/g, '%27');
+            //                     }
+            //                     
+            // 
+            //                 );
+            //             }
+            //         };
+            // 
+            //     return ret;
+            // })();
+            // 
+            // Hok.cookie = {
+            //     enabled: true,
+            //     cookie_nocookiesaround: false,
+            //     initCheck: function() {
+            //         return Hok.W.navigator.cookieEnabled;
+            //     },
+            //     set: function(name, value, expires, copath, domain, secure) {
+            //         if (!Hok.cookie.enabled) return false;
+            //         Hok.cookie.cookie_nocookiesaround = false;
+            //         var today = new Date(),
+            //             expiresDate = new Date(today.getTime() + expires);
+            //         // expires && (expires = expires * 1000 * 60 * 60 * 24);
+            //         Hok.WD.cookie = [
+            //             name, '=', Hok.W.escape(value),
+            //             (expires ? ';expires=' + expiresDate.toGMTString() : ''),
+            //             (copath ? ';path=' + copath : ''),
+            //             (domain ? ';domain=' + domain : ''),
+            //             (secure ? ';secure' : '')
+            //         ].join();
+            //         return true;
+            //     },
+            //     del: function(name, path, domain) {
+            //         if (!Hok.cookie.enabled) return false;
+            //         var ret = false;
+            // 
+            //         if (Hok.cookie.get(name)) {
+            //             Hok.WD.cookie = [
+            //                 name, '=',
+            //                 (path ? ';path=' + path : ''),
+            //                 (domain ? ';domain=' + domain : ''),
+            //                 ';expires=Thu, 01-Jan-1970 00:00:01 GMT'
+            //             ].join('');
+            //             ret = true;
+            //         }
+            //         return ret;
+            //     },
+            //     get: function(checkName) {
+            //         var allCookies = Hok.WD.cookie.split(';'),
+            //             l = allCookies.length,
+            //             tempCookie = '',
+            //             cookieName = '',
+            //             cookieValue = '',
+            //             cookieFound = false,
+            //             i = 0;
+            // 
+            //         if (!Hok.cookie.enabled) return false;
+            // 
+            //         for (null; i < l; i += 1) {
+            //             tempCookie = allCookies[i].split('=');
+            //             cookieName = tempCookie[0].replace(/^\s+|\s+$/g, '');
+            // 
+            //             if (cookieName === checkName) {
+            //                 cookieFound = true;
+            //                 tempCookie.length > 1 && (cookieValue = W.unescape(tempCookie[1].replace(/^\s+|\s+$/g, '')));
+            //                 return cookieValue;
+            //             }
+            // 
+            //             tempCookie = null;
+            //             cookieName = '';
+            //         }
+            //         return cookieFound;
+            //     },
+            //     delall: function() {
+            //         if (!Hok.cookie.enabled) return false;
+            //         var thecookie = Hok.WD.cookie.split(/;/),
+            //             l = thecookie.length,
+            //             i = 0,
+            //             name;
+            //         for (null; i < l; i += 1) {
+            //             name = thecookie[i].split(/=/);
+            //             Hok.cookie.del(name[0], false, false);
+            //         }
+            //         Hok.cookie.cookie_nocookiesaround = true;
+            //         return true;
+            //     },
+            //     getall: function() {
+            //         if (!Hok.cookie.enabled) return false;
+            //         if (Hok.WD.cookie === '') return [];
+            //         return Hok.cookie.cookie_nocookiesaround
+            //             ? []
+            //             : Hok.WD.cookie.split(';').forEach(
+            //                 function(i) {
+            //                     var t = i.split('=');
+            //                     return { name: t[0], value: t[1] };
+            //                 }
+            //             );
+            //     }
+            // };
             Hok.dom.noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
             Hok.dom.setStyle = function(node, styles) {
                 if (typeof styles === Hok.TYPES.U)
@@ -475,9 +508,9 @@
                 node.innerHTML = Hok.dom.filterHtml(html);
             };
             
-            Hok.io = (function (){
+            (function (ctx){
             
-                function get(uri, onSuccess, onError){
+                ctx.get = function(uri, onSuccess, onError){
                     return fetch(uri)
                         .then(function (response){
                             if(!response.ok){
@@ -490,9 +523,28 @@
                             return v.text()
                         })
                         .then(onSuccess)
-                }
+                };
+                ctx.post = function(uri, data, onSuccess, onError){
+                    return fetch(uri,{
+                            method: 'POST',
+                            headers: {
+                                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                                
+                            },
+                            body: new URLSearchParams(data)
+                        })
+                        .then(function (response){
+                            if(!response.ok){
+                                onError()
+                                return Promise.reject()
+                            }
+                            return response
+                        })
+                        .then(function (r){ return r.json()})
+                        .then(onSuccess)
+                };
             
-                function getJson(uri, onSuccess, onError) {
+                ctx.getJson = function(uri, onSuccess, onError) {
                     return fetch(uri)
                         .then(function (response) {
                             if(!response.ok){
@@ -506,9 +558,9 @@
                         })
                         .then(onSuccess)
                         .catch(onError)
-                }
+                };
             
-                function getXML(uri, onSuccess, onError) {
+                ctx.getXML = function(uri, onSuccess, onError) {
                     //'https://codetogo.io/api/users.xml'
                     return fetch(uri)
                         .then(function(response) {
@@ -524,13 +576,7 @@
                         .then(onSuccess)
                         .catch(onError); 
                 }
-            
-                return {
-                    get: get,
-                    getJson: getJson,
-                    getXML: getXML
-                };
-            })();
+            })(Hok.io);
             Hok.events._ = {
                 events: {
                     getElementDeterminant: function(el) {
@@ -667,37 +713,37 @@
                 };
             })();
             
-            
-            
-            Hok.history = (function(){
-                var handlers = [],
-                    spread = function(url, state, title) {
-                        document.title = title;
-                        return handlers.forEach(
-                            function(handler){
-                                handler(url, state, title);
-                            }
-                        );
-                    };
-                return {
-                    push: function(url, state, title) {
-                        Hok.H.pushState(state || {}, title || '', url);
-                        spread(url, state, title);
-                    },
-                    registerHandler: function(f) {return handlers.push(f)},
-                    replace: function(url, state, title) {
-                        Hok.H.replaceState(state || {}, title || '', url);
-                        spread(url, state, title);
-                    },
-                    back: function() {
-                        Hok.H.back();
-                    },
-                    resetHandlers: function(){
-                        handlers = [];
-                    },
-                    state: function() { return Hok.H.state; }
-                };
-            })();
+            // 
+            // 
+            // Hok.history = (function(){
+            //     var handlers = [],
+            //         spread = function(url, state, title) {
+            //             document.title = title;
+            //             return handlers.forEach(
+            //                 function(handler){
+            //                     handler(url, state, title);
+            //                 }
+            //             );
+            //         };
+            //     return {
+            //         push: function(url, state, title) {
+            //             Hok.H.pushState(state || {}, title || '', url);
+            //             spread(url, state, title);
+            //         },
+            //         registerHandler: function(f) {return handlers.push(f)},
+            //         replace: function(url, state, title) {
+            //             Hok.H.replaceState(state || {}, title || '', url);
+            //             spread(url, state, title);
+            //         },
+            //         back: function() {
+            //             Hok.H.back();
+            //         },
+            //         resetHandlers: function(){
+            //             handlers = [];
+            //         },
+            //         state: function() { return Hok.H.state; }
+            //     };
+            // })();
             Hok.i18n = (function(){
                 var data = {},
                     RX_LANG = /i18n\(([^}|]*)?\|?([^}]*)\)/;
@@ -713,7 +759,7 @@
                                 lang in lo[_label] && (data[_label] = lo[_label][lang]);
                             }
                         },
-                        get: function(k, fallback) {return  Hok.ns.check(k, data) || fallback || 'no Value'},
+                        get: function(k, fallback) {return  Hok.ns.check(k, data) || fallback || k+'<sup>&#2417;</sup>'},
                         load: function(dict) { data = dict;},
                         parse: function(obj){
                             var replacing = searchHash.forValue(obj, RX_LANG),
@@ -791,6 +837,7 @@
                 
                 var components = {},
                     preloadedComponents = {},
+                    computeStats = Hok.CONFIG.ENGY.STATS,
                     PARAMETERS_RX = /\${([^}|]*)?\|?([^}]*)}/,
                     cmp404 = function(componentName) {return JSON.stringify({
                         tag: 'div',
@@ -858,8 +905,7 @@
                         end,
                         xhrTot = 0,
                         requested = {},
-                        cback,
-                        computeStats = Hok.CONFIG.ENGY.STATS;
+                        cback;
                     return new Promise(function(resolve, reject){
                         (function solve() {
                             var component = searchHash.forKey(
@@ -869,16 +915,18 @@
                                 componentName,
                                 cached, preLoaded,
                                 xhrStart = 0,
-                                xhrEnd = 0;
-                
+                                xhrEnd = 0,
+                                trackEnd = function() {
+                                    end = +new Date();
+                                    self.stats.time = end - start;
+                                    self.stats.elements = elementsN;
+                                    self.stats.requested = requested;
+                                    self.stats.xhrTot = xhrTot;
+                                };
                             if (!component.length) {
-                            
-                                end = +new Date();
-                                self.stats.time = end - start;
-                                self.stats.elements = elementsN;
-                                self.stats.requested = requested;
-                                self.stats.xhrTot = xhrTot;
-                                resolve(self.content, {});
+                                trackEnd();
+                                langFunc && langFunc(self.content);
+                                resolve([self.content]);
                             } else {
                                 component = component[0];
                                 componentName = self.getFileName(component.value);
@@ -944,14 +992,17 @@
                                     }
                                     
                                     langFunc && langFunc(self.content);
+                                    trackEnd();
                                     
-                                    resolve(self.content, computeStats && self.stats);
+                                    resolve([self.content, computeStats && self.stats]);
+                                    solve();
                                 };
                                 xhrStart = +new Date();
                                 // cached?
                                 if (preLoaded) {
                                     cback(preloadedComponents[componentName]);
                                 } else if (cached) {
+                                    
                                     cback(components[componentName]);
                                 } else {
                                     Hok.io.get(componentName, cback, function(e) {
@@ -960,21 +1011,58 @@
                                 }
                             }
                         })();
-                        // resolve(self.content);
                     });
                 };
+                function report (stats) {
+                    var j, ln = new Array(37).join('-');
             
-            
+                    console.log(ln);
+                    console.log(
+                        'Hokuto used ' + stats.elements + ' component' + (stats.elements === 1 ? '' : 's')
+                    );
+                    console.log('usage: ');
+                    for (j in stats.requested) {
+                        console.log(
+                            '> ' + j + ': ' + stats.requested[j] + ' time' + (stats.requested[j] > 1 ? 's' : '')
+                        );
+                    }
+                    console.log(
+                        'Hokuto total time: '
+                        + stats.time
+                        + 'ms (unfolding: '
+                        + (stats.time - stats.xhrTot)
+                        + 'ms; xhr: '
+                        + stats.xhrTot
+                        + 'ms)'
+                    );
+                    console.log(ln);
+                }
             
                 return function(cnf) {
-                    return new Processor(cnf).parse();
+                    return new Processor(cnf).parse()
+                    .then(
+                        function(res){
+                            if (computeStats && res.length > 1 ) {
+                                report(res[1]);
+                            }
+                            return res
+                        }
+                    );
+                    
+                    
+                    
                 }
             })();
             var resolutive = function () {
-                return Promise.resolve();
-            };
-            var isDefined = function (x){return typeof x !== Hok.TYPES.U};
-            var isFunction = function (f){return typeof f === Hok.TYPES.F};
+                    return Promise.resolve();
+                },
+                isDefined = function (x){return typeof x !== Hok.TYPES.U},
+                isFunction = function (f){return typeof f === Hok.TYPES.F},
+                functionize = function (instance, what){
+                    return isFunction(what)
+                        ? what.call(instance)
+                        : what;
+                };
             
             function Knot(config, clearTarget) {
                 var self = this;
@@ -1008,24 +1096,21 @@
                 this.initTag();
                 this.initialize();
             }
+            
             Knot.prototype.initTag = function(){
                 this.tag = this.config.tag || 'div';
                 this.node = this.config.ns ?
                     document.createElementNS(this.config.ns, this.tag) :
                     document.createElement(this.tag);
             };
+            
             Knot.prototype.initialize = function(){
                 this.setCall('Id,Ref,Data,State,Events,Html,Text,Style,Attrs,Classname,End,ByRef,Methods');
-                
             };
+            
             Knot.prototype.initRerender = function(){
                 this.setCall('Ref,Data,State,Html,Text,Style,Attrs,Classname,End,ByRef,Methods');
-                // if(
-                //     isDefined(this.config[Knot.identifier]) &&
-                //     !isDefined(this.config.nodes[this.config[Knot.identifier]])
-                // ) this.nodes[this.config[Knot.identifier]] = this;
                 this.cb && this.cb.call(this);
-            
                 this.childrenKnots.forEach(function (childrenKnot) {
                     childrenKnot.initRerender();
                 }) 
@@ -1041,30 +1126,27 @@
              */
             Knot.prototype.setState = function(state) {
                 if (isDefined(state)){
-                    for (var i in o) {
-                        if (o.hasOwnProperty(i)) {
-                            this.state[i] = o[i];
-                        }
+                    for (var i in state) {
+                        if (state.hasOwnProperty(i)) this.state[i] = state[i];
                     }
                 } else {
                     var statePassed = 'state' in this.config,
                         state = statePassed ? this.config.state : {};
-            
-                    this.state = isFunction(state) ?
-                        state.call(this) :
-                        state;
+                    this.state = functionize(this, state);
                 }
                 return this
             };
             
             Knot.prototype.setId = function(id) {
                 var fromConf = isDefined(this.config[Knot.identifier]),
-                    val;
-                if ( fromConf || id ) {
+                    val,
+                    attrs = {};
+                if (fromConf || id) {
                     val = fromConf
                         ? this.config[Knot.identifier]
-                        : id
-                    this.setAttrs({[Knot.identifier]: val});
+                        : id;
+                    attrs[Knot.identifier] = val;
+                    this.setAttrs(attrs);
                 }
             }
             Knot.prototype.setCall = function(fns) {
@@ -1082,19 +1164,19 @@
                 }
             };
             
-            
-            
             Knot.prototype.setByRef = function() {
-                if(Knot.byIdIdentifier in this.config) {
+                if (Knot.byIdIdentifier in this.config) {
                     var ref = this.config[Knot.byIdIdentifier]
                     this.nodes[ref] = this;
                 }
             };
+            
             Knot.prototype.getByRef = function(ref) {
                 return ref in this.nodes
                     ? this.nodes[ref]
                     : null
             };
+            
             Knot.prototype.setRef = function(ref, ctx) {
                 // allow the node to set a ref on itself
                 // or to another node it can reference
@@ -1112,20 +1194,29 @@
             
             Knot.prototype.setStyle = function(style) {
                 if (style) {
-                    this.config.style = Object.assign({}, this.config.style, style)
+                    this.config.style = Object.assign(
+                        {},
+                        this.config.style,
+                        functionize(this, style)
+                    )
                 }
                 this.config.style && Hok.dom.setStyle(this.node, this.config.style);
             };
             
             Knot.prototype.setAttrs = function(attrs) {
-                var a = isFunction(this.config.attrs)
-                    ? this.config.attrs.call(this)
-                    : this.config.attrs;
                 if (attrs) {
-                    a = Object.assign({}, a, attrs)
+                    this.config.attrs = Object.assign(
+                        {},
+                        this.config.attrs,
+                        functionize(this, attrs)
+                    )
                 }
-                a && Hok.dom.setAttrs(this.node, a);
+                this.config.attrs && Hok.dom.setAttrs(this.node, this.config.attrs);
             };
+            
+            Knot.prototype.unsetAttrs = function(attrs) {
+                attrs && Hok.dom.unsetAttrs(this.node, attrs);
+            }
             
             Knot.prototype.setData = function(data) {
                 if (data) {
@@ -1137,6 +1228,10 @@
                 }
             };
             
+            Knot.prototype.unsetData = function(data) {
+                data && Hok.dom.unsetData(this.node, data);
+            };
+            
             Knot.prototype.setText = function(text) {
                 if (isDefined(text)) this.config.text = text;
                 isDefined(this.config.text)
@@ -1145,9 +1240,9 @@
             
             Knot.prototype.setHtml = function(html) {
                 if (isDefined(html)) this.config.html = html;
-                if(isDefined(this.config.html)) {
+                if (isDefined(this.config.html)) {
                     
-                    if(isFunction(this.config.html)){
+                    if (isFunction(this.config.html)) {
                         Hok.dom.setHtml(this.node, this.config.html.call(this));
                     } else {
                         Hok.dom.setHtml(this.node, this.config.html);
@@ -1204,7 +1299,7 @@
             Knot.prototype.unhandle = function(eventType){
                 var self = this;
                 self.unhandlers = Object.entries(self.unhandlers).reduce(function (acc, entry){
-                    if(entry[0] === eventType){
+                    if (entry[0] === eventType) {
                         Hok.events.off(self.node, entry[0], entry[1]);
                     } else {
                         acc[entry[0]] = entry[1];
@@ -1214,8 +1309,8 @@
             };
             
             Knot.prototype.setEnd = function(e) {
-                const self = this;
-                if(!this.rendered && 'end' in this.config && isFunction(this.config.end)){
+                var self = this;
+                if (!this.rendered && 'end' in this.config && isFunction(this.config.end)) {
                     this.ender = self.config.end.call(self);
                 }
                 return this;
@@ -1244,13 +1339,12 @@
                         }, Promise.resolve()).then(function(){return self;});
                     } else {
                         return this.initCheck.call(this).then(function () {
-                            
                             return self.cb.call(self).then(function() {
                                 if(!self.aborted){
-                                    if(self.clearTarget && !self.rendered){
+                                    if (self.clearTarget && !self.rendered) {
                                         self.target.innerHTML = '';
                                     }
-                                    if(!self.rendered) self.target.appendChild(self.frag);
+                                    if (!self.rendered) self.target.appendChild(self.frag);
                                     self.rendered = true;
                                 }
                                 return self
@@ -1284,7 +1378,7 @@
                 }
             };
             Knot.prototype.report = function() {
-                const  jsonSize = JSON.stringify(this.config).length,
+                var jsonSize = JSON.stringify(this.config).length,
                     htmlSize = this.node.innerHTML.length;
                 return (htmlSize / jsonSize).toFixed(2) + " (html:" + htmlSize + " / json:" + jsonSize + ")"
             };
@@ -1294,31 +1388,31 @@
             Knot.byIdIdentifier = 'ref';
             //+++++++++++++++++++++++++++++++++++++++++++++++
         
-            var __renders = {};
-            var __nodes = {};
+            var __renders = {},
+                __nodes = {};
+        
             function render(cnf, clear, name) {
-                return Hok.solve(cnf).then(function (config, stats){
-                    if(!('target' in config)){
-                        config.target = document.currentScript.parentNode;
-                    }
-                    config.endFunctions = [];
-                    // config.saveKnotRef = function (id, knot) {
-                    //     __nodes[id] = knot;
-                    // };
-                    config.nodes = __nodes;
-                    return new Knot(config, clear).render().then(function (n) {
-                        if (name){
-                            __renders[name] = n;
+                return Hok.solve(cnf).then(
+                    function (r){
+                        var config = r[0],
+                            stats = r[1];
+                        
+                        if(!('target' in config)){
+                            config.target = document.currentScript.parentNode;
                         }
-                        return n;
-                    });
-                    // .finally(function () {
-                    //     console.log(config.endFunctions);
-                    // });
-                }).catch(function (r){
-                    console.log({r:r});
-                });
-           
+                        config.endFunctions = [];
+                        config.nodes = __nodes;
+                        return new Knot(config, clear).render().then(function (n) {
+                            if (name){
+                                __renders[name] = n;
+                            }
+                            return n;
+                        });
+                    }
+                )
+                // .catch(function (r){
+                //     console.log({r:r});
+                // });
             }
         
             function get(cnf){
@@ -1336,6 +1430,7 @@
                 events: Hok.events,
                 render: render,
                 get: get,
+                utils: Hok.utils,
                 getKnotById: function(id){
                     return id in __nodes
                         ? __nodes[id]

@@ -13,7 +13,7 @@ Hok.i18n = (function(){
                     lang in lo[_label] && (data[_label] = lo[_label][lang]);
                 }
             },
-            get: function(k, fallback) {return  Hok.ns.check(k, data) || fallback || 'no Value'},
+            get: function(k, fallback) {return  Hok.ns.check(k, data) || fallback || k+'<sup>&#2417;</sup>'},
             load: function(dict) { data = dict;},
             parse: function(obj){
                 var replacing = searchHash.forValue(obj, RX_LANG),

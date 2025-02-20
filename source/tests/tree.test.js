@@ -23,7 +23,7 @@ describe('start hokuto', () => {
         }]
     }
     it('basic tree render', done => {
-        render(basicConfig).then(r=>{
+        render(basicConfig).then(()=>{
             expect(selector('[data-id="0"]')).not.toBeNull();
             expect(selector('[data-id="1"]')).not.toBeNull();
             expect(selector('[data-id="1.1"]')).not.toBeNull();

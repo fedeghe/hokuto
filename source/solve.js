@@ -54,6 +54,7 @@ Hok.solve = (function() {
     
     var components = {},
         preloadedComponents = {},
+        computeStats = Hok.CONFIG.ENGY.STATS,
         PARAMETERS_RX = /\${([^}|]*)?\|?([^}]*)}/,
         cmp404 = function(componentName) {return JSON.stringify({
             tag: 'div',
@@ -121,8 +122,7 @@ Hok.solve = (function() {
             end,
             xhrTot = 0,
             requested = {},
-            cback,
-            computeStats = Hok.CONFIG.ENGY.STATS;
+            cback;
         return new Promise(function(resolve, reject){
             (function solve() {
                 var component = searchHash.forKey(
@@ -132,16 +132,18 @@ Hok.solve = (function() {
                     componentName,
                     cached, preLoaded,
                     xhrStart = 0,
-                    xhrEnd = 0;
-    
+                    xhrEnd = 0,
+                    trackEnd = function() {
+                        end = +new Date();
+                        self.stats.time = end - start;
+                        self.stats.elements = elementsN;
+                        self.stats.requested = requested;
+                        self.stats.xhrTot = xhrTot;
+                    };
                 if (!component.length) {
-                
-                    end = +new Date();
-                    self.stats.time = end - start;
-                    self.stats.elements = elementsN;
-                    self.stats.requested = requested;
-                    self.stats.xhrTot = xhrTot;
-                    resolve(self.content, {});
+                    trackEnd();
+                    langFunc && langFunc(self.content);
+                    resolve([self.content]);
                 } else {
                     component = component[0];
                     componentName = self.getFileName(component.value);
@@ -207,14 +209,17 @@ Hok.solve = (function() {
                         }
                         
                         langFunc && langFunc(self.content);
+                        trackEnd();
                         
-                        resolve(self.content, computeStats && self.stats);
+                        resolve([self.content, computeStats && self.stats]);
+                        solve();
                     };
                     xhrStart = +new Date();
                     // cached?
                     if (preLoaded) {
                         cback(preloadedComponents[componentName]);
                     } else if (cached) {
+                        
                         cback(components[componentName]);
                     } else {
                         Hok.io.get(componentName, cback, function(e) {
@@ -223,13 +228,45 @@ Hok.solve = (function() {
                     }
                 }
             })();
-            // resolve(self.content);
         });
     };
+    function report (stats) {
+        var j, ln = new Array(37).join('-');
 
-
+        console.log(ln);
+        console.log(
+            'Hokuto used ' + stats.elements + ' component' + (stats.elements === 1 ? '' : 's')
+        );
+        console.log('usage: ');
+        for (j in stats.requested) {
+            console.log(
+                '> ' + j + ': ' + stats.requested[j] + ' time' + (stats.requested[j] > 1 ? 's' : '')
+            );
+        }
+        console.log(
+            'Hokuto total time: '
+            + stats.time
+            + 'ms (unfolding: '
+            + (stats.time - stats.xhrTot)
+            + 'ms; xhr: '
+            + stats.xhrTot
+            + 'ms)'
+        );
+        console.log(ln);
+    }
 
     return function(cnf) {
-        return new Processor(cnf).parse();
+        return new Processor(cnf).parse()
+        .then(
+            function(res){
+                if (computeStats && res.length > 1 ) {
+                    report(res[1]);
+                }
+                return res
+            }
+        );
+        
+        
+        
     }
 })();

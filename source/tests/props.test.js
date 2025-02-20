@@ -21,7 +21,9 @@ describe('all props', () => {
         cbResolving = jest.fn(()=>Promise.resolve()),
         cbRejecting = jest.fn(() =>Promise.reject()),
         initTrue = jest.fn(() => Promise.resolve()),
-        initFalse = jest.fn(() => Promise.reject());
+        initFalse = jest.fn(() => Promise.reject()),
+        insideEnder = jest.fn(),
+        ender = jest.fn(() => insideEnder);
     afterEach(() => {
         cb.mockClear();
         documentClear();
@@ -31,40 +33,44 @@ describe('all props', () => {
         render({
             ...basicConfig,
             cb
-        }).then(r=>{
+        }).then(() => {
             expect(cb).toBeCalled()
         });
     });
+
     it('cb resolving', done => {
         render({
             ...basicConfig,
             cb: cbResolving
-        }).then(r=>{
+        }).then(() => {
             expect(cbResolving).toBeCalled()
             expect(selector('p').innerHTML).toBe('test');
             done()
         });
     });
+
     it('cb rejecting', done => {
         render({
             ...basicConfig,
             cb: cbRejecting
-        }).then(r=>{
+        }).then(() => {
             expect(cbRejecting).toBeCalled()
             expect(selector('p')).toBeNull();
             done()
         });
     });
+
     it('initCheck truthy expected', done => {
         render({
             ...basicConfig,
             initCheck: initTrue
-        }).then(r=>{
+        }).then(() => {
             expect(selector('p').innerHTML).toBe('test');
             expect(initTrue).toBeCalled()
             done()
         });
     });
+
     it('initCheck falsy expected', done => {
         render({
             ...basicConfig,
@@ -80,7 +86,7 @@ describe('all props', () => {
         render({
             ...basicConfig,
             abort: cbRejecting
-        },true).then(r=>{
+        },true).then(() => {
             expect(selector('div[data-testid="visible"]').innerHTML).toBe('loading');
         });
     });
@@ -92,7 +98,7 @@ describe('all props', () => {
                 s:'test string',
                 n: 4
             }
-        }).then(r=>{
+        }).then(r => {
             expect(r.state).toMatchObject({
                 s:'test string',
                 n: 4
@@ -131,7 +137,7 @@ describe('all props', () => {
                 id:'u2',
                 text:'testTwo'
             }]
-        },true).then(r=>{
+        },true).then(() => {
             var n = selector('#u1');
             // https://stackoverflow.com/questions/47902335/innertext-is-undefined-in-jest-test
             expect(n.textContent).toBe('testOne');         
@@ -150,7 +156,7 @@ describe('all props', () => {
                     backgroundColor:'blue'
                 }
             }]
-        }).then(r=>{
+        }).then(() => {
             var n = selector('#u1')
             expect(n.innerHTML).toBe('testOne');         
             expect(n.style.color).toBe('red');         
@@ -172,7 +178,7 @@ describe('all props', () => {
                     step: 5
                 }
             }]
-        }).then(r=>{
+        }).then(() => {
             var n = selector('#u1')
             expect(n.title).toBe('just a title');
             expect(n.type).toBe('range');
@@ -184,19 +190,33 @@ describe('all props', () => {
         });
     });
 
-    it('classNAme setter expected', done => {
+    it('className setter expected', done => {
         render({
             children:[{
                 tag:'input',
-                id:'u1',
+                ref:'u1',
                 className:'a,b,c'
             }]
-        }).then(r=>{
-            var n = selector('#u1')
+        }).then(r => {
+            var n = r.getByRef('u1').node
             expect(n.classList.contains('a')).toBe(true);
             expect(n.classList.contains('b')).toBe(true);
             expect(n.classList.contains('c')).toBe(true);
             expect(n.classList.contains('d')).toBe(false);
+            done();
+        });
+    });
+
+    it('ender expected', done => {
+        render({
+            ...basicConfig,
+            end: ender
+        }).then(r => {
+            expect(selector('p').innerHTML).toBe('test');
+            expect(ender).toBeCalled();
+            expect(insideEnder).not.toBeCalled();
+            r.clear();
+            expect(insideEnder).toBeCalled();
             done();
         });
     });

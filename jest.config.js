@@ -5,5 +5,6 @@ module.exports = {
     },
     "collectCoverage": true,
     "coverageReporters": ["lcov", "json", "html"],
-    "clearMocks": true
+    "clearMocks": true,
+    verbose: true
 }
