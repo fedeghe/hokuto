@@ -1,2 +1,8 @@
-/source
+/node_modules
 /sample
+/tests
+/source
+/coverage
+/jest.config.js
+.coveralls.yml
+yarn.lock

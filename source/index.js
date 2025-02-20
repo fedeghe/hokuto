@@ -27,10 +27,8 @@ var hokuto = (function (_) {
 
     function render(cnf, clear, name) {
         return Hok.solve(cnf).then(
-            function (r){
+            function (config){
                 // debugger
-                var config = r[0],
-                    stats = r[1];
                 
                 if(!('target' in config)){
                     config.target = document.currentScript.parentNode;

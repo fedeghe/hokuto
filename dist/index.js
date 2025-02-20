@@ -21,7 +21,7 @@
 
 hokuto v. 0.1.0
 
-with ~17.92KB of ❤️
+with ~18.1KB of ❤️
 
 Federico Ghedina <fedeghe@gmail.com>
 
@@ -30,8 +30,8 @@ var hokuto=function(_){"use strict";function Knot(t,e){var n=this;this.config=t,
 this.target=this.config.target||document.body,this.children=this.config.children||[],this.childrenKnots=[],this.debt=~~this.children.length,this.solved=0===this.debt,
 this.cb=this.config.cb||resolutive,this.parentKnot=this.config.parentKnot||null,this.rootKnot=this.config.rootKnot||this,this.initCheck=this.config.initCheck||resolutive,
 this.abort=this.config.abort||resolutive,this.aborted=!1,this.ender=!1,this.state="state"in t?t.state:{},this.nodes=t.nodes||this.rootKnot.nodes,this.rootNodeUnhandlersCollector=[],this.unhandlers={},
-this.abort.call(this).then().catch(function(){n.rootKnot.aborted=!0}),this.initTag(),this.initialize()}function render(t,e,n){return Hok.solve(t).then(function(t){var o=t[0];t[1]
-;return"target"in o||(o.target=document.currentScript.parentNode),o.endFunctions=[],o.nodes=__nodes,new Knot(o,e).render().then(function(t){return n&&(__renders[n]=t),t})})}function get(t){
+this.abort.call(this).then().catch(function(){n.rootKnot.aborted=!0}),this.initTag(),this.initialize()}function render(t,e,n){return Hok.solve(t).then(function(t){
+return"target"in t||(t.target=document.currentScript.parentNode),t.endFunctions=[],t.nodes=__nodes,new Knot(t,e).render().then(function(t){return n&&(__renders[n]=t),t})})}function get(t){
 var e=document.createElement("div");return t.target=e,render(t)}var searchHash=function(){function t(t,e){return JSON.stringify(t)===JSON.stringify(e)&&!n(e)}function e(t){
 return"string"==typeof t||t instanceof String}function n(t){return t instanceof RegExp}function o(t){
 var e=String(t)!==t,n=t===Object(t),o="function"!=typeof t,r={}.toString.call(t).match(/\[object\sObject\]/);return e&&n&&o&&!(!r||!r.length)}function r(t){
@@ -78,26 +78,29 @@ return Hok.ns.check(e,t)||n||e+"<sup>&#2417;</sup>"},load:function(e){t=e},parse
 (typeof r.regexp).match(/boolean/i)||(n=Hok.i18n.check(r.regexp[0]))&&(o=Hok.ns.check(r.container,t),o[r.key]=r.value.replace(n[0],Hok.i18n.get(n[1],n[2])))}}}(),Hok.solve=function(){
 function Processor(t){this.content=t,this.stats={};var e=t.engy;this.config={fileNameSeparator:e&&e.fileNameSeparator?e.fileNameSeparator:Hok.CONFIG.ENGY.COMPONENTS.PATH_SEPARATOR,
 fileNamePrepend:e&&e.fileNamePrepend?e.fileNamePrepend:Hok.CONFIG.ENGY.COMPONENTS.NAME_PREPEND,ext:e&&e.ext?e.ext:Hok.CONFIG.ENGY.COMPONENTS.EXT,
-componentsUrl:e&&e.componentsUrl?e.componentsUrl:Hok.CONFIG.ENGY.COMPONENTS.URL}}function report(t){var e,n=new Array(37).join("-"),o=console.log;o(n),
-o(["Hokuto used",t.elements,"component"+(1===t.elements?"":"s")].join(" ")),o("usage: ");for(e in t.requested)o(["•",e,":",t.requested[e],"time"+(t.requested[e]>1?"s":"")].join(" "))
-;o(["total time:",t.time+"ms"].join(" ")),o(["◦ unfolding:",t.time-t.xhrTot+"ms"].join(" ")),o(["◦ xhr:",t.xhrTot+"ms"].join(" ")),o(n)}var _clone=function(t){if(null==t||"object"!=typeof t)return t
-;var e,n=t.constructor();for(e in t)t.hasOwnProperty(e)&&(n[e]=_clone(t[e]));return n},_overwrite=function(t,e,n){for(var o=e.split(/\.|\//),r=o.length,i=0;i<r-1;)t=t[o[i++]];t[o[r-1]]=n
-},_mergeComponent=function(t,e,n){var o,r=Hok.ns.check(e,t),i=Object.assign({},n);for(o in r)!o.match(/component|params/)&&(i[o]=r[o]);n.protected?_overwrite(t,e,n):_overwrite(t,e,i)
+componentsUrl:e&&e.componentsUrl?e.componentsUrl:Hok.CONFIG.ENGY.COMPONENTS.URL}}function report(t){var e=new Array(37).join("-");(0,
+console.log)(e+"\n"+["%cHokuto%c used",t.elements,"component"+(1===t.elements?"":"s"),"\n"].join(" ")+"usage: \n"+Object.keys(t.requested).reduce(function(e,n){
+return e+["•",n+":",t.requested[n],"time"+(t.requested[n]>1?"s":""),"\n"].join(" ")
+},"")+["total time:",t.time+"ms","\n"].join(" ")+["◦ unfolding:",t.time-t.xhrTot+"ms","\n"].join(" ")+["◦ xhr:",t.xhrTot+"ms","\n"].join(" ")+e,"color:#6af;font-size:1.5em","")}var _clone=function(t){
+if(null==t||"object"!=typeof t)return t;var e,n=t.constructor();for(e in t)t.hasOwnProperty(e)&&(n[e]=_clone(t[e]));return n},_overwrite=function(t,e,n){
+for(var o=e.split(/\.|\//),r=o.length,i=0;i<r-1;)t=t[o[i++]];t[o[r-1]]=n},_mergeComponent=function(t,e,n){var o,r=Hok.ns.check(e,t),i=Object.assign({},n)
+;for(o in r)!o.match(/component|params/)&&(i[o]=r[o]);n.protected?_overwrite(t,e,n):_overwrite(t,e,i)
 },components={},preloadedComponents={},computeStats=Hok.CONFIG.ENGY.STATS,PARAMETERS_RX=/\${([^}|]*)?\|?([^}]*)}/,cmp404=function(t){return JSON.stringify({tag:"div",style:{border:"1px solid red",
 backgroundColor:"pink",color:"red",padding:"10px"},html:"no component found ("+t+")",protected:!0})};return Processor.prototype.getFileName=function(t){
 var e=t.split(/\/|\|/),n=t,o=this.config,r=e.length-1;return e[r]=o.fileNamePrepend+e[r],n=e.join(o.fileNameSeparator),[o.componentsUrl,o.componentsUrl.match(/\/$/)?"":"/",n,o.ext].join("")},
 Processor.prototype.resetStats=function(){this.stats={time:0,elements:0,requested:{},xhrTot:0}},Processor.prototype.parse=function(){
-var self=this,langFunc=Hok.i18n.parse,elementsN=0,start=+new Date,end,xhrTot=0,requested={},cback;return new Promise(function(resolve,reject){!function solve(){
+var self=this,langFunc=Hok.i18n.parse,elementsN=0,start=+new Date,end,xhrTot=0,requested={},cback,hasStats=!1;return new Promise(function(resolve,reject){!function solve(){
 var component=searchHash.forKey(self.content,"component",{limit:1}),componentName,cached,preLoaded,xhrStart=0,xhrEnd=0,trackEnd=function(){end=+new Date,self.stats.time=end-start,
-self.stats.elements=elementsN,self.stats.requested=requested,self.stats.xhrTot=xhrTot};component.length?(component=component[0],componentName=self.getFileName(component.value),
+self.stats.elements=elementsN,self.stats.requested=requested,self.stats.xhrTot=xhrTot};component.length?(hasStats=!0,component=component[0],componentName=self.getFileName(component.value),
 component.value in requested?requested[component.value]++:(requested[component.value]=1,elementsN++),cached=componentName in components,preLoaded=componentName in preloadedComponents,
-cback=function(cntORobj){xhrEnd=+new Date,xhrTot+=xhrEnd-xhrStart;var params=Hok.ns.check(component.container+"/params",self.content),obj;if(preLoaded)obj=_clone(cntORobj);else{
-cached||(components[componentName]=_clone(cntORobj));var evaluator=eval("(function (){return "+cntORobj+";})()");obj=evaluator(params)}
+cback=function(cntORobj){xhrEnd=+new Date,xhrTot+=xhrEnd-xhrStart;var params=Hok.ns.check(component.container+"/params",self.content),obj,evaluator;if(preLoaded)obj=_clone(cntORobj);else{
+cached||(components[componentName]=_clone(cntORobj));try{evaluator=eval("(function (){return "+cntORobj+";})()"),obj=evaluator(params)}catch(t){
+console.error("Error evaluating component '"+componentName+"'"),console.error(t)}}
 component.container?_mergeComponent(self.content,component.container,obj):(obj.protected?self.config=Object.assign({},self.config,obj):self.config=Object.assign({},obj,self.config),
 self.content=Object.assign({},obj,self.content),delete self.content.component,delete self.content.params),langFunc&&langFunc(self.content),trackEnd(),solve()},xhrStart=+new Date,
 preLoaded?cback(preloadedComponents[componentName]):cached?cback(components[componentName]):Hok.io.get(componentName,cback,function(t){cback(cmp404(componentName))})):(trackEnd(),
-langFunc&&langFunc(self.content),resolve([self.content,computeStats&&self.stats]))}()})},function(t){return new Processor(t).parse().then(function(t){return computeStats&&t.length>1&&report(t[1]),t})}
-}();var resolutive=function(){return Promise.resolve()},isDefined=function(t){return typeof t!==Hok.TYPES.U},isFunction=function(t){return typeof t===Hok.TYPES.F},functionize=function(t,e){
+langFunc&&langFunc(self.content),resolve([self.content,hasStats&&computeStats&&self.stats]))}()})},function(t){return new Processor(t).parse().then(function(t){return t[1]&&report(t[1]),t[0]})}}()
+;var resolutive=function(){return Promise.resolve()},isDefined=function(t){return typeof t!==Hok.TYPES.U},isFunction=function(t){return typeof t===Hok.TYPES.F},functionize=function(t,e){
 return isFunction(e)?e.call(t):e};Knot.prototype.initTag=function(){this.tag=this.config.tag||"div",
 this.node=this.config.ns?document.createElementNS(this.config.ns,this.tag):document.createElement(this.tag)},Knot.prototype.initialize=function(){
 this.setCall("Id,Ref,Data,State,Events,Html,Text,Style,Attrs,Classname,End,ByRef,Methods")},Knot.prototype.initRerender=function(){

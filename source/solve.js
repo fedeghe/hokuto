@@ -123,7 +123,8 @@ Hok.solve = (function() {
             end,
             xhrTot = 0,
             requested = {},
-            cback;
+            cback,
+            hasStats = false;
         return new Promise(function(resolve, reject){
             (function solve() {
                 var component = searchHash.forKey(
@@ -145,8 +146,9 @@ Hok.solve = (function() {
                 if (!component.length) {
                     trackEnd();
                     langFunc && langFunc(self.content);
-                    resolve([self.content, computeStats && self.stats]);
+                    resolve([self.content, hasStats && computeStats && self.stats]);
                 } else {
+                    hasStats = true;
                     component = component[0];
                     componentName = self.getFileName(component.value);
                     if (component.value in requested) {
@@ -162,10 +164,8 @@ Hok.solve = (function() {
                         xhrEnd = +new Date();
                         xhrTot += xhrEnd - xhrStart;
                         var params = Hok.ns.check(component.container + '/params', self.content),
-                            obj;
-                            // usedParams, foundParam,
-                            // foundParamValue, foundParamValueReplaced,
-                            // i, l;
+                            obj,
+                            evaluator;
                             
                         if (preLoaded) {
                             obj = _clone(cntORobj);
@@ -173,8 +173,13 @@ Hok.solve = (function() {
                             if (!cached) {
                                 components[componentName] = _clone(cntORobj);
                             }
-                            var evaluator = eval('(function (){return '+cntORobj+';})()');
-                            obj = evaluator(params);
+                            try {
+                                evaluator = eval('(function (){return '+cntORobj+';})()');
+                                obj = evaluator(params);
+                             } catch(e) {
+                                console.error("Error evaluating component '"+componentName+"'");
+                                console.error(e);
+                             }
                         }
                         if (component.container) {
                             _mergeComponent(self.content, component.container, obj);
@@ -210,34 +215,27 @@ Hok.solve = (function() {
         });
     };
     function report (stats) {
-        var j, ln = new Array(37).join('-'), cl = console.log;
-
-        cl(ln);
-        cl(['Hokuto used', stats.elements, 'component' + (stats.elements === 1 ? '' : 's')].join(' '));
-        cl('usage: ');
-        for (j in stats.requested) {
-            cl(['•', j, ':', stats.requested[j], 'time' + (stats.requested[j] > 1 ? 's' : '')].join(' '));
-        }
-        cl(['total time:',
-            stats.time+'ms'
-        ].join(' '));
-        cl(['◦ unfolding:',
-            (stats.time - stats.xhrTot)+'ms'
-        ].join(' '));
-        cl(['◦ xhr:',
-            stats.xhrTot+'ms'
-        ].join(' '));
-        cl(ln);
+        var ln = new Array(37).join('-'), cl = console.log;
+        cl(
+            ln+'\n'+
+            ['%cHokuto%c used', stats.elements, 'component' + (stats.elements === 1 ? '' : 's'),'\n'].join(' ')+
+            'usage: \n'+
+            Object.keys(stats.requested).reduce(function(acc, key){
+                return acc + ['•', key+':', stats.requested[key], 'time' + (stats.requested[key] > 1 ? 's' : ''), '\n'].join(' ')
+            }, '')+
+            ['total time:', stats.time+'ms', '\n'].join(' ')+
+            ['◦ unfolding:', (stats.time - stats.xhrTot)+'ms', '\n'].join(' ')+
+            ['◦ xhr:', stats.xhrTot+'ms', '\n'].join(' ')+
+            ln, "color:#6af;font-size:1.5em", ""
+        );
     }
 
     return function(cnf) {
         return new Processor(cnf).parse()
         .then(
             function(res){
-                if (computeStats && res.length > 1 ) {
-                    report(res[1]);
-                }
-                return res
+                res[1] && report(res[1]);
+                return res[0];
             }
         );
     }
