@@ -21,7 +21,7 @@
 
 hokuto v. 0.1.0
 
-with ~17.94KB of ❤️
+with ~17.92KB of ❤️
 
 Federico Ghedina <fedeghe@gmail.com>
 
@@ -94,10 +94,10 @@ component.value in requested?requested[component.value]++:(requested[component.v
 cback=function(cntORobj){xhrEnd=+new Date,xhrTot+=xhrEnd-xhrStart;var params=Hok.ns.check(component.container+"/params",self.content),obj;if(preLoaded)obj=_clone(cntORobj);else{
 cached||(components[componentName]=_clone(cntORobj));var evaluator=eval("(function (){return "+cntORobj+";})()");obj=evaluator(params)}
 component.container?_mergeComponent(self.content,component.container,obj):(obj.protected?self.config=Object.assign({},self.config,obj):self.config=Object.assign({},obj,self.config),
-self.content=Object.assign({},obj,self.content),delete self.content.component,delete self.content.params),langFunc&&langFunc(self.content),trackEnd(),resolve([self.content,computeStats&&self.stats]),
-solve()},xhrStart=+new Date,preLoaded?cback(preloadedComponents[componentName]):cached?cback(components[componentName]):Hok.io.get(componentName,cback,function(t){cback(cmp404(componentName))
-})):(trackEnd(),langFunc&&langFunc(self.content),resolve([self.content]))}()})},function(t){return new Processor(t).parse().then(function(t){return computeStats&&t.length>1&&report(t[1]),t})}}()
-;var resolutive=function(){return Promise.resolve()},isDefined=function(t){return typeof t!==Hok.TYPES.U},isFunction=function(t){return typeof t===Hok.TYPES.F},functionize=function(t,e){
+self.content=Object.assign({},obj,self.content),delete self.content.component,delete self.content.params),langFunc&&langFunc(self.content),trackEnd(),solve()},xhrStart=+new Date,
+preLoaded?cback(preloadedComponents[componentName]):cached?cback(components[componentName]):Hok.io.get(componentName,cback,function(t){cback(cmp404(componentName))})):(trackEnd(),
+langFunc&&langFunc(self.content),resolve([self.content,computeStats&&self.stats]))}()})},function(t){return new Processor(t).parse().then(function(t){return computeStats&&t.length>1&&report(t[1]),t})}
+}();var resolutive=function(){return Promise.resolve()},isDefined=function(t){return typeof t!==Hok.TYPES.U},isFunction=function(t){return typeof t===Hok.TYPES.F},functionize=function(t,e){
 return isFunction(e)?e.call(t):e};Knot.prototype.initTag=function(){this.tag=this.config.tag||"div",
 this.node=this.config.ns?document.createElementNS(this.config.ns,this.tag):document.createElement(this.tag)},Knot.prototype.initialize=function(){
 this.setCall("Id,Ref,Data,State,Events,Html,Text,Style,Attrs,Classname,End,ByRef,Methods")},Knot.prototype.initRerender=function(){

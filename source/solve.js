@@ -126,7 +126,6 @@ Hok.solve = (function() {
             cback;
         return new Promise(function(resolve, reject){
             (function solve() {
-                
                 var component = searchHash.forKey(
                         self.content,
                         'component', { limit: 1 }
@@ -146,7 +145,7 @@ Hok.solve = (function() {
                 if (!component.length) {
                     trackEnd();
                     langFunc && langFunc(self.content);
-                    resolve([self.content]);
+                    resolve([self.content, computeStats && self.stats]);
                 } else {
                     component = component[0];
                     componentName = self.getFileName(component.value);
@@ -160,7 +159,6 @@ Hok.solve = (function() {
                     preLoaded = componentName in preloadedComponents;
     
                     cback = function(cntORobj){
-                        debugger
                         xhrEnd = +new Date();
                         xhrTot += xhrEnd - xhrStart;
                         var params = Hok.ns.check(component.container + '/params', self.content),
@@ -193,8 +191,7 @@ Hok.solve = (function() {
                         
                         langFunc && langFunc(self.content);
                         trackEnd();
-                        
-                        resolve([self.content, computeStats && self.stats]);
+                        // check again
                         solve();
                     };
                     xhrStart = +new Date();
@@ -243,8 +240,5 @@ Hok.solve = (function() {
                 return res
             }
         );
-        
-        
-        
     }
 })();
