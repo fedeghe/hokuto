@@ -126,8 +126,7 @@ Hok.solve = (function() {
             cback;
         return new Promise(function(resolve, reject){
             (function solve() {
-                console.log(+new Date)
-                console.log(JSON.parse(JSON.stringify(self.content.children[0].children[0].children[0])))
+                
                 var component = searchHash.forKey(
                         self.content,
                         'component', { limit: 1 }
@@ -143,7 +142,7 @@ Hok.solve = (function() {
                         self.stats.requested = requested;
                         self.stats.xhrTot = xhrTot;
                     };
-                console.log(component)
+                
                 if (!component.length) {
                     trackEnd();
                     langFunc && langFunc(self.content);

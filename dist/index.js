@@ -21,7 +21,7 @@
 
 hokuto v. 0.1.0
 
-with ~18.07KB of ❤️
+with ~17.94KB of ❤️
 
 Federico Ghedina <fedeghe@gmail.com>
 
@@ -87,10 +87,9 @@ o(["Hokuto used",t.elements,"component"+(1===t.elements?"":"s")].join(" ")),o("u
 backgroundColor:"pink",color:"red",padding:"10px"},html:"no component found ("+t+")",protected:!0})};return Processor.prototype.getFileName=function(t){
 var e=t.split(/\/|\|/),n=t,o=this.config,r=e.length-1;return e[r]=o.fileNamePrepend+e[r],n=e.join(o.fileNameSeparator),[o.componentsUrl,o.componentsUrl.match(/\/$/)?"":"/",n,o.ext].join("")},
 Processor.prototype.resetStats=function(){this.stats={time:0,elements:0,requested:{},xhrTot:0}},Processor.prototype.parse=function(){
-var self=this,langFunc=Hok.i18n.parse,elementsN=0,start=+new Date,end,xhrTot=0,requested={},cback;return new Promise(function(resolve,reject){!function solve(){console.log(+new Date),
-console.log(JSON.parse(JSON.stringify(self.content.children[0].children[0].children[0])));var component=searchHash.forKey(self.content,"component",{limit:1
-}),componentName,cached,preLoaded,xhrStart=0,xhrEnd=0,trackEnd=function(){end=+new Date,self.stats.time=end-start,self.stats.elements=elementsN,self.stats.requested=requested,self.stats.xhrTot=xhrTot}
-;console.log(component),component.length?(component=component[0],componentName=self.getFileName(component.value),
+var self=this,langFunc=Hok.i18n.parse,elementsN=0,start=+new Date,end,xhrTot=0,requested={},cback;return new Promise(function(resolve,reject){!function solve(){
+var component=searchHash.forKey(self.content,"component",{limit:1}),componentName,cached,preLoaded,xhrStart=0,xhrEnd=0,trackEnd=function(){end=+new Date,self.stats.time=end-start,
+self.stats.elements=elementsN,self.stats.requested=requested,self.stats.xhrTot=xhrTot};component.length?(component=component[0],componentName=self.getFileName(component.value),
 component.value in requested?requested[component.value]++:(requested[component.value]=1,elementsN++),cached=componentName in components,preLoaded=componentName in preloadedComponents,
 cback=function(cntORobj){xhrEnd=+new Date,xhrTot+=xhrEnd-xhrStart;var params=Hok.ns.check(component.container+"/params",self.content),obj;if(preLoaded)obj=_clone(cntORobj);else{
 cached||(components[componentName]=_clone(cntORobj));var evaluator=eval("(function (){return "+cntORobj+";})()");obj=evaluator(params)}
