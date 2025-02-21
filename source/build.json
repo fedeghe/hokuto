@@ -3,5 +3,6 @@
         "rm -rf dist",
         "mkdir dist"
     ],
-    "#source/index.js": "dist -plugins=malta-js-uglify[compress:true,output:{max_line_len:200}]...malta-header-comment[name:\"source/header.txt\"] -options=placeholderMode:'func',verbose:2,showPath:false -vars=vars.json"
+    "#source/index.js": "dist -plugins=malta-js-uglify[compress:true,output:{max_line_len:200}]...malta-header-comment[name:\"source/header.txt\"] -options=placeholderMode:'func',verbose:2,showPath:false -vars=vars.json",
+    "#source/docs/README.md": ". -options=placeholderMode:'func'"
 }
