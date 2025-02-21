@@ -21,7 +21,7 @@
 
 hokuto v. 0.1.0
 
-with ~18.1KB of ❤️
+with ~18.22KB of ❤️
 
 Federico Ghedina <fedeghe@gmail.com>
 
@@ -36,12 +36,12 @@ var e=document.createElement("div");return t.target=e,render(t)}var searchHash=f
 return"string"==typeof t||t instanceof String}function n(t){return t instanceof RegExp}function o(t){
 var e=String(t)!==t,n=t===Object(t),o="function"!=typeof t,r={}.toString.call(t).match(/\[object\sObject\]/);return e&&n&&o&&!(!r||!r.length)}function r(t){
 var e={}.toString.call(t).match(/\[object\sArray\]/);return String(t)!==t&&!(!e||!e.length)}function i(t){return t&&"object"==typeof t&&void 0!==t.nodeType&&1===t.nodeType&&"string"==typeof t.nodeName
-}function s(s,c,a,u){if(!o(c)&&!r(c))throw new Error("BAD PARAM: must search into an object or an array");var f,d=0,h=function(o,r){return e(o)&&n(r)?o.match(r):t(o,r)},l={key:function(t,e,n){
-return"function"==typeof n?n(t):h(t,n)},value:function(t,e,n){return"function"==typeof n?n(e):h(e,n)},keyvalue:function(t,e,n){
-return("function"==typeof n.key&&n.key(t)||h(t,n.key))&&("function"==typeof n.value&&n.value(e)||h(e,n.value))}}[s],p=[],m=function(t,e,n,o,r){
+}function s(s,c,a,u){if(!o(c)&&!r(c))throw new Error("BAD PARAM: must search into an object or an array");var f,h=0,d=function(o,r){return e(o)&&n(r)?o.match(r):t(o,r)},l={key:function(t,e,n){
+return"function"==typeof n?n(t):d(t,n)},value:function(t,e,n){return"function"==typeof n?n(e):d(e,n)},keyvalue:function(t,e,n){
+return("function"==typeof n.key&&n.key(t)||d(t,n.key))&&("function"==typeof n.value&&n.value(e)||d(e,n.value))}}[s],p=[],m=function(t,e,n,o,r){
 var i=[].concat.call(t,[e]),s=l(e,o[e],n),a=u.min<=r&&r<=u.max,f=i.length;a&&s&&(p.push({obj:o,value:o[e],key:i[f-1],parentKey:i[f-2],path:i.join("/"),getter:function(){return i.reduce(function(t,e){
-return t[e]},c)},container:i.slice(0,f-1).join("/"),parentContainer:i.slice(0,f-2).join("/"),regexp:s,level:r}),d++),g(o[e],n,i,r+1)},g=function(t,e,n,o){if(!i(t)){var r,s
-;if(t instanceof Array)for(r=0,s=t.length;r<s&&(m(n,r,e,t,o),u.limit!==d);r++);else if("object"==typeof t)for(r in t)if(m(n,r,e,t,o),u.limit===d)break}};return u.limit="limit"in u?~~u.limit:1/0,
+return t[e]},c)},container:i.slice(0,f-1).join("/"),parentContainer:i.slice(0,f-2).join("/"),regexp:s,level:r}),h++),g(o[e],n,i,r+1)},g=function(t,e,n,o){if(!i(t)){var r,s
+;if(t instanceof Array)for(r=0,s=t.length;r<s&&(m(n,r,e,t,o),u.limit!==h);r++);else if("object"==typeof t)for(r in t)if(m(n,r,e,t,o),u.limit===h)break}};return u.limit="limit"in u?~~u.limit:1/0,
 u.min="min"in u?~~u.min:0,u.max="max"in u?~~u.max:1/0,0===u.limit?p:(u.min=u.min<0?0:u.min,u.max<u.min&&(f=u.min,u.min=u.max,u.max=f),g(c,a,[],0),u.sorter?p.sort(u.sorter):p)}return{
 forKey:function(t,e,n){return s("key",t,e,n||{})},forValue:function(t,e,n){return s("value",t,e,n||{})},forKeyValue:function(t,e,n){return s("keyvalue",t,e,n||{})}}}()
 ;"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=searchHash);var Hok={W:window,_U_:"undefined",WD:window.document,H:window.history,TYPES:{U:"undefined",F:"function"},
@@ -111,14 +111,14 @@ Knot.prototype.setCall=function(t){var e=this;t.split(/,/).forEach(function(t){e
 t in this.nodes?consolw.warn('node already present by "'+Knot.byIdIdentifier+'"'):this.nodes[t]=this},Knot.prototype.setByRef=function(){if(Knot.byIdIdentifier in this.config){
 var t=this.config[Knot.byIdIdentifier];this.nodes[t]=this}},Knot.prototype.getByRef=function(t){return t in this.nodes?this.nodes[t]:null},Knot.prototype.setRef=function(t,e){
 t?(e||this).nodes[t]=e||this:isDefined(this.config.ref)&&(this.nodes[this.config.ref]=this)},Knot.prototype.setClassname=function(){
-this.config.className&&Hok.dom.setClass(this.node,this.config.className)},Knot.prototype.setStyle=function(t){t&&(this.config.style=Object.assign({},this.config.style,functionize(this,t))),
-this.config.style&&Hok.dom.setStyle(this.node,this.config.style)},Knot.prototype.setAttrs=function(t){t&&(this.config.attrs=Object.assign({},this.config.attrs,functionize(this,t))),
-this.config.attrs&&Hok.dom.setAttrs(this.node,this.config.attrs)},Knot.prototype.unsetAttrs=function(t){t&&Hok.dom.unsetAttrs(this.node,t)},Knot.prototype.setData=function(t){
-t&&(this.config.data=Object.assign({},this.config.data,t)),this.config.data&&(this.data=this.config.data,Hok.dom.setData(this.node,this.data))},Knot.prototype.unsetData=function(t){
-t&&Hok.dom.unsetData(this.node,t)},Knot.prototype.setText=function(t){isDefined(t)&&(this.config.text=t),isDefined(this.config.text)&&Hok.dom.setText(this.node,this.config.text)},
-Knot.prototype.setHtml=function(t){
-isDefined(t)&&(this.config.html=t),isDefined(this.config.html)&&(isFunction(this.config.html)?Hok.dom.setHtml(this.node,this.config.html.call(this)):Hok.dom.setHtml(this.node,this.config.html))},
-Knot.prototype.setMethods=function(){var t,e=this,n=Object.keys(this.config);n.forEach(function(n){
+this.config.className&&Hok.dom.setClass(this.node,this.config.className)},Knot.prototype.setStyle=function(t){var e=this;this.config.style=functionize(this,this.config.style||{}),
+t&&(this.config.style=Object.assign({},e.config.style,functionize(e,t))),this.config.style&&Hok.dom.setStyle(this.node,this.config.style)},Knot.prototype.setAttrs=function(t){var e=this
+;this.config.attrs=functionize(this,this.config.attrs||{}),t&&(this.config.attrs=Object.assign({},e.config.attrs,functionize(e,t))),this.config.attrs&&Hok.dom.setAttrs(this.node,this.config.attrs)},
+Knot.prototype.unsetAttrs=function(t){t&&Hok.dom.unsetAttrs(this.node,t)},Knot.prototype.setData=function(t){t&&(this.config.data=Object.assign({},this.config.data,t)),
+this.config.data&&(this.data=this.config.data,Hok.dom.setData(this.node,this.data))},Knot.prototype.unsetData=function(t){t&&Hok.dom.unsetData(this.node,t)},Knot.prototype.setText=function(t){
+isDefined(t)&&(this.config.text=t),isDefined(this.config.text)&&Hok.dom.setText(this.node,this.config.text)},Knot.prototype.setHtml=function(t){isDefined(t)&&(this.config.html=t),
+isDefined(this.config.html)&&(isFunction(this.config.html)?Hok.dom.setHtml(this.node,this.config.html.call(this)):Hok.dom.setHtml(this.node,this.config.html))},Knot.prototype.setMethods=function(){
+var t,e=this,n=Object.keys(this.config);n.forEach(function(n){
 (t=n.match(/^method_(\w*)$/i))&&(t[1]in e?console.warn("[WARNING] : method '"+t[0]+"' cant be added, would override existing element."):e["_"+t[1]]=e.config[t[0]].bind(e))})},
 Knot.prototype.setEvents=function(){var t,e,n,o=this;o.unhandlers={};for(n in o.config)(t=n.match(/^(on(ce)?)([A-Z]{1}[a-z]*)$/))&&(e=t[3].toLowerCase(),function(n){var r=function(t){
 return o.config[n].call(o,t)};Hok.events[t[1]](o.node,e,r),o.unhandlers[e]=r}(n));return this.unhandleEvents=function(){return Object.entries(o.unhandlers).forEach(function(t){

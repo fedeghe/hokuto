@@ -138,22 +138,26 @@ Knot.prototype.setClassname = function() {
 };
 
 Knot.prototype.setStyle = function(style) {
+    var self = this;
+    this.config.style = functionize(this, this.config.style || {});
     if (style) {
         this.config.style = Object.assign(
             {},
-            this.config.style,
-            functionize(this, style)
+            self.config.style,
+            functionize(self, style)
         )
     }
     this.config.style && Hok.dom.setStyle(this.node, this.config.style);
 };
 
 Knot.prototype.setAttrs = function(attrs) {
+    var self = this;
+    this.config.attrs = functionize(this, this.config.attrs || {});
     if (attrs) {
         this.config.attrs = Object.assign(
             {},
-            this.config.attrs,
-            functionize(this, attrs)
+            self.config.attrs,
+            functionize(self, attrs)
         )
     }
     this.config.attrs && Hok.dom.setAttrs(this.node, this.config.attrs);
