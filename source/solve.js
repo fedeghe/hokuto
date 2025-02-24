@@ -6,7 +6,7 @@ Hok.solve = (function() {
             var copy = obj.constructor(),
                 attr;
             for (attr in obj) {
-                if (obj.hasOwnProperty(attr)) copy[attr] = _clone(obj[attr]);
+                if (obj.hasOwn(attr)) copy[attr] = _clone(obj[attr]);
             }
             return copy;
         },
@@ -56,18 +56,19 @@ Hok.solve = (function() {
     var components = {},
         preloadedComponents = {},
         computeStats = Hok.CONFIG.ENGY.STATS,
-        PARAMETERS_RX = /\${([^}|]*)?\|?([^}]*)}/,
-        cmp404 = function(componentName) {return JSON.stringify({
-            tag: 'div',
-            style:{
-                border:'1px solid red',
-                backgroundColor:'pink',
-                color:'red',
-                padding:'10px'
-            },
-            html: 'no component found ('+componentName+')',
-            protected: true
-        })};
+        cmp404 = function(componentName) {
+            return JSON.stringify({
+                tag: 'div',
+                style:{
+                    border:'1px solid red',
+                    backgroundColor:'pink',
+                    color:'red',
+                    padding:'10px'
+                },
+                html: 'no component found ('+componentName+')',
+                protected: true
+            });
+        };
     
     
     function Processor(content) {
@@ -113,7 +114,7 @@ Hok.solve = (function() {
             elements: 0,
             requested: {},
             xhrTot: 0
-        }
+        };
     };
     Processor.prototype.parse = function () {
         var self = this,
@@ -125,14 +126,15 @@ Hok.solve = (function() {
             requested = {},
             cback,
             hasStats = false;
-        return new Promise(function(resolve, reject){
+        return new Promise(function(resolve){
             (function solve() {
                 var component = searchHash.forKey(
                         self.content,
                         'component', { limit: 1 }
                     ),
                     componentName,
-                    cached, preLoaded,
+                    cached,
+                    preLoaded,
                     xhrStart = 0,
                     xhrEnd = 0,
                     trackEnd = function() {
@@ -206,22 +208,32 @@ Hok.solve = (function() {
                     } else if (cached) {
                         cback(components[componentName]);
                     } else {
-                        Hok.io.get(componentName, cback, function(e) {
-                            cback(cmp404(componentName))
-                        });
+                        Hok.io.get(
+                            componentName,
+                            cback,
+                            function() {
+                                cback(cmp404(componentName));
+                            });
                     }
                 }
             })();
         });
     };
     function report (stats) {
-        var ln = new Array(37).join('-'), cl = console.log;
+        var ln = new Array(37).join('-'),
+            cl = console.log;
         cl(
             ln+'\n'+
             ['%cHokuto%c used', stats.elements, 'component' + (stats.elements === 1 ? '' : 's'),'\n'].join(' ')+
             'usage: \n'+
             Object.keys(stats.requested).reduce(function(acc, key){
-                return acc + ['•', key+':', stats.requested[key], 'time' + (stats.requested[key] > 1 ? 's' : ''), '\n'].join(' ')
+                return acc + [
+                    '•',
+                    key+':',
+                    stats.requested[key],
+                    'time' + (stats.requested[key] > 1 ? 's' : ''),
+                    '\n'
+                ].join(' ');
             }, '')+
             ['total time:', stats.time+'ms', '\n'].join(' ')+
             ['◦ unfolding:', (stats.time - stats.xhrTot)+'ms', '\n'].join(' ')+
@@ -238,5 +250,5 @@ Hok.solve = (function() {
                 return res[0];
             }
         );
-    }
+    };
 })();

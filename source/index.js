@@ -1,25 +1,26 @@
+// eslint-disable-next-line no-unused-vars
 var hokuto = (function (_) {
         
     //+++++++++++++++++++++++++++++++++++++++++++++++
     //libz
-    maltaF('../node_modules/searchhash/dist/index.js')
+    maltaF('../node_modules/searchhash/dist/index.js');
     
     //hokuto
-    maltaF('core.js')
-    maltaF('utils.js')
+    maltaF('core.js');
+    maltaF('utils.js');
     // maltaF('poly.js')
-    maltaF('ns.js')
-    maltaF('config.js')
+    maltaF('ns.js');
+    maltaF('config.js');
     // maltaF('object.js')
     // maltaF('cookie.js')
-    maltaF('dom.js')
-    maltaF('io.js')
-    maltaF('events.js')
+    maltaF('dom.js');
+    maltaF('io.js');
+    maltaF('events.js');
     // maltaF('history.js')
-    maltaF('i18n.js')
+    maltaF('i18n.js');
     
-    maltaF('solve.js')
-    maltaF('knot.js')
+    maltaF('solve.js');
+    maltaF('knot.js');
     //+++++++++++++++++++++++++++++++++++++++++++++++
 
     var __renders = {},
@@ -43,7 +44,7 @@ var hokuto = (function (_) {
                     return n;
                 });
             }
-        )
+        );
         // .catch(function (r){
         //     console.log({r:r});
         // });
@@ -62,16 +63,17 @@ var hokuto = (function (_) {
         i18n: Hok.i18n,
         dom: Hok.dom,
         events: Hok.events,
+        utils: Hok.utils,
+
         render: render,
         get: get,
-        utils: Hok.utils,
-        getKnotById: function(id){
+        getKnotById: function (id) {
             return id in __nodes
                 ? __nodes[id]
-                :null
+                : null;
         },
-        getElement: function(n){return n in __renders ? __renders[n] : false},
-        getElements: function() {return  __renders},
+        getElement: function(n) { return n in __renders ? __renders[n] : false; },
+        getElements: function() { return __renders; },
     };
 })(window);
 (typeof exports === 'object') && (module.exports = hokuto);

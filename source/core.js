@@ -1,8 +1,9 @@
+// eslint-disable-next-line no-unused-vars
 var Hok = {
-    W: window,
+    W: _,
     _U_: 'undefined',
-    WD: window.document,
-    H: window.history,
+    WD: _.document,
+    H: _.history,
     TYPES: {
         U: 'undefined',
         F: 'function'

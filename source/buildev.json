@@ -1,7 +1,8 @@
 {
     "EXE": [
         "rm -rf dist demo tests",
-        "mkdir dist demo tests"
+        "mkdir dist demo tests",
+        "cp source/docs/hokuto.png ."
     ],
     "!source/index.js": "dist -plugins=malta-js-uglify[compress:true,output:{max_line_len:200}]...malta-header-comment[name:\"source/header.txt\"] -options=placeholderMode:'func',verbose:2,showPath:false -vars=vars.json",
     "source/index.js": "dist -plugins=malta-header-comment[name:\"source/header.txt\"] -options=placeholderMode:'func',verbose:2,showPath:false -vars=vars.json",

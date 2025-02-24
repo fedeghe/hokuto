@@ -3,7 +3,7 @@
     ctx.type = {};
     
     ctx.type.isFunction = function (ƒ){
-        return typeof ƒ === 'function'
+        return typeof ƒ === 'function';
     };
 
     ctx.type.isObject = function(o) {
@@ -23,7 +23,4 @@
         
         return t1 && !!(t2 && t2.length);
     };
-
-    
-    
-})(Hok.utils)
+})(Hok.utils);

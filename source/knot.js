@@ -1,8 +1,8 @@
 var resolutive = function () {
         return Promise.resolve();
     },
-    isDefined = function (x){return typeof x !== Hok.TYPES.U},
-    isFunction = function (f){return typeof f === Hok.TYPES.F},
+    isDefined = function (x){return typeof x !== Hok.TYPES.U;},
+    isFunction = function (f){return typeof f === Hok.TYPES.F;},
     functionize = function (instance, what){
         return isFunction(what)
             ? what.call(instance)
@@ -58,7 +58,7 @@ Knot.prototype.initRerender = function(){
     this.cb && this.cb.call(this);
     this.childrenKnots.forEach(function (childrenKnot) {
         childrenKnot.initRerender();
-    }) 
+    }); 
 };
 
 /**
@@ -79,7 +79,7 @@ Knot.prototype.setState = function(state) {
             state = statePassed ? this.config.state : {};
         this.state = functionize(this, state);
     }
-    return this
+    return this;
 };
 
 Knot.prototype.setId = function(id) {
@@ -93,25 +93,25 @@ Knot.prototype.setId = function(id) {
         attrs[Knot.identifier] = val;
         this.setAttrs(attrs);
     }
-}
+};
 Knot.prototype.setCall = function(fns) {
     var self = this;
     fns.split(/,/).forEach(function(f) {
-        self['set' + f]()
-    })
+        self['set' + f]();
+    });
 };
 
 Knot.prototype.lateKid = function(id) {
     if (!(id in this.nodes)) {
         this.nodes[id] = this;
     } else {
-        consolw.warn('node already present by "'+Knot.byIdIdentifier+'"')
+        consolw.warn('node already present by "'+Knot.byIdIdentifier+'"');
     }
 };
 
 Knot.prototype.setByRef = function() {
     if (Knot.byIdIdentifier in this.config) {
-        var ref = this.config[Knot.byIdIdentifier]
+        var ref = this.config[Knot.byIdIdentifier];
         this.nodes[ref] = this;
     }
 };
@@ -119,14 +119,14 @@ Knot.prototype.setByRef = function() {
 Knot.prototype.getByRef = function(ref) {
     return ref in this.nodes
         ? this.nodes[ref]
-        : null
+        : null;
 };
 
 Knot.prototype.setRef = function(ref, ctx) {
     // allow the node to set a ref on itself
     // or to another node it can reference
     if (ref) {
-        (ctx || this).nodes[ref] = ctx || this
+        (ctx || this).nodes[ref] = ctx || this;
             // or incase is in the config, just set it
     } else if (isDefined(this.config.ref)) {
         this.nodes[this.config.ref] = this;
@@ -145,7 +145,7 @@ Knot.prototype.setStyle = function(style) {
             {},
             self.config.style,
             functionize(self, style)
-        )
+        );
     }
     this.config.style && Hok.dom.setStyle(this.node, this.config.style);
 };
@@ -158,18 +158,18 @@ Knot.prototype.setAttrs = function(attrs) {
             {},
             self.config.attrs,
             functionize(self, attrs)
-        )
+        );
     }
     this.config.attrs && Hok.dom.setAttrs(this.node, this.config.attrs);
 };
 
 Knot.prototype.unsetAttrs = function(attrs) {
     attrs && Hok.dom.unsetAttrs(this.node, attrs);
-}
+};
 
 Knot.prototype.setData = function(data) {
     if (data) {
-        this.config.data = Object.assign({}, this.config.data, data)
+        this.config.data = Object.assign({}, this.config.data, data);
     }
     if (this.config.data) {
         this.data = this.config.data;
@@ -209,7 +209,7 @@ Knot.prototype.setMethods = function() {
             if (!(tmp[1] in self)) {
                 self['_' + tmp[1]] = self.config[tmp[0]].bind(self);
             } else {
-                console.warn('[WARNING] : method \'' + tmp[0] + '\' cant be added, would override existing element.')
+                console.warn('[WARNING] : method \'' + tmp[0] + '\' cant be added, would override existing element.');
             }
         }
     });
@@ -257,7 +257,7 @@ Knot.prototype.unhandle = function(eventType){
     }, {});
 };
 
-Knot.prototype.setEnd = function(e) {
+Knot.prototype.setEnd = function() {
     var self = this;
     if (!this.rendered && 'end' in this.config && isFunction(this.config.end)) {
         this.ender = self.config.end.call(self);
@@ -296,7 +296,7 @@ Knot.prototype.render = function(){
                         if (!self.rendered) self.target.appendChild(self.frag);
                         self.rendered = true;
                     }
-                    return self
+                    return self;
                 });
             }).then(function(){
                 if(self.parentKnot){
@@ -305,7 +305,7 @@ Knot.prototype.render = function(){
                 return self;
             }).catch(function(){
                 self.frag.removeChild(self.node);
-            })
+            });
         }
     }
     
@@ -329,9 +329,9 @@ Knot.prototype.solve = function(){
 Knot.prototype.report = function() {
     var jsonSize = JSON.stringify(this.config).length,
         htmlSize = this.node.innerHTML.length;
-    return (htmlSize / jsonSize).toFixed(2) + " (html:" + htmlSize + " / json:" + jsonSize + ")"
+    return (htmlSize / jsonSize).toFixed(2) + " (html:" + htmlSize + " / json:" + jsonSize + ")";
 };
 
-Knot.isknot = function(n){return n instanceof Knot};
+Knot.isknot = function(n){return n instanceof Knot;};
 Knot.identifier = 'id';
 Knot.byIdIdentifier = 'ref';

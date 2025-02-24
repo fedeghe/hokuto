@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-var utils = require('./utils.js')
+var utils = require('./utils.js'),
     render = utils.render,
     selector = utils.selector,
     selectors = utils.selectors;
@@ -21,7 +21,7 @@ describe('start hokuto', () => {
                 ]
             }]
         }]
-    }
+    };
     it('basic tree render', done => {
         render(basicConfig).then(()=>{
             expect(selector('[data-id="0"]')).not.toBeNull();

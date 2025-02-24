@@ -1,7 +1,7 @@
 if (typeof Object.assign !== Hok.TYPES.F) {
     // Must be writable: true, enumerable: false, configurable: true
     Object.defineProperty(Object, "assign", {
-        value: function assign(target, varArgs) {
+        value: function assign(target/*, varArgs*/) {
             'use strict';
             if (target === null || target === undefined) {
                 throw new TypeError('Cannot convert undefined or null to object');

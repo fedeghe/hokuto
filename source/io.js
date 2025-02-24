@@ -4,50 +4,49 @@
         return fetch(uri)
             .then(function (response){
                 if(!response.ok){
-                    onError()
-                    return Promise.reject()
+                    onError();
+                    return Promise.reject();
                 }
-                return response
+                return response;
             })
             .then(function(v){
-                return v.text()
+                return v.text();
             })
-            .then(onSuccess)
+            .then(onSuccess);
     };
     ctx.post = function(uri, data, onSuccess, onError){
         return fetch(uri,{
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-                    
                 },
                 body: new URLSearchParams(data)
             })
             .then(function (response){
                 if(!response.ok){
-                    onError()
-                    return Promise.reject()
+                    onError();
+                    return Promise.reject();
                 }
-                return response
+                return response;
             })
-            .then(function (r){ return r.json()})
-            .then(onSuccess)
+            .then(function (r){ return r.json();})
+            .then(onSuccess);
     };
 
     ctx.getJson = function(uri, onSuccess, onError) {
         return fetch(uri)
             .then(function (response) {
                 if(!response.ok){
-                    onError()
-                    return Promise.reject()
+                    onError();
+                    return Promise.reject();
                 }
-                return response
+                return response;
             })
             .then(function(j){
-                return j.json()
+                return j.json();
             })
             .then(onSuccess)
-            .catch(onError)
+            .catch(onError);
     };
 
     ctx.getXML = function(uri, onSuccess, onError) {
@@ -65,5 +64,5 @@
             })
             .then(onSuccess)
             .catch(onError); 
-    }
+    };
 })(Hok.io);

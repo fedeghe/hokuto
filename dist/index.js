@@ -21,11 +21,12 @@
 
 hokuto v. 0.1.0
 
-with ~48.56KB of ❤️
+with ~49.39KB of ❤️
 
 Federico Ghedina <fedeghe@gmail.com>
 
 */
+// eslint-disable-next-line no-unused-vars
 var hokuto = (function (_) {
         
     //+++++++++++++++++++++++++++++++++++++++++++++++
@@ -35,14 +36,15 @@ var hokuto = (function (_) {
     SEARCHHASH v1.2.12
     ~2.01KB
     */
-    var searchHash=function(){function n(n,t){return JSON.stringify(n)===JSON.stringify(t)&&!e(t)}function t(n){return"string"==typeof n||n instanceof String}function e(n){return n instanceof RegExp}function r(n){var t=String(n)!==n,e=n===Object(n),r="function"!=typeof n,i={}.toString.call(n).match(/\[object\sObject\]/);return t&&e&&r&&!(!i||!i.length)}function i(n){var t={}.toString.call(n).match(/\[object\sArray\]/);return String(n)!==n&&!(!t||!t.length)}function o(n){return n&&"object"==typeof n&&void 0!==n.nodeType&&1===n.nodeType&&"string"==typeof n.nodeName}function u(u,a,f,c){if(!r(a)&&!i(a))throw new Error("BAD PARAM: must search into an object or an array");var l,m=0,y=function(r,i){return t(r)&&e(i)?r.match(i):n(r,i)},s={key:function(n,t,e){return"function"==typeof e?e(n):y(n,e)},value:function(n,t,e){return"function"==typeof e?e(t):y(t,e)},keyvalue:function(n,t,e){return("function"==typeof e.key&&e.key(n)||y(n,e.key))&&("function"==typeof e.value&&e.value(t)||y(t,e.value))}}[u],p=[],g=function(n,t,e,r,i){var o=[].concat.call(n,[t]),u=s(t,r[t],e),f=c.min<=i&&i<=c.max,l=o.length;f&&u&&(p.push({obj:r,value:r[t],key:o[l-1],parentKey:o[l-2],path:o.join("/"),getter:function(){return o.reduce(function(n,t){return n[t]},a)},container:o.slice(0,l-1).join("/"),parentContainer:o.slice(0,l-2).join("/"),regexp:u,level:i}),m++),v(r[t],e,o,i+1)},v=function(n,t,e,r){if(!o(n)){var i,u;if(n instanceof Array)for(i=0,u=n.length;i<u&&(g(e,i,t,n,r),c.limit!==m);i++);else if("object"==typeof n)for(i in n)if(g(e,i,t,n,r),c.limit===m)break}};return c.limit="limit"in c?~~c.limit:1/0,c.min="min"in c?~~c.min:0,c.max="max"in c?~~c.max:1/0,0===c.limit?p:(c.min=c.min<0?0:c.min,c.max<c.min&&(l=c.min,c.min=c.max,c.max=l),v(a,f,[],0),c.sorter?p.sort(c.sorter):p)}return{forKey:function(n,t,e){return u("key",n,t,e||{})},forValue:function(n,t,e){return u("value",n,t,e||{})},forKeyValue:function(n,t,e){return u("keyvalue",n,t,e||{})}}}();"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=searchHash);
+    var searchHash=function(){function n(n,t){return JSON.stringify(n)===JSON.stringify(t)&&!e(t)}function t(n){return"string"==typeof n||n instanceof String}function e(n){return n instanceof RegExp}function r(n){var t=String(n)!==n,e=n===Object(n),r="function"!=typeof n,i={}.toString.call(n).match(/\[object\sObject\]/);return t&&e&&r&&!(!i||!i.length)}function i(n){var t={}.toString.call(n).match(/\[object\sArray\]/);return String(n)!==n&&!(!t||!t.length)}function o(n){return n&&"object"==typeof n&&void 0!==n.nodeType&&1===n.nodeType&&"string"==typeof n.nodeName}function u(u,a,f,c){if(!r(a)&&!i(a))throw new Error("BAD PARAM: must search into an object or an array");var l,m=0,y=function(r,i){return t(r)&&e(i)?r.match(i):n(r,i)},s={key:function(n,t,e){return"function"==typeof e?e(n):y(n,e)},value:function(n,t,e){return"function"==typeof e?e(t):y(t,e)},keyvalue:function(n,t,e){return("function"==typeof e.key&&e.key(n)||y(n,e.key))&&("function"==typeof e.value&&e.value(t)||y(t,e.value))}}[u],p=[],g=function(n,t,e,r,i){var o=[].concat.call(n,[t]),u=s(t,r[t],e),f=c.min<=i&&i<=c.max,l=o.length;f&&u&&(p.push({obj:r,value:r[t],key:o[l-1],parentKey:o[l-2],path:o.join("/"),getter:function(){return o.reduce(function(n,t){return n[t]},a)},container:o.slice(0,l-1).join("/"),parentContainer:o.slice(0,l-2).join("/"),regexp:u,level:i}),m++),v(r[t],e,o,i+1)},v=function(n,t,e,r){if(!o(n)){var i,u;if(n instanceof Array)for(i=0,u=n.length;i<u&&(g(e,i,t,n,r),c.limit!==m);i++);else if("object"==typeof n)for(i in n)if(g(e,i,t,n,r),c.limit===m)break}};return c.limit="limit"in c?~~c.limit:1/0,c.min="min"in c?~~c.min:0,c.max="max"in c?~~c.max:1/0,0===c.limit?p:(c.min=c.min<0?0:c.min,c.max<c.min&&(l=c.min,c.min=c.max,c.max=l),v(a,f,[],0),c.sorter?p.sort(c.sorter):p)}return{forKey:function(n,t,e){return u("key",n,t,e||{})},forValue:function(n,t,e){return u("value",n,t,e||{})},forKeyValue:function(n,t,e){return u("keyvalue",n,t,e||{})}}}();"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=searchHash);;
     
     //hokuto
+    // eslint-disable-next-line no-unused-vars
     var Hok = {
-        W: window,
+        W: _,
         _U_: 'undefined',
-        WD: window.document,
-        H: window.history,
+        WD: _.document,
+        H: _.history,
         TYPES: {
             U: 'undefined',
             F: 'function'
@@ -58,13 +60,13 @@ var hokuto = (function (_) {
         io: {},
         utils: {},
     };
-    
+    ;
     (function(ctx){
     
         ctx.type = {};
         
         ctx.type.isFunction = function (ƒ){
-            return typeof ƒ === 'function'
+            return typeof ƒ === 'function';
         };
     
         ctx.type.isObject = function(o) {
@@ -84,14 +86,11 @@ var hokuto = (function (_) {
             
             return t1 && !!(t2 && t2.length);
         };
-    
-        
-        
-    })(Hok.utils)
+    })(Hok.utils);;
     // if (typeof Object.assign !== Hok.TYPES.F) {
     //     // Must be writable: true, enumerable: false, configurable: true
     //     Object.defineProperty(Object, "assign", {
-    //         value: function assign(target, varArgs) {
+    //         value: function assign(target/*, varArgs*/) {
     //             'use strict';
     //             if (target === null || target === undefined) {
     //                 throw new TypeError('Cannot convert undefined or null to object');
@@ -172,7 +171,7 @@ var hokuto = (function (_) {
         }
     };
     
-    */
+    */;
     Hok.CONFIG = {
         AUTHOR: "Federico Ghedina",
         LANG: 'en',
@@ -194,7 +193,7 @@ var hokuto = (function (_) {
     
         NAME: "hokuto",
         VERSION: "0.1.0"
-    };
+    };;
     // Hok.object = (function(){
     // 
     //     var strMap = function(o, fn) {
@@ -214,7 +213,7 @@ var hokuto = (function (_) {
     //                 : o
     //                     && typeof o === 'object'
     //                     && typeof o.nodeType === 'number'
-    //                     && typeof o.nodeName === 'string'
+    //                     && typeof o.nodeName === 'string';
     //         },
     // 
     //         extract = function(data, where){                
@@ -316,7 +315,7 @@ var hokuto = (function (_) {
     //             jCompare: function(obj1, obj2) {
     //                 return !isNode(obj1) && typeof JSON !== Hok._U_
     //                     ? JSON.stringify(obj1) === JSON.stringify(obj2)
-    //                     : obj1 === obj2
+    //                     : obj1 === obj2;
     //             },
     // 
     //             toQs: function(obj) {
@@ -427,126 +426,129 @@ var hokuto = (function (_) {
     //             );
     //     }
     // };
-    Hok.dom.noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
-    Hok.dom.setStyle = function(node, styles) {
-        if (typeof styles === Hok.TYPES.U)
-            throw new Error('ERR: styles needed')
-        for (var tmp in styles) {
-            if (tmp === 'float') {
-                node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
-            } else {
-                node.style[tmp] = styles[tmp];
+    (function(ctx){
+        ctx.noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
+        ctx.setStyle = function(node, styles) {
+            if (typeof styles === Hok.TYPES.U)
+                throw new Error('ERR: styles needed');
+            for (var tmp in styles) {
+                if (tmp === 'float') {
+                    node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
+                } else {
+                    node.style[tmp] = styles[tmp];
+                }
             }
-        }
-    };
+        };
     
-    Hok.dom.setAttrs = function(node, attrs) {
-        if (typeof attrs === Hok.TYPES.U)
-            throw new Error('ERR: attrs needed');
-        for (var tmp in attrs) {
-            if (Hok.dom.noAttrs.indexOf(tmp) < 0)
-                node.setAttribute(tmp, attrs[tmp]);
-        }
-    };
+        ctx.setAttrs = function(node, attrs) {
+            if (typeof attrs === Hok.TYPES.U)
+                throw new Error('ERR: attrs needed');
+            for (var tmp in attrs) {
+                if (ctx.noAttrs.indexOf(tmp) < 0)
+                    node.setAttribute(tmp, attrs[tmp]);
+            }
+        };
     
-    Hok.dom.unsetAttrs = function(node, attrs) {
-        if (typeof attrs === Hok.TYPES.U)
-            throw new Error('ERR: attrs needed');
-        for (var tmp in attrs) {
-            Hok.dom.noAttrs.indexOf(tmp) < 0
-            && node.removeAttribute(tmp, attrs[tmp]);
-        }
-    };
+        ctx.unsetAttrs = function(node, attrs) {
+            if (typeof attrs === Hok.TYPES.U)
+                throw new Error('ERR: attrs needed');
+            for (var tmp in attrs) {
+                ctx.noAttrs.indexOf(tmp) < 0
+                && node.removeAttribute(tmp, attrs[tmp]);
+            }
+        };
     
-    Hok.dom.setData = function(node, data) {
-        if (typeof data === Hok.TYPES.U)
-            throw new Error('ERR: data needed');
-        for (var tmp in data) {
-            node.dataset[tmp] = data[tmp];
-        }
-    };
+        ctx.setData = function(node, data) {
+            if (typeof data === Hok.TYPES.U)
+                throw new Error('ERR: data needed');
+            for (var tmp in data) {
+                node.dataset[tmp] = data[tmp];
+            }
+        };
     
-    Hok.dom.setClass = function(node, data) {
-        data.split(',').forEach(function (cls){
-            node.classList.add(cls);
-        });
-    };
+        ctx.setClass = function(node, data) {
+            data.split(',').forEach(function (cls){
+                node.classList.add(cls);
+            });
+        };
     
-    Hok.dom.unsetData = function(node, data) {
-        if (typeof data === Hok.TYPES.U)
-            throw new Error('ERR: data needed');
-        for (var tmp in data) {
-            delete node.dataset[tmp];
-        }
-    };
+        ctx.unsetData = function(node, data) {
+            if (typeof data === Hok.TYPES.U)
+                throw new Error('ERR: data needed');
+            for (var tmp in data) {
+                delete node.dataset[tmp];
+            }
+        };
     
-    Hok.dom.remove = function(el) {
-        return el.parentNode && el.parentNode.removeChild(el);
-    };
+        ctx.remove = function(el) {
+            return el.parentNode && el.parentNode.removeChild(el);
+        };
     
-    //TODO
-    Hok.dom.filterHtml = function(html) {
-        return '' + html;
-    };
+        //TODO
+        ctx.filterHtml = function(html) {
+            return '' + html;
+        };
     
-    Hok.dom.setText = function(node, text) {
-        node.appendChild(document.createTextNode(text));
-    };
+        ctx.setText = function(node, text) {
+            node.appendChild(document.createTextNode(text));
+        };
     
-    Hok.dom.setHtml = function(node, html) {
-        node.innerHTML = Hok.dom.filterHtml(html);
-    };
+        ctx.setHtml = function(node, html) {
+            node.innerHTML = ctx.filterHtml(html);
+        };
     
+    })(Hok.dom);
+    
+    ;
     (function (ctx){
     
         ctx.get = function(uri, onSuccess, onError){
             return fetch(uri)
                 .then(function (response){
                     if(!response.ok){
-                        onError()
-                        return Promise.reject()
+                        onError();
+                        return Promise.reject();
                     }
-                    return response
+                    return response;
                 })
                 .then(function(v){
-                    return v.text()
+                    return v.text();
                 })
-                .then(onSuccess)
+                .then(onSuccess);
         };
         ctx.post = function(uri, data, onSuccess, onError){
             return fetch(uri,{
                     method: 'POST',
                     headers: {
                         "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-                        
                     },
                     body: new URLSearchParams(data)
                 })
                 .then(function (response){
                     if(!response.ok){
-                        onError()
-                        return Promise.reject()
+                        onError();
+                        return Promise.reject();
                     }
-                    return response
+                    return response;
                 })
-                .then(function (r){ return r.json()})
-                .then(onSuccess)
+                .then(function (r){ return r.json();})
+                .then(onSuccess);
         };
     
         ctx.getJson = function(uri, onSuccess, onError) {
             return fetch(uri)
                 .then(function (response) {
                     if(!response.ok){
-                        onError()
-                        return Promise.reject()
+                        onError();
+                        return Promise.reject();
                     }
-                    return response
+                    return response;
                 })
                 .then(function(j){
-                    return j.json()
+                    return j.json();
                 })
                 .then(onSuccess)
-                .catch(onError)
+                .catch(onError);
         };
     
         ctx.getXML = function(uri, onSuccess, onError) {
@@ -564,144 +566,148 @@ var hokuto = (function (_) {
                 })
                 .then(onSuccess)
                 .catch(onError); 
-        }
-    })(Hok.io);
-    Hok.events._ = {
-        events: {
-            getElementDeterminant: function(el) {
-                const tname = el.tagName;
-                return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
-            },
-            getElementEvent: function(el) {
-                const tname = el.tagName;
-                return (tname.match(/input|textarea/i)) ? 'input' : 'change';
-            }
-        },
-        unhandlers: {},
-        bindErr: function(v) {return 'No straight way to '+(v ? '' : 'un')+'}bind an event'}
-    };
-    
-    Hok.events.saveUnhandler = function(el, f) {
-        Hok.events._.unhandlers[el] = Hok.events._.unhandlers[el] || [];
-        Hok.events._.unhandlers[el].push(f);
-    };
-    
-    Hok.events.unhandle = function(el) {
-        Hok.events._.unhandlers[el] && Hok.events._.unhandlers[el].forEach(function(unhandler) {
-            unhandler();
-        });
-        Hok.events._.unhandlers = [];
-    };
-    
-    Hok.events.on = (function() {
-        function unhandle(el, evnt, cb) {
-            Hok.events.saveUnhandler(el, function() {
-                Hok.events.off(el, evnt, cb);
-            });
-        }
-        if ('addEventListener' in Hok.W) {
-            return function(el, evnt, cb, capture) {
-                capture = capture || false
-                el.addEventListener.apply(el, [evnt, cb, capture]);
-                unhandle(el, evnt, cb);
-            };
-        } else if ('attachEvent' in Hok.W) {
-            return function(el, evnt, cb) {
-                el.attachEvent.apply(el, ['on' + evnt, cb]);
-                unhandle(el, evnt, cb);
-            };
-        } else {
-            return function() {
-                throw new Error(Hok.events._.bindErr(1));
-            };
-        }
-    })();
-    
-    Hok.events.off = (function() {
-        if ('removeEventListener' in Hok.W) {
-            return function(el, evnt, cb) {
-                el.removeEventListener(evnt, cb);
-            };
-        } else if ('detachEvent' in Hok.W) {
-            return function(el, evnt, cb) {
-                el.detachEvent.apply(el, ['on' + evnt, cb]);
-            };
-        } else {
-            return function() {
-                throw new Error(Hok.events._.bindErr(0));
-            };
-        }
-    })();
-    
-    Hok.events.kill = function(e) {
-        if (!e) {
-            e = Hok.W.event;
-            e.cancelBubble = true;
-            e.returnValue = false;
-        }
-        'stopPropagation' in e && e.stopPropagation();
-        e.preventDefault();
-        return false;
-    };
-    
-    Hok.events.once = function(el, evnt, cb) {
-        Hok.events.on(el, evnt, function _(e) {
-            cb.call(el, e)
-            Hok.events.off(el, evnt, _)
-        });
-    };
-    
-    Hok.events.eventTarget = function(e) {
-        e = e || Hok.W.event;
-        var targetElement =
-            e.currentTarget
-            || (typeof e.target !== Hok.TYPES.U) ? e.target : e.srcElement;
-        if (!targetElement) {
-            return false;
-        }
-        while (targetElement.nodeType === 3 && targetElement.parentNode !== null) {
-            targetElement = targetElement.parentNode;
-        }
-        return targetElement;
-    };
-    
-    Hok.events.noEvents = function (el, fn, t) {
-        t = t || 3000;
-        fn = fn || function(){};
-        var to;
-        function inner (e) {
-            to && window.clearTimeout(to);
-            to = window.setTimeout(function () {
-                fn(e);
-            }, t);
-        }
-        Hok.events.on(el, 'mousemove', inner);
-        Hok.events.on(el, 'click', inner);
-        Hok.events.on(el, 'touchstart', inner);
-    };
-    
-    Hok.events.ready = (function() {
-        var comp = 'complete',
-            readyStateCheckInterval = setInterval(function() {
-                if (document.readyState === comp) {
-                    clearInterval(readyStateCheckInterval);
-                    for (i = 0, l = cb.length; i < l; i++) {
-                        cb[i].call(this);
-                    }
-                }
-            }, 10),
-            cb = [],
-            i, l;
-            
-        return function(c) {
-            if (document.readyState === comp) {
-                c.call(this);
-            } else {
-                cb.push(c);
-            }
         };
-    })();
+    })(Hok.io);;
+    (function(ctx) {
+        ctx._ = {
+            events: {
+                getElementDeterminant: function(el) {
+                    const tname = el.tagName;
+                    return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
+                },
+                getElementEvent: function(el) {
+                    const tname = el.tagName;
+                    return (tname.match(/input|textarea/i)) ? 'input' : 'change';
+                }
+            },
+            unhandlers: {},
+            bindErr: function(v) {return 'No straight way to '+(v ? '' : 'un')+'}bind an event';}
+        };
+        
+        ctx.saveUnhandler = function(el, f) {
+            ctx._.unhandlers[el] = ctx._.unhandlers[el] || [];
+            ctx._.unhandlers[el].push(f);
+        };
+        
+        ctx.unhandle = function(el) {
+            ctx._.unhandlers[el] && ctx._.unhandlers[el].forEach(function(unhandler) {
+                unhandler();
+            });
+            ctx._.unhandlers = [];
+        };
+        
+        ctx.on = (function() {
+            function unhandle(el, evnt, cb) {
+                ctx.saveUnhandler(el, function() {
+                    ctx.off(el, evnt, cb);
+                });
+            }
+            if ('addEventListener' in Hok.W) {
+                return function(el, evnt, cb, capture) {
+                    capture = capture || false;
+                    el.addEventListener.apply(el, [evnt, cb, capture]);
+                    unhandle(el, evnt, cb);
+                };
+            } else if ('attachEvent' in Hok.W) {
+                return function(el, evnt, cb) {
+                    el.attachEvent.apply(el, ['on' + evnt, cb]);
+                    unhandle(el, evnt, cb);
+                };
+            } else {
+                return function() {
+                    throw new Error(ctx._.bindErr(1));
+                };
+            }
+        })();
+        
+        ctx.off = (function() {
+            if ('removeEventListener' in Hok.W) {
+                return function(el, evnt, cb) {
+                    el.removeEventListener(evnt, cb);
+                };
+            } else if ('detachEvent' in Hok.W) {
+                return function(el, evnt, cb) {
+                    el.detachEvent.apply(el, ['on' + evnt, cb]);
+                };
+            } else {
+                return function() {
+                    throw new Error(ctx._.bindErr(0));
+                };
+            }
+        })();
+        
+        ctx.kill = function(e) {
+            if (!e) {
+                e = Hok.W.event;
+                e.cancelBubble = true;
+                e.returnValue = false;
+            }
+            'stopPropagation' in e && e.stopPropagation();
+            e.preventDefault();
+            return false;
+        };
+        
+        ctx.once = function(el, evnt, cb) {
+            ctx.on(el, evnt, function _(e) {
+                cb.call(el, e);
+                ctx.off(el, evnt, _);
+            });
+        };
+        
+        ctx.eventTarget = function(e) {
+            e = e || Hok.W.event;
+            var targetElement =
+                e.currentTarget
+                || (typeof e.target !== Hok.TYPES.U) ? e.target : e.srcElement;
+            if (!targetElement) {
+                return false;
+            }
+            while (targetElement.nodeType === 3 && targetElement.parentNode !== null) {
+                targetElement = targetElement.parentNode;
+            }
+            return targetElement;
+        };
+        
+        ctx.noEvents = function (el, fn, t) {
+            t = t || 3000;
+            fn = fn || function(){};
+            var to;
+            function inner (e) {
+                to && window.clearTimeout(to);
+                to = window.setTimeout(function () {
+                    fn(e);
+                }, t);
+            }
+            ctx.on(el, 'mousemove', inner);
+            ctx.on(el, 'click', inner);
+            ctx.on(el, 'touchstart', inner);
+        };
+        
+        ctx.ready = (function() {
+            var comp = 'complete',
+                readyStateCheckInterval = setInterval(function() {
+                    if (document.readyState === comp) {
+                        clearInterval(readyStateCheckInterval);
+                        for (i = 0, l = cb.length; i < l; i++) {
+                            cb[i].call(this);
+                        }
+                    }
+                }, 10),
+                cb = [],
+                i, l;
+                
+            return function(c) {
+                if (document.readyState === comp) {
+                    c.call(this);
+                } else {
+                    cb.push(c);
+                }
+            };
+        })();
+    })(Hok.events);
     
+    
+    ;
     // 
     // 
     // Hok.history = (function(){
@@ -719,7 +725,15 @@ var hokuto = (function (_) {
     //             Hok.H.pushState(state || {}, title || '', url);
     //             spread(url, state, title);
     //         },
-    //         registerHandler: function(f) {return handlers.push(f)},
+    //         registerHandler: function(f) {return handlers.push(f);}, 
+    // 
+    // 
+    // 
+    // 
+    // 
+    // 
+    // 
+    //         
     //         replace: function(url, state, title) {
     //             Hok.H.replaceState(state || {}, title || '', url);
     //             spread(url, state, title);
@@ -733,42 +747,38 @@ var hokuto = (function (_) {
     //         state: function() { return Hok.H.state; }
     //     };
     // })();
-    Hok.i18n = (function(){
+    (function(ctx){
         var data = {},
             RX_LANG = /i18n\(([^}|]*)?\|?([^}]*)\)/;
-        return {
-                lang: Hok.CONFIG.LANG,
-                switchLang: function(lang){
-                    Hok.i18n.lang = lang;
-                },
-                check: function(lab){ return lab.match(RX_LANG)},
-                dynamicLoad: function(lo, _label) {
-                    var lang = Hok.i18n.lang
-                    for (_label in lo) {
-                        lang in lo[_label] && (data[_label] = lo[_label][lang]);
-                    }
-                },
-                get: function(k, fallback) {return  Hok.ns.check(k, data) || fallback || k+'<sup>&#2417;</sup>'},
-                load: function(dict) { data = dict;},
-                parse: function(obj){
-                    var replacing = searchHash.forValue(obj, RX_LANG),
-                        l = replacing.length,
-                        mayP, ref, i = 0, r;
-                    for (null; i < l; i++) {
-                        r = replacing[i];
-                        if ((typeof r.regexp).match(/boolean/i)) continue;
-                        
-                        mayP = Hok.i18n.check(r.regexp[0]);
-                        
-                        if (mayP) {
-                            ref = Hok.ns.check(r.container, obj);
-                            ref[r.key] = r.value.replace(mayP[0], Hok.i18n.get(mayP[1], mayP[2]));
-                        }
-                    }
+        ctx.lang = Hok.CONFIG.LANG;
+        ctx.switchLang = function(lang){
+            Hok.i18n.lang = lang;
+        };
+        ctx.check = function(lab){ return lab.match(RX_LANG);};
+        ctx.dynamicLoad = function(lo, _label) {
+            var lang = Hok.i18n.lang;
+            for (_label in lo) {
+                lang in lo[_label] && (data[_label] = lo[_label][lang]);
+            }
+        };
+        ctx.get = function(k, fallback) {return  Hok.ns.check(k, data) || fallback || k+'<sup>&#2417;</sup>';};
+        ctx.load = function(dict) { data = dict;};
+        ctx.parse = function(obj){
+            var replacing = searchHash.forValue(obj, RX_LANG),
+                l = replacing.length,
+                mayP, ref, i = 0, r;
+            for (null; i < l; i++) {
+                r = replacing[i];
+                if ((typeof r.regexp).match(/boolean/i)) continue;
+                mayP = Hok.i18n.check(r.regexp[0]);
+                if (mayP) {
+                    ref = Hok.ns.check(r.container, obj);
+                    ref[r.key] = r.value.replace(mayP[0], Hok.i18n.get(mayP[1], mayP[2]));
                 }
-            };
-    })();
-    
+            }
+        };
+    })(Hok.i18n);
+    ;
     
     Hok.solve = (function() {
         var _clone = function(obj){
@@ -778,7 +788,7 @@ var hokuto = (function (_) {
                 var copy = obj.constructor(),
                     attr;
                 for (attr in obj) {
-                    if (obj.hasOwnProperty(attr)) copy[attr] = _clone(obj[attr]);
+                    if (obj.hasOwn(attr)) copy[attr] = _clone(obj[attr]);
                 }
                 return copy;
             },
@@ -828,18 +838,19 @@ var hokuto = (function (_) {
         var components = {},
             preloadedComponents = {},
             computeStats = Hok.CONFIG.ENGY.STATS,
-            PARAMETERS_RX = /\${([^}|]*)?\|?([^}]*)}/,
-            cmp404 = function(componentName) {return JSON.stringify({
-                tag: 'div',
-                style:{
-                    border:'1px solid red',
-                    backgroundColor:'pink',
-                    color:'red',
-                    padding:'10px'
-                },
-                html: 'no component found ('+componentName+')',
-                protected: true
-            })};
+            cmp404 = function(componentName) {
+                return JSON.stringify({
+                    tag: 'div',
+                    style:{
+                        border:'1px solid red',
+                        backgroundColor:'pink',
+                        color:'red',
+                        padding:'10px'
+                    },
+                    html: 'no component found ('+componentName+')',
+                    protected: true
+                });
+            };
         
         
         function Processor(content) {
@@ -885,7 +896,7 @@ var hokuto = (function (_) {
                 elements: 0,
                 requested: {},
                 xhrTot: 0
-            }
+            };
         };
         Processor.prototype.parse = function () {
             var self = this,
@@ -897,14 +908,15 @@ var hokuto = (function (_) {
                 requested = {},
                 cback,
                 hasStats = false;
-            return new Promise(function(resolve, reject){
+            return new Promise(function(resolve){
                 (function solve() {
                     var component = searchHash.forKey(
                             self.content,
                             'component', { limit: 1 }
                         ),
                         componentName,
-                        cached, preLoaded,
+                        cached,
+                        preLoaded,
                         xhrStart = 0,
                         xhrEnd = 0,
                         trackEnd = function() {
@@ -978,22 +990,32 @@ var hokuto = (function (_) {
                         } else if (cached) {
                             cback(components[componentName]);
                         } else {
-                            Hok.io.get(componentName, cback, function(e) {
-                                cback(cmp404(componentName))
-                            });
+                            Hok.io.get(
+                                componentName,
+                                cback,
+                                function() {
+                                    cback(cmp404(componentName));
+                                });
                         }
                     }
                 })();
             });
         };
         function report (stats) {
-            var ln = new Array(37).join('-'), cl = console.log;
+            var ln = new Array(37).join('-'),
+                cl = console.log;
             cl(
                 ln+'\n'+
                 ['%cHokuto%c used', stats.elements, 'component' + (stats.elements === 1 ? '' : 's'),'\n'].join(' ')+
                 'usage: \n'+
                 Object.keys(stats.requested).reduce(function(acc, key){
-                    return acc + ['•', key+':', stats.requested[key], 'time' + (stats.requested[key] > 1 ? 's' : ''), '\n'].join(' ')
+                    return acc + [
+                        '•',
+                        key+':',
+                        stats.requested[key],
+                        'time' + (stats.requested[key] > 1 ? 's' : ''),
+                        '\n'
+                    ].join(' ');
                 }, '')+
                 ['total time:', stats.time+'ms', '\n'].join(' ')+
                 ['◦ unfolding:', (stats.time - stats.xhrTot)+'ms', '\n'].join(' ')+
@@ -1010,13 +1032,13 @@ var hokuto = (function (_) {
                     return res[0];
                 }
             );
-        }
-    })();
+        };
+    })();;
     var resolutive = function () {
             return Promise.resolve();
         },
-        isDefined = function (x){return typeof x !== Hok.TYPES.U},
-        isFunction = function (f){return typeof f === Hok.TYPES.F},
+        isDefined = function (x){return typeof x !== Hok.TYPES.U;},
+        isFunction = function (f){return typeof f === Hok.TYPES.F;},
         functionize = function (instance, what){
             return isFunction(what)
                 ? what.call(instance)
@@ -1072,7 +1094,7 @@ var hokuto = (function (_) {
         this.cb && this.cb.call(this);
         this.childrenKnots.forEach(function (childrenKnot) {
             childrenKnot.initRerender();
-        }) 
+        }); 
     };
     
     /**
@@ -1093,7 +1115,7 @@ var hokuto = (function (_) {
                 state = statePassed ? this.config.state : {};
             this.state = functionize(this, state);
         }
-        return this
+        return this;
     };
     
     Knot.prototype.setId = function(id) {
@@ -1107,25 +1129,25 @@ var hokuto = (function (_) {
             attrs[Knot.identifier] = val;
             this.setAttrs(attrs);
         }
-    }
+    };
     Knot.prototype.setCall = function(fns) {
         var self = this;
         fns.split(/,/).forEach(function(f) {
-            self['set' + f]()
-        })
+            self['set' + f]();
+        });
     };
     
     Knot.prototype.lateKid = function(id) {
         if (!(id in this.nodes)) {
             this.nodes[id] = this;
         } else {
-            consolw.warn('node already present by "'+Knot.byIdIdentifier+'"')
+            consolw.warn('node already present by "'+Knot.byIdIdentifier+'"');
         }
     };
     
     Knot.prototype.setByRef = function() {
         if (Knot.byIdIdentifier in this.config) {
-            var ref = this.config[Knot.byIdIdentifier]
+            var ref = this.config[Knot.byIdIdentifier];
             this.nodes[ref] = this;
         }
     };
@@ -1133,14 +1155,14 @@ var hokuto = (function (_) {
     Knot.prototype.getByRef = function(ref) {
         return ref in this.nodes
             ? this.nodes[ref]
-            : null
+            : null;
     };
     
     Knot.prototype.setRef = function(ref, ctx) {
         // allow the node to set a ref on itself
         // or to another node it can reference
         if (ref) {
-            (ctx || this).nodes[ref] = ctx || this
+            (ctx || this).nodes[ref] = ctx || this;
                 // or incase is in the config, just set it
         } else if (isDefined(this.config.ref)) {
             this.nodes[this.config.ref] = this;
@@ -1159,7 +1181,7 @@ var hokuto = (function (_) {
                 {},
                 self.config.style,
                 functionize(self, style)
-            )
+            );
         }
         this.config.style && Hok.dom.setStyle(this.node, this.config.style);
     };
@@ -1172,18 +1194,18 @@ var hokuto = (function (_) {
                 {},
                 self.config.attrs,
                 functionize(self, attrs)
-            )
+            );
         }
         this.config.attrs && Hok.dom.setAttrs(this.node, this.config.attrs);
     };
     
     Knot.prototype.unsetAttrs = function(attrs) {
         attrs && Hok.dom.unsetAttrs(this.node, attrs);
-    }
+    };
     
     Knot.prototype.setData = function(data) {
         if (data) {
-            this.config.data = Object.assign({}, this.config.data, data)
+            this.config.data = Object.assign({}, this.config.data, data);
         }
         if (this.config.data) {
             this.data = this.config.data;
@@ -1223,7 +1245,7 @@ var hokuto = (function (_) {
                 if (!(tmp[1] in self)) {
                     self['_' + tmp[1]] = self.config[tmp[0]].bind(self);
                 } else {
-                    console.warn('[WARNING] : method \'' + tmp[0] + '\' cant be added, would override existing element.')
+                    console.warn('[WARNING] : method \'' + tmp[0] + '\' cant be added, would override existing element.');
                 }
             }
         });
@@ -1271,7 +1293,7 @@ var hokuto = (function (_) {
         }, {});
     };
     
-    Knot.prototype.setEnd = function(e) {
+    Knot.prototype.setEnd = function() {
         var self = this;
         if (!this.rendered && 'end' in this.config && isFunction(this.config.end)) {
             this.ender = self.config.end.call(self);
@@ -1310,7 +1332,7 @@ var hokuto = (function (_) {
                             if (!self.rendered) self.target.appendChild(self.frag);
                             self.rendered = true;
                         }
-                        return self
+                        return self;
                     });
                 }).then(function(){
                     if(self.parentKnot){
@@ -1319,7 +1341,7 @@ var hokuto = (function (_) {
                     return self;
                 }).catch(function(){
                     self.frag.removeChild(self.node);
-                })
+                });
             }
         }
         
@@ -1343,12 +1365,12 @@ var hokuto = (function (_) {
     Knot.prototype.report = function() {
         var jsonSize = JSON.stringify(this.config).length,
             htmlSize = this.node.innerHTML.length;
-        return (htmlSize / jsonSize).toFixed(2) + " (html:" + htmlSize + " / json:" + jsonSize + ")"
+        return (htmlSize / jsonSize).toFixed(2) + " (html:" + htmlSize + " / json:" + jsonSize + ")";
     };
     
-    Knot.isknot = function(n){return n instanceof Knot};
+    Knot.isknot = function(n){return n instanceof Knot;};
     Knot.identifier = 'id';
-    Knot.byIdIdentifier = 'ref';
+    Knot.byIdIdentifier = 'ref';;
     //+++++++++++++++++++++++++++++++++++++++++++++++
 
     var __renders = {},
@@ -1372,7 +1394,7 @@ var hokuto = (function (_) {
                     return n;
                 });
             }
-        )
+        );
         // .catch(function (r){
         //     console.log({r:r});
         // });
@@ -1391,16 +1413,17 @@ var hokuto = (function (_) {
         i18n: Hok.i18n,
         dom: Hok.dom,
         events: Hok.events,
+        utils: Hok.utils,
+
         render: render,
         get: get,
-        utils: Hok.utils,
-        getKnotById: function(id){
+        getKnotById: function (id) {
             return id in __nodes
                 ? __nodes[id]
-                :null
+                : null;
         },
-        getElement: function(n){return n in __renders ? __renders[n] : false},
-        getElements: function() {return  __renders},
+        getElement: function(n) { return n in __renders ? __renders[n] : false; },
+        getElements: function() { return __renders; },
     };
 })(window);
 (typeof exports === 'object') && (module.exports = hokuto);

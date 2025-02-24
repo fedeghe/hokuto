@@ -15,7 +15,15 @@ Hok.history = (function(){
             Hok.H.pushState(state || {}, title || '', url);
             spread(url, state, title);
         },
-        registerHandler: function(f) {return handlers.push(f)},
+        registerHandler: function(f) {return handlers.push(f);}, 
+
+
+
+
+
+
+
+        
         replace: function(url, state, title) {
             Hok.H.replaceState(state || {}, title || '', url);
             spread(url, state, title);

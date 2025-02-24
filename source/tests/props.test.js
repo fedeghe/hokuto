@@ -1,6 +1,7 @@
 /**
  * @jest-environment jsdom
  */
+// eslint-disable-next-line no-unused-vars
 var hokuto = require('../dist/index.js'),
     utils = require('./utils.js'),
     render = utils.render,
@@ -33,9 +34,7 @@ describe('all props', () => {
         render({
             ...basicConfig,
             cb
-        }).then(() => {
-            expect(cb).toBeCalled()
-        });
+        }).then(() => expect(cb).toBeCalled());
     });
 
     it('cb resolving', done => {
@@ -43,9 +42,9 @@ describe('all props', () => {
             ...basicConfig,
             cb: cbResolving
         }).then(() => {
-            expect(cbResolving).toBeCalled()
+            expect(cbResolving).toBeCalled();
             expect(selector('p').innerHTML).toBe('test');
-            done()
+            done();
         });
     });
 
@@ -54,9 +53,9 @@ describe('all props', () => {
             ...basicConfig,
             cb: cbRejecting
         }).then(() => {
-            expect(cbRejecting).toBeCalled()
+            expect(cbRejecting).toBeCalled();
             expect(selector('p')).toBeNull();
-            done()
+            done();
         });
     });
 
@@ -66,8 +65,8 @@ describe('all props', () => {
             initCheck: initTrue
         }).then(() => {
             expect(selector('p').innerHTML).toBe('test');
-            expect(initTrue).toBeCalled()
-            done()
+            expect(initTrue).toBeCalled();
+            done();
         });
     });
 
@@ -75,10 +74,10 @@ describe('all props', () => {
         render({
             ...basicConfig,
             initCheck: initFalse
-        }).then(r=>{
+        }).then(()=>{
             expect(selector('p')).toBeNull();
-            expect(initFalse).toBeCalled()
-            done()
+            expect(initFalse).toBeCalled();
+            done();
         });
     });
     
@@ -98,12 +97,12 @@ describe('all props', () => {
                 s:'test string',
                 n: 4
             }
-        }).then(r => {
+        }).then(r => 
             expect(r.state).toMatchObject({
                 s:'test string',
                 n: 4
             })
-        });
+        );
     });
 
     it('ref setter expected', done => {
@@ -157,7 +156,7 @@ describe('all props', () => {
                 }
             }]
         }).then(() => {
-            var n = selector('#u1')
+            var n = selector('#u1');
             expect(n.innerHTML).toBe('testOne');         
             expect(n.style.color).toBe('red');         
             expect(n.style.backgroundColor).toBe('blue');         
@@ -179,7 +178,7 @@ describe('all props', () => {
                 }
             }]
         }).then(() => {
-            var n = selector('#u1')
+            var n = selector('#u1');
             expect(n.title).toBe('just a title');
             expect(n.type).toBe('range');
             expect(n.value).toBe('35');
@@ -198,7 +197,7 @@ describe('all props', () => {
                 className:'a,b,c'
             }]
         }).then(r => {
-            var n = r.getByRef('u1').node
+            var n = r.getByRef('u1').node;
             expect(n.classList.contains('a')).toBe(true);
             expect(n.classList.contains('b')).toBe(true);
             expect(n.classList.contains('c')).toBe(true);

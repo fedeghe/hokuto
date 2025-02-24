@@ -17,7 +17,7 @@ Hok.object = (function(){
                 : o
                     && typeof o === 'object'
                     && typeof o.nodeType === 'number'
-                    && typeof o.nodeName === 'string'
+                    && typeof o.nodeName === 'string';
         },
 
         extract = function(data, where){                
@@ -119,7 +119,7 @@ Hok.object = (function(){
             jCompare: function(obj1, obj2) {
                 return !isNode(obj1) && typeof JSON !== Hok._U_
                     ? JSON.stringify(obj1) === JSON.stringify(obj2)
-                    : obj1 === obj2
+                    : obj1 === obj2;
             },
 
             toQs: function(obj) {

@@ -1,10 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-var utils = require('./utils.js')
+var utils = require('./utils.js'),
     render = utils.render,
-    selector = utils.selector,
-    selectors = utils.selectors;
+    selector = utils.selector;
 
 describe('start hokuto', () => {
     const one = jest.fn(),
@@ -25,7 +24,7 @@ describe('start hokuto', () => {
                 },{
                     tag: 'span',
                     attrs:{id:'n2'},
-                    onClick:function(e) {
+                    onClick:function() {
                         two();
                     }
                 }]
@@ -33,8 +32,8 @@ describe('start hokuto', () => {
         };
 
     afterEach(() => {
-        one.mockClear()
-        two.mockClear()
+        one.mockClear();
+        two.mockClear();
     });
 
     it('basic handler, upper', () => {
@@ -46,8 +45,8 @@ describe('start hokuto', () => {
             expect(n1).not.toBeNull();
             expect(n2).not.toBeNull();
             n0.click();
-            expect(one).toBeCalled()
-            expect(two).not.toBeCalled()
+            expect(one).toBeCalled();
+            expect(two).not.toBeCalled();
         });
     });
 
@@ -60,8 +59,8 @@ describe('start hokuto', () => {
             expect(n1).not.toBeNull();
             expect(n2).not.toBeNull();
             n1.click();
-            expect(one).not.toBeCalled()
-            expect(two).toBeCalled()
+            expect(one).not.toBeCalled();
+            expect(two).toBeCalled();
         });
     });
 
@@ -74,8 +73,8 @@ describe('start hokuto', () => {
             expect(n1).not.toBeNull();
             expect(n2).not.toBeNull();
             n2.click();
-            expect(two).toBeCalled()
-            expect(one).toBeCalled()
+            expect(two).toBeCalled();
+            expect(one).toBeCalled();
         });
     });
 

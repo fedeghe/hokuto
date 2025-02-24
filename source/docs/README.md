@@ -1,14 +1,28 @@
-maltaF('./hokuto.md')
 
-## Hokuto
+![hokuto](hokuto.png)
+![track][https://click.jmvc.org/p/fEtBzv7O/1]
 
-Experimental dom engine
+<small>Experimental dom engine</small>
 
-#### Try it
 
-- install deps  
-  `> yarn `
-- run unminified  
-  `> yarn start`
-- navigate to [http://127.0.0.1:3001](http://127.0.0.1:3001)
-- edit the `src/sample/index.js` (or `style.css`)
+``` js
+hokuto.render({
+  state: { n: 50 }
+  children: [{
+    tag:'span',
+    html: function() {
+      this.node.innerHTML = this.parent.state.n;
+    },
+    ref: 'lab'
+  },{
+    tag: 'input',
+    attrs: { type: 'range' },
+    onInput: function(e) {
+      this.getByRef('lab').innerHTML = e.target.value;
+    }
+  }]
+})
+```
+
+
+  

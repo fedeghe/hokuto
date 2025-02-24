@@ -3,7 +3,7 @@ var render = (conf ,clear , label) => {
     return hokuto.render({
         target: document.getElementById('target'),
         ...conf
-    }, clear, label)
+    }, clear, label);
 };
 var selector = d => document.querySelector(d);
 var selectors = d => document.querySelectorAll(d);
