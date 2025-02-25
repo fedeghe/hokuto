@@ -12,7 +12,7 @@ var hokuto = (function (_) {
     maltaF('ns.js');
     maltaF('config.js');
     // maltaF('object.js')
-    // maltaF('cookie.js')
+    maltaF('cookie.js');
     maltaF('dom.js');
     maltaF('io.js');
     maltaF('events.js');
@@ -27,12 +27,11 @@ var hokuto = (function (_) {
         __nodes = {};
 
     function render(cnf, clear, name) {
+        var scriptParent = document.currentScript && document.currentScript.parentNode;
         return Hok.solve(cnf).then(
             function (config){
-                // debugger
-                
-                if(!('target' in config)){
-                    config.target = document.currentScript.parentNode;
+                if(!('target' in config) && scriptParent){
+                    config.target = scriptParent;
                 }
                 config.endFunctions = [];
                 config.nodes = __nodes;
@@ -64,6 +63,7 @@ var hokuto = (function (_) {
         dom: Hok.dom,
         events: Hok.events,
         utils: Hok.utils,
+        cookie: Hok.cookie,
 
         render: render,
         get: get,

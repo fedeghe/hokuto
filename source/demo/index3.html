@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maltaV('PACKAGE.name') maltaV('tit')</title>
+    <style>*{font-family: Verdana, Geneva, Tahoma, sans-serif;}</style>
+    <script>
+        maltaF('../../dist/index.js')
+        </script>
+</head>
+<body>
+    <h1>sub compoennts</h1>
+    <div id="target">
+        <script>
+            (function () {
+                hokuto.i18n.load({
+                    hello: 'ciao'
+                })
+                
+                hokuto.render({
+                    target: document.getElementById('target'),
+                    children:[{
+                        component:'xxx',
+                        params:{
+                            name:'i18n(hello)'
+                        }
+                    }]
+                });
+            })();
+    
+        </script>
+    </div>
+</body>
+
+</html>

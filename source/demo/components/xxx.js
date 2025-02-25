@@ -1,10 +1,17 @@
-// eslint-disable-next-line no-unused-vars
-function x(o){
+function _(o){
     return {
         tag:'p',
         children:[{
             tag: 'strong',
             html: o.name
+        },{
+            html : 'hello',
+            children:[{
+                component: 'yyy',
+                params:{
+                    name:'freddy'
+                }
+            }]
         }]
     };
 }
