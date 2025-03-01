@@ -17,7 +17,7 @@ Hok.cookie = {
             (copath ? ';path=' + copath : ''),
             (domain ? ';domain=' + domain : ''),
             (secure ? ';secure' : '')
-        ].join();
+        ].join(' ');
         return true;
     },
     del: function(name, path, domain) {
@@ -52,7 +52,7 @@ Hok.cookie = {
 
             if (cookieName === checkName) {
                 cookieFound = true;
-                tempCookie.length > 1 && (cookieValue = W.unescape(tempCookie[1].replace(/^\s+|\s+$/g, '')));
+                tempCookie.length > 1 && (cookieValue = Hok.W.unescape(tempCookie[1].replace(/^\s+|\s+$/g, '')));
                 return cookieValue;
             }
 

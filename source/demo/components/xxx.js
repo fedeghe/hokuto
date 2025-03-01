@@ -1,4 +1,4 @@
-function _(o){
+function (o){
     return {
         tag:'p',
         children:[{

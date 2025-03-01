@@ -8,6 +8,7 @@ module.exports = [{
         "max-len": ["error", { "code": 160 }],
         "no-unused-vars": ["error", { "vars": "local", "args": "all" }],
         "semi": ["error"],
+        "func-names": ["error", "never"]
     },
     ignores: ["dist/index.js", "coverage/", "tests/", "jest.config.js"]
 }];
