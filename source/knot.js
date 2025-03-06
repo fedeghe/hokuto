@@ -137,7 +137,7 @@ Knot.prototype.setClassname = function() {
     this.config.className && Hok.dom.setClass(this.node, this.config.className);
 };
 
-Knot.prototype.setStyle = function(style) {
+Knot.prototype.setStyle0 = function(style) {
     var self = this;
     this.config.style = functionize(this, this.config.style || {});
     if (style) {
@@ -149,6 +149,20 @@ Knot.prototype.setStyle = function(style) {
     }
     this.config.style && Hok.dom.setStyle(this.node, this.config.style);
 };
+Knot.prototype.setStyle = function(style) {
+    var self = this,
+        _style = functionize(this, this.config.style || {});
+    
+    Hok.dom.setStyle(this.node, Object.assign(
+        {}, _style, style ? functionize(self, style) : {}
+    ));
+};
+
+
+
+
+
+
 
 Knot.prototype.setAttrs = function(attrs) {
     var self = this;
@@ -168,13 +182,11 @@ Knot.prototype.unsetAttrs = function(attrs) {
 };
 
 Knot.prototype.setData = function(data) {
+    this.data = functionize( this, this.config.data );
     if (data) {
-        this.config.data = Object.assign({}, this.config.data, data);
+        this.data = Object.assign(this.data, data);
     }
-    if (this.config.data) {
-        this.data = this.config.data;
-        Hok.dom.setData(this.node, this.data);
-    }
+    this.data && Hok.dom.setData(this.node, this.data);
 };
 
 Knot.prototype.unsetData = function(data) {
@@ -188,15 +200,8 @@ Knot.prototype.setText = function(text) {
 };
 
 Knot.prototype.setHtml = function(html) {
-    if (isDefined(html)) this.config.html = html;
-    if (isDefined(this.config.html)) {
-        
-        if (isFunction(this.config.html)) {
-            Hok.dom.setHtml(this.node, this.config.html.call(this));
-        } else {
-            Hok.dom.setHtml(this.node, this.config.html);
-        }
-    }
+    this.config.html = functionize(this, html || this.config.html || '');
+    this.config.html && Hok.dom.setHtml(this.node, this.config.html);
 };
 
 Knot.prototype.setMethods = function() {
@@ -316,6 +321,7 @@ Knot.prototype.clear = function(){
     if(this.ender) this.ender();
     this.target.removeChild(this.node);
     this.unhandleEvents();
+    this.rendered = false;
 };
 Knot.prototype.solve = function(){
     if(this.debt > 0){

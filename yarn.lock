@@ -2774,6 +2774,11 @@ resolve@^1.20.0:
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
 
+rexhr@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/rexhr/-/rexhr-0.0.3.tgz#607429b04a9557fce79bbc4e94dfb9c83c93a3e9"
+  integrity sha512-JxsoEHFfoE7AIjYfD7uYTkZHE6uDDWyHZeKeaFCTpuJrT9nExVXnS8Hts/w366gyGAYqXyKK6AdvfRyKGVgjKg==
+
 right-align@^0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/right-align/-/right-align-0.1.3.tgz#61339b722fe6a3515689210d24e14c96148613ef"

@@ -3,6 +3,8 @@ var hokuto = (function (_) {
         
     //+++++++++++++++++++++++++++++++++++++++++++++++
     //libz
+    // can be ignored cause it is 💯 (https://www.npmjs.com/package/searchhash)
+    /* istanbul ignore next */
     maltaF('../node_modules/searchhash/dist/index.js');
     
     //hokuto

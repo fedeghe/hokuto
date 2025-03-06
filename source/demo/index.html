@@ -6,8 +6,8 @@
     <title>maltaV('PACKAGE.name') maltaV('tit')</title>
     <style>*{font-family: Verdana, Geneva, Tahoma, sans-serif;}</style>
     <script>
-        maltaF('../../dist/index.js')
-        </script>
+    maltaF('../../dist/index.js')
+    </script>
 </head>
 <body>
     <h1>title here</h1>
@@ -46,12 +46,8 @@
                 cb: function() {
                     var self = this;
                     self.config.state.n  = self.config.state.n + 1;
-                    // console.log(self.state);
+                    
                     setTimeout(function(){
-                        // debugger
-                        // console.log('whaaat')
-                        // console.log(self)
-                        
                         self.render();
                     },1e3);
                     return Promise.resolve();
@@ -62,6 +58,7 @@
                     {
                         tag: 'input',
                         attrs:{type:'range',step:5},
+                        // data:function(){return {xxx:44}},
                         onInput: function (e) {
                             var r = this.getByRef('val');
                             r.node.value = e.target.value;
@@ -165,7 +162,7 @@
                     tag:  'li',
                     html: 'test 2',
                 }]
-            },true).then(r=> {
+            },true, 'one').then(r=> {
                 
                 console.log({r})
 

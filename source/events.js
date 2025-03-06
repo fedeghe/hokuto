@@ -2,11 +2,11 @@
     ctx._ = {
         events: {
             getElementDeterminant: function(el) {
-                const tname = el.tagName;
+                var tname = el.tagName;
                 return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
             },
             getElementEvent: function(el) {
-                const tname = el.tagName;
+                var tname = el.tagName;
                 return (tname.match(/input|textarea/i)) ? 'input' : 'change';
             }
         },

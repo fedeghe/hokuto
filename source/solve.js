@@ -1,22 +1,10 @@
 Hok.solve = (function() {
-    var _clone = function(obj){
-            if (obj == null || typeof obj !== 'object') {
-                return obj;
-            }
-            var copy = obj.constructor(),
-                attr;
-            for (attr in obj) {
-                if (obj.hasOwn(attr)) copy[attr] = _clone(obj[attr]);
-            }
-            return copy;
-        },
-        _overwrite = function(destObj, path, obj){
+    var  _overwrite = function(destObj, path, obj){
             // path can be
             // str1
             // str1/str2[/str3[...]] (or str1.str2[.str3])
             //
             // in any case we need the elements of it
-            //
             var pathEls = path.split(/\.|\//),
                 l = pathEls.length,
                 i = 0;
@@ -40,7 +28,6 @@ Hok.solve = (function() {
                 i;
         
             // copy everything but 'component' & 'params', overriding
-            //
             for (i in componentPH) {
                 !(i.match(/component|params/)) && (merged[i] = componentPH[i]);
             }
@@ -50,8 +37,6 @@ Hok.solve = (function() {
                 _overwrite(ns, path, merged);
             }
         };
-    
-    
     
     var components = {},
         preloadedComponents = {},
@@ -69,7 +54,6 @@ Hok.solve = (function() {
                 protected: true
             });
         };
-    
     
     function Processor(content) {
         this.content = content;
@@ -91,7 +75,6 @@ Hok.solve = (function() {
         };
     }
 
-    
     Processor.prototype.getFileName = function (n) {
         var els = n.split(/\/|\|/),
             res = n,
@@ -162,7 +145,8 @@ Hok.solve = (function() {
                     cached = componentName in components;
                     preLoaded = componentName in preloadedComponents;
     
-                    cback = function(cntORobj){
+                    cback = function(xhr){
+                        var cntORobj = xhr.responseText;
                         xhrEnd = +new Date();
                         xhrTot += xhrEnd - xhrStart;
                         var params = Hok.ns.check(component.container + '/params', self.content),
@@ -170,10 +154,12 @@ Hok.solve = (function() {
                             evaluator;
                             
                         if (preLoaded) {
-                            obj = _clone(cntORobj);
+                            // clone as string
+                            obj = String(cntORobj);
                         } else {
                             if (!cached) {
-                                components[componentName] = _clone(cntORobj);
+                                // components[componentName] = _clone(cntORobj);
+                                components[componentName] = String(cntORobj);
                             }
                             try {
                                 evaluator = eval('(function (){return '+cntORobj+';})()');
@@ -204,16 +190,17 @@ Hok.solve = (function() {
                     xhrStart = +new Date();
                     // cached?
                     if (preLoaded) {
-                        cback(preloadedComponents[componentName]);
+                        cback({responseText: preloadedComponents[componentName]});
                     } else if (cached) {
-                        cback(components[componentName]);
+                        cback({responseText:components[componentName]});
                     } else {
-                        Hok.io.get(
-                            componentName,
-                            cback,
-                            function() {
+                        Hok.io.get({
+                            url: componentName,
+                            onCompleted: cback,
+                            onError: function() {
                                 cback(cmp404(componentName));
-                            });
+                            }
+                        });
                     }
                 }
             })();

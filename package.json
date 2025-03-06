@@ -12,10 +12,11 @@
         "start": "malta source/buildev.json",
         "startmin": "malta source/buildevmin.json",
         "build": "malta source/build.json",
-        "test": "jest --config ./jest.config.js --verbose $PWD/tests",
-        "watch": "jest --config ./jest.config.js --watch $PWD/tests",
-        "cover": "jest --config ./jest.config.js $PWD/tests",
-        "coveralls": "jest --config ./jest.config.js $PWD/tests && cat ./coverage/lcov.info | coveralls",
+        "srv": "malta source/startsrv.json",
+        "test": "jest --config ./jest.config.js --verbose $PWD/source/tests",
+        "watch": "jest --config ./jest.config.js --watch $PWD/source/tests",
+        "cover": "jest --config ./jest.config.js $PWD/source/tests",
+        "coveralls": "jest --config ./jest.config.js $PWD/source/tests && cat ./coverage/lcov.info | coveralls",
         "lint": "eslint src",
         "lintfix": "eslint src --fix"
     },
@@ -33,5 +34,8 @@
         "malta-js-uglify": "^1.0.13",
         "searchhash": "^1.2.12",
         "web-page-monitor": "^0.0.26"
+    },
+    "dependencies": {
+        "rexhr": "^0.0.3"
     }
 }
