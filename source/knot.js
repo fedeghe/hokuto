@@ -70,15 +70,10 @@ Knot.prototype.initRerender = function(){
  * @param {*} state 
  */
 Knot.prototype.setState = function(state) {
-    if (isDefined(state)){
-        for (var i in state) {
-            if (state.hasOwnProperty(i)) this.state[i] = state[i];
-        }
-    } else {
-        var statePassed = 'state' in this.config,
-            state = statePassed ? this.config.state : {};
-        this.state = functionize(this, state);
-    }
+    var nextState = functionize( this, this.config.state || {}),
+        nextPassedState = functionize( this, state || {}),
+        whole = Object.assign({}, nextState, nextPassedState);
+    Hok.dom.setData(this.node, whole);
     return this;
 };
 
@@ -133,75 +128,67 @@ Knot.prototype.setRef = function(ref, ctx) {
     }
 };
 
-Knot.prototype.setClassname = function() {
-    this.config.className && Hok.dom.setClass(this.node, this.config.className);
+Knot.prototype.setClassname = function(classes) {
+    var nextClassnames = functionize(this, this.config.className || ''),
+        nextPassedClassnames = functionize(this, classes || ''),
+        whole = [nextClassnames, nextPassedClassnames]
+            .filter(Boolean)
+            .join(',');
+    whole && Hok.dom.setClass(this.node, whole);
+    return this;
 };
 
-Knot.prototype.setStyle0 = function(style) {
-    var self = this;
-    this.config.style = functionize(this, this.config.style || {});
-    if (style) {
-        this.config.style = Object.assign(
-            {},
-            self.config.style,
-            functionize(self, style)
-        );
-    }
-    this.config.style && Hok.dom.setStyle(this.node, this.config.style);
-};
 Knot.prototype.setStyle = function(style) {
-    var self = this,
-        _style = functionize(this, this.config.style || {});
-    
-    Hok.dom.setStyle(this.node, Object.assign(
-        {}, _style, style ? functionize(self, style) : {}
-    ));
+    var nextStyle = functionize(this, this.config.style || {}),
+        nextPassedStyle = functionize(this, style || {}),
+        whole = Object.assign(
+            {}, nextStyle, nextPassedStyle
+        );
+    Hok.dom.setStyle(this.node, whole);
+    return this;
 };
-
-
-
-
-
 
 
 Knot.prototype.setAttrs = function(attrs) {
-    var self = this;
-    this.config.attrs = functionize(this, this.config.attrs || {});
-    if (attrs) {
-        this.config.attrs = Object.assign(
-            {},
-            self.config.attrs,
-            functionize(self, attrs)
-        );
-    }
-    this.config.attrs && Hok.dom.setAttrs(this.node, this.config.attrs);
+    var nextAttrs = functionize(this, this.config.attrs || {}),
+        nextPassedAttrs = functionize(this, attrs || {}),
+        whole = Object.assign({}, nextAttrs, nextPassedAttrs);
+    Hok.dom.setAttrs( this.node, whole);
+    return this;
 };
 
 Knot.prototype.unsetAttrs = function(attrs) {
     attrs && Hok.dom.unsetAttrs(this.node, attrs);
+    return this;
 };
 
 Knot.prototype.setData = function(data) {
-    this.data = functionize( this, this.config.data );
-    if (data) {
-        this.data = Object.assign(this.data, data);
-    }
-    this.data && Hok.dom.setData(this.node, this.data);
+    var nextData = functionize( this, this.config.data || {}),
+        nextPassedData = functionize( this, data || {}),
+        whole = Object.assign({}, nextData, nextPassedData);
+    whole && Hok.dom.setData(this.node, whole);
+    return this;
 };
 
 Knot.prototype.unsetData = function(data) {
     data && Hok.dom.unsetData(this.node, data);
+    return this;
 };
 
 Knot.prototype.setText = function(text) {
-    if (isDefined(text)) this.config.text = text;
-    isDefined(this.config.text)
-        && Hok.dom.setText(this.node, this.config.text);
+    var nextText = functionize(this, this.config.text || ''),
+        nextPassedText= functionize(this, text || ''),
+        whole = nextPassedText || nextText || '';
+    Hok.dom.setText(this.node, whole);
+    return this;
 };
 
 Knot.prototype.setHtml = function(html) {
-    this.config.html = functionize(this, html || this.config.html || '');
-    this.config.html && Hok.dom.setHtml(this.node, this.config.html);
+    var nextHtml = functionize(this, this.config.html || ''),
+        nextPassedHtml= functionize(this, html || ''),
+        whole = nextPassedHtml || nextHtml || '';
+        whole && Hok.dom.setHtml(this.node, whole);
+    return this;
 };
 
 Knot.prototype.setMethods = function() {
@@ -272,6 +259,7 @@ Knot.prototype.setEnd = function() {
 
 Knot.prototype.render = function(){
     var self = this;
+    // debugger
     if (this.rendered) {
         this.initRerender();
     } else {
@@ -321,7 +309,7 @@ Knot.prototype.clear = function(){
     if(this.ender) this.ender();
     this.target.removeChild(this.node);
     this.unhandleEvents();
-    this.rendered = false;
+    // this.rendered = false;
 };
 Knot.prototype.solve = function(){
     if(this.debt > 0){

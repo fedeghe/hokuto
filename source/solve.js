@@ -99,6 +99,10 @@ Hok.solve = (function() {
             xhrTot: 0
         };
     };
+    Processor.prototype.evalTextFunctionWithParams = function(scriptContent, params){
+        var evaluator = eval('(function (){return '+scriptContent+';})()');
+        return evaluator(params);
+    };
     Processor.prototype.parse = function () {
         var self = this,
             langFunc = Hok.i18n.parse,
@@ -164,6 +168,8 @@ Hok.solve = (function() {
                             try {
                                 evaluator = eval('(function (){return '+cntORobj+';})()');
                                 obj = evaluator(params);
+                                // obj = self.evalTextFunctionWithParams(cntORobj, params);
+
                              } catch(e) {
                                 console.error("Error evaluating component '"+componentName+"'");
                                 console.error(e);

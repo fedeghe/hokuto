@@ -21,7 +21,7 @@
 
 hokuto v. 0.1.0
 
-with ~20.2KB of ❤️
+with ~20.15KB of ❤️
 
 Federico Ghedina <fedeghe@gmail.com>
 
@@ -99,6 +99,7 @@ var _overwrite=function(t,e,n){for(var o=e.split(/\.|\//),r=o.length,i=0;i<r-1;)
 return JSON.stringify({tag:"div",style:{border:"1px solid red",backgroundColor:"pink",color:"red",padding:"10px"},html:"no component found ("+t+")",protected:!0})}
 ;return Processor.prototype.getFileName=function(t){var e=t.split(/\/|\|/),n=t,o=this.config,r=e.length-1;return e[r]=o.fileNamePrepend+e[r],n=e.join(o.fileNameSeparator),
 [o.componentsUrl,o.componentsUrl.match(/\/$/)?"":"/",n,o.ext].join("")},Processor.prototype.resetStats=function(){this.stats={time:0,elements:0,requested:{},xhrTot:0}},
+Processor.prototype.evalTextFunctionWithParams=function(scriptContent,params){var evaluator=eval("(function (){return "+scriptContent+";})()");return evaluator(params)},
 Processor.prototype.parse=function(){var self=this,langFunc=Hok.i18n.parse,elementsN=0,start=+new Date,end,xhrTot=0,requested={},cback,hasStats=!1;return new Promise(function(resolve){
 !function solve(){var component=searchHash.forKey(self.content,"component",{limit:1}),componentName,cached,preLoaded,xhrStart=0,xhrEnd=0,trackEnd=function(){end=+new Date,self.stats.time=end-start,
 self.stats.elements=elementsN,self.stats.requested=requested,self.stats.xhrTot=xhrTot};component.length?(hasStats=!0,component=component[0],componentName=self.getFileName(component.value),
@@ -115,20 +116,20 @@ return t[1]&&report(t[1]),t[0]})}}();var resolutive=function(){return Promise.re
 this.node=this.config.ns?document.createElementNS(this.config.ns,this.tag):document.createElement(this.tag)},Knot.prototype.initialize=function(){
 this.setCall("Id,Ref,Data,State,Events,Html,Text,Style,Attrs,Classname,End,ByRef,Methods")},Knot.prototype.initRerender=function(){
 this.setCall("Ref,Data,State,Html,Text,Style,Attrs,Classname,End,ByRef,Methods"),this.cb&&this.cb.call(this),this.childrenKnots.forEach(function(t){t.initRerender()})},
-Knot.prototype.setState=function(t){if(isDefined(t))for(var e in t)t.hasOwnProperty(e)&&(this.state[e]=t[e]);else{var n="state"in this.config,t=n?this.config.state:{};this.state=functionize(this,t)}
-return this},Knot.prototype.setId=function(t){var e,n=isDefined(this.config[Knot.identifier]),o={};(n||t)&&(e=n?this.config[Knot.identifier]:t,o[Knot.identifier]=e,this.setAttrs(o))},
+Knot.prototype.setState=function(t){var e=functionize(this,this.config.state||{}),n=functionize(this,t||{}),o=Object.assign({},e,n);return Hok.dom.setData(this.node,o),this},
+Knot.prototype.setId=function(t){var e,n=isDefined(this.config[Knot.identifier]),o={};(n||t)&&(e=n?this.config[Knot.identifier]:t,o[Knot.identifier]=e,this.setAttrs(o))},
 Knot.prototype.setCall=function(t){var e=this;t.split(/,/).forEach(function(t){e["set"+t]()})},Knot.prototype.lateKid=function(t){
 t in this.nodes?consolw.warn('node already present by "'+Knot.byIdIdentifier+'"'):this.nodes[t]=this},Knot.prototype.setByRef=function(){if(Knot.byIdIdentifier in this.config){
 var t=this.config[Knot.byIdIdentifier];this.nodes[t]=this}},Knot.prototype.getByRef=function(t){return t in this.nodes?this.nodes[t]:null},Knot.prototype.setRef=function(t,e){
-t?(e||this).nodes[t]=e||this:isDefined(this.config.ref)&&(this.nodes[this.config.ref]=this)},Knot.prototype.setClassname=function(){
-this.config.className&&Hok.dom.setClass(this.node,this.config.className)},Knot.prototype.setStyle0=function(t){var e=this;this.config.style=functionize(this,this.config.style||{}),
-t&&(this.config.style=Object.assign({},e.config.style,functionize(e,t))),this.config.style&&Hok.dom.setStyle(this.node,this.config.style)},Knot.prototype.setStyle=function(t){
-var e=this,n=functionize(this,this.config.style||{});Hok.dom.setStyle(this.node,Object.assign({},n,t?functionize(e,t):{}))},Knot.prototype.setAttrs=function(t){var e=this
-;this.config.attrs=functionize(this,this.config.attrs||{}),t&&(this.config.attrs=Object.assign({},e.config.attrs,functionize(e,t))),this.config.attrs&&Hok.dom.setAttrs(this.node,this.config.attrs)},
-Knot.prototype.unsetAttrs=function(t){t&&Hok.dom.unsetAttrs(this.node,t)},Knot.prototype.setData=function(t){this.data=functionize(this,this.config.data),t&&(this.data=Object.assign(this.data,t)),
-this.data&&Hok.dom.setData(this.node,this.data)},Knot.prototype.unsetData=function(t){t&&Hok.dom.unsetData(this.node,t)},Knot.prototype.setText=function(t){isDefined(t)&&(this.config.text=t),
-isDefined(this.config.text)&&Hok.dom.setText(this.node,this.config.text)},Knot.prototype.setHtml=function(t){this.config.html=functionize(this,t||this.config.html||""),
-this.config.html&&Hok.dom.setHtml(this.node,this.config.html)},Knot.prototype.setMethods=function(){var t,e=this,n=Object.keys(this.config);n.forEach(function(n){
+t?(e||this).nodes[t]=e||this:isDefined(this.config.ref)&&(this.nodes[this.config.ref]=this)},Knot.prototype.setClassname=function(t){
+var e=functionize(this,this.config.className||""),n=functionize(this,t||""),o=[e,n].filter(Boolean).join(",");return o&&Hok.dom.setClass(this.node,o),this},Knot.prototype.setStyle=function(t){
+var e=functionize(this,this.config.style||{}),n=functionize(this,t||{}),o=Object.assign({},e,n);return Hok.dom.setStyle(this.node,o),this},Knot.prototype.setAttrs=function(t){
+var e=functionize(this,this.config.attrs||{}),n=functionize(this,t||{}),o=Object.assign({},e,n);return Hok.dom.setAttrs(this.node,o),this},Knot.prototype.unsetAttrs=function(t){
+return t&&Hok.dom.unsetAttrs(this.node,t),this},Knot.prototype.setData=function(t){var e=functionize(this,this.config.data||{}),n=functionize(this,t||{}),o=Object.assign({},e,n)
+;return o&&Hok.dom.setData(this.node,o),this},Knot.prototype.unsetData=function(t){return t&&Hok.dom.unsetData(this.node,t),this},Knot.prototype.setText=function(t){
+var e=functionize(this,this.config.text||""),n=functionize(this,t||""),o=n||e||"";return Hok.dom.setText(this.node,o),this},Knot.prototype.setHtml=function(t){
+var e=functionize(this,this.config.html||""),n=functionize(this,t||""),o=n||e||"";return o&&Hok.dom.setHtml(this.node,o),this},Knot.prototype.setMethods=function(){
+var t,e=this,n=Object.keys(this.config);n.forEach(function(n){
 (t=n.match(/^method_(\w*)$/i))&&(t[1]in e?console.warn("[WARNING] : method '"+t[0]+"' cant be added, would override existing element."):e["_"+t[1]]=e.config[t[0]].bind(e))})},
 Knot.prototype.setEvents=function(){var t,e,n,o=this;o.unhandlers={};for(n in o.config)(t=n.match(/^(on(ce)?)([A-Z]{1}[a-z]*)$/))&&(e=t[3].toLowerCase(),function(n){var r=function(t){
 return o.config[n].call(o,t)};Hok.events[t[1]](o.node,e,r),o.unhandlers[e]=r}(n));return this.unhandleEvents=function(){return Object.entries(o.unhandlers).forEach(function(t){
@@ -139,7 +140,7 @@ Promise.resolve(this)):(this.frag.appendChild(this.node),this.debt?this.children
 }),r=new Knot(o);return t.childrenKnots.push(r),e.then(function(){return r.render()})},Promise.resolve()).then(function(){return t}):this.initCheck.call(this).then(function(){
 return t.cb.call(t).then(function(){return t.aborted||(t.clearTarget&&!t.rendered&&(t.target.innerHTML=""),t.rendered||t.target.appendChild(t.frag),t.rendered=!0),t})}).then(function(){
 return t.parentKnot&&t.parentKnot.solve(),t}).catch(function(){t.frag.removeChild(t.node)}))},Knot.prototype.clear=function(){this.ender&&this.ender(),this.target.removeChild(this.node),
-this.unhandleEvents(),this.rendered=!1},Knot.prototype.solve=function(){this.debt>0&&this.debt--,this.debt<=0&&(this.solved=!0,this.render())},Knot.prototype.report=function(){
+this.unhandleEvents()},Knot.prototype.solve=function(){this.debt>0&&this.debt--,this.debt<=0&&(this.solved=!0,this.render())},Knot.prototype.report=function(){
 var t=JSON.stringify(this.config).length,e=this.node.innerHTML.length;return(e/t).toFixed(2)+" (html:"+e+" / json:"+t+")"},Knot.isknot=function(t){return t instanceof Knot},Knot.identifier="id",
 Knot.byIdIdentifier="ref";var __renders={},__nodes={};return{io:Hok.io,i18n:Hok.i18n,dom:Hok.dom,events:Hok.events,utils:Hok.utils,cookie:Hok.cookie,render:render,get:get,getKnotById:function(t){
 return t in __nodes?__nodes[t]:null},getElement:function(t){return t in __renders&&__renders[t]},getElements:function(){return __renders}}}(window);"object"==typeof exports&&(module.exports=hokuto);

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>maltaV('PACKAGE.name') maltaV('tit')</title>
-    <style>*{font-family: Verdana, Geneva, Tahoma, sans-serif;}</style>
+    <link rel="stylesheet" href="./style.css">
     <script>
         maltaF('../../dist/index.js')
         </script>
@@ -27,7 +27,6 @@
                         onClick:function() {
                             this.config.html = new Date();
                             this.render();
-                            
                         }
                     },{
                         tag:'p',
@@ -56,6 +55,10 @@
                     },
                     children:[{
                         tag:'p',
+                        className: function(){
+                            console.log(this);
+                            return 'a,b,c'
+                        },
                         html:function() { return +new Date},
                         data:{n:1},
                         onClick:function(e) {
