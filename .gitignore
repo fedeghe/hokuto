@@ -4,7 +4,6 @@
 /tests
 /demo
 /source/tests/coverage
-/coverage
 .printVersion
 .buildNum.json
 .DS_Store
