@@ -1,10 +1,10 @@
 var resolutive = function () {
         return Promise.resolve();
     },
-    isDefined = function (x){return typeof x !== Hok.TYPES.U;},
-    isFunction = function (f){return typeof f === Hok.TYPES.F;},
+    // isDefined = function (x){return typeof x !== Hok.TYPES.U;},
+    // isFunction = function (f){return typeof f === Hok.TYPES.F;},
     functionize = function (instance, what){
-        return isFunction(what)
+        return Hok.utils.type.isFunction(what)
             ? what.call(instance)
             : what;
     };
@@ -72,13 +72,14 @@ Knot.prototype.initRerender = function(){
 Knot.prototype.setState = function(state) {
     var nextState = functionize( this, this.config.state || {}),
         nextPassedState = functionize( this, state || {}),
-        whole = Object.assign({}, nextState, nextPassedState);
-    Hok.dom.setData(this.node, whole);
+        whole = Object.assign({}, nextState, this.state, nextPassedState );
+    // debugger
+    this.state = whole;
     return this;
 };
 
 Knot.prototype.setId = function(id) {
-    var fromConf = isDefined(this.config[Knot.identifier]),
+    var fromConf = Hok.utils.type.isDefined(this.config[Knot.identifier]),
         val,
         attrs = {};
     if (fromConf || id) {
@@ -123,7 +124,7 @@ Knot.prototype.setRef = function(ref, ctx) {
     if (ref) {
         (ctx || this).nodes[ref] = ctx || this;
             // or incase is in the config, just set it
-    } else if (isDefined(this.config.ref)) {
+    } else if (Hok.utils.type.isDefined(this.config.ref)) {
         this.nodes[this.config.ref] = this;
     }
 };
@@ -251,7 +252,7 @@ Knot.prototype.unhandle = function(eventType){
 
 Knot.prototype.setEnd = function() {
     var self = this;
-    if (!this.rendered && 'end' in this.config && isFunction(this.config.end)) {
+    if (!this.rendered && 'end' in this.config && Hok.utils.type.isFunction(this.config.end)) {
         this.ender = self.config.end.call(self);
     }
     return this;

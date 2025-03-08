@@ -8,19 +8,21 @@ var utils = require('./utils.js'),
 
 describe('start hokuto', () => {
     const basicConfig = {
-        children:[{
-            tag:'ul',
-            data:{id:'0'},
+        config: {
             children:[{
-                tag:'li',
-                data:{id:'1'},
-                children:[
-                    {tag: 'li', html:'1.1', data:{id:'1.1'}},
-                    {tag: 'li', html:'1.2', data:{id:'1.2'}},
-                    {tag: 'li', html:'1.3', data:{id:'1.3'}},
-                ]
+                tag:'ul',
+                data:{id:'0'},
+                children:[{
+                    tag:'li',
+                    data:{id:'1'},
+                    children:[
+                        {tag: 'li', html:'1.1', data:{id:'1.1'}},
+                        {tag: 'li', html:'1.2', data:{id:'1.2'}},
+                        {tag: 'li', html:'1.3', data:{id:'1.3'}},
+                    ]
+                }]
             }]
-        }]
+        }
     };
     it('basic tree render', done => {
         render(basicConfig).then(()=>{

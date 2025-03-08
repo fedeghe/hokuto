@@ -8,28 +8,31 @@ var utils = require('./utils.js'),
 describe('start hokuto', () => {
     const one = jest.fn(),
         two = jest.fn(),
-        basicConfig = {
-            children:[{
-                tag:'div',
-                ref:'clickUp',
-                onClick: one,
-                attrs:{id:'n0'},
+        getBasicConfig = () =>({
+            config: {
                 children:[{
-                    tag: 'span',
-                    attrs:{id:'n1'},
-                    onClick:function(e) {
-                        two();
-                        e.stopPropagation();
-                    }
-                },{
-                    tag: 'span',
-                    attrs:{id:'n2'},
-                    onClick:function() {
-                        two();
-                    }
+                    tag:'div',
+                    ref:'clickUp',
+                    onClick: one,
+                    attrs:{id:'n0'},
+                    children:[{
+                        tag: 'span',
+                        attrs:{id:'n1'},
+                        onClick:function(e) {
+                            two();
+                            e.stopPropagation();
+                        }
+                    },{
+                        tag: 'span',
+                        attrs:{id:'n2'},
+                        onClick:function() {
+                            two();
+                        }
+                    }]
                 }]
-            }]
-        };
+            },
+            clear: true
+        });
 
     afterEach(() => {
         one.mockClear();
@@ -37,7 +40,7 @@ describe('start hokuto', () => {
     });
 
     it('basic handler, upper', () => {
-        render(basicConfig).then(()=>{
+        render(getBasicConfig()).then(()=>{
             var n0 = selector('[id="n0"]'),
                 n1 = selector('[id="n1"]'),
                 n2 = selector('[id="n2"]');
@@ -51,7 +54,7 @@ describe('start hokuto', () => {
     });
 
     it('basic handler, single deep', () => {
-        render(basicConfig).then(()=>{
+        render(getBasicConfig()).then(()=>{
             var n0 = selector('[id="n0"]'),
                 n1 = selector('[id="n1"]'),
                 n2 = selector('[id="n2"]');
@@ -64,8 +67,9 @@ describe('start hokuto', () => {
         });
     });
 
+
     it('basic handler, double deep', () => {
-        render(basicConfig).then(()=>{
+        render(getBasicConfig()).then(()=>{
             var n0 = selector('[id="n0"]'),
                 n1 = selector('[id="n1"]'),
                 n2 = selector('[id="n2"]');
@@ -80,8 +84,10 @@ describe('start hokuto', () => {
 
     it('basic handler, unhandleEvents', done => {
         render({
-            onClick: one,
-            html: 'test'
+            config:{
+                onClick: one,
+                html: 'test'
+            }
         }).then(r=>{
             r.unhandleEvents();
             r.node.click();
@@ -92,8 +98,10 @@ describe('start hokuto', () => {
     
     it('basic handler, unhandleEvents on clear', done => {
         render({
-            onClick: one,
-            html: 'test'
+            config: {
+                onClick: one,
+                html: 'test'
+            }
         }).then(r=>{
             r.clear();
             r.node.click();
@@ -101,4 +109,5 @@ describe('start hokuto', () => {
             done();
         });
     });
+
 });

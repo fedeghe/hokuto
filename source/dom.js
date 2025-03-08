@@ -1,8 +1,6 @@
 (function(ctx){
     ctx.noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
     ctx.setStyle = function(node, styles) {
-        if (typeof styles === Hok.TYPES.U)
-            throw new Error('ERR: styles needed');
         for (var tmp in styles) {
             if (tmp === 'float') {
                 node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];

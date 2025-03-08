@@ -2412,10 +2412,10 @@ malta-browser-refresh@^1.2.16:
   dependencies:
     ws "^7.4.2"
 
-malta-dev-srv@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/malta-dev-srv/-/malta-dev-srv-1.1.8.tgz#61d833a12e351510bab5511f624fbb4703aca02e"
-  integrity sha512-6/mJuQKcsFrxFJFyNCINrzXzvdteBe4JYX4tWuVVr1Jjx8GNdQyRwAaP3qXMF8Fx719iQERj64lHZETH+k++JQ==
+malta-dev-srv@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/malta-dev-srv/-/malta-dev-srv-1.1.9.tgz#acba7d9e33fb327565a65164c18c81b1dea0da41"
+  integrity sha512-wSZ1wFzpqpF+5Dy+mlEKw1mAVMo+To5Tb3z5ZVZlignnGV2323TkdqZoTbq+JxqMsfG+hmo3YRWj4t50bpjZhg==
 
 malta-header-comment@^1.0.12:
   version "1.0.12"

@@ -28,17 +28,24 @@ var hokuto = (function (_) {
     var __renders = {},
         __nodes = {};
 
-    function render(cnf, clear, name) {
-        var scriptParent = document.currentScript && document.currentScript.parentNode;
-        return Hok.solve(cnf).then(
-            function (config){
-                if(!('target' in config) && scriptParent){
-                    config.target = scriptParent;
+    //function render(cnf, clear, name) {
+    function render(params) {
+        if(!Hok.utils.type.isDefined(params) || !Hok.utils.type.isDefined(params.config)){
+            throw "Nothing to render";
+        }
+        var config = params.config,
+            clear = !!params.clear,
+            name = params.name,
+            scriptParent = document.currentScript && document.currentScript.parentNode;
+        return Hok.solve(config).then(
+            function (solvedConfig){
+                if(!('target' in solvedConfig) && scriptParent){
+                    solvedConfig.target = scriptParent;
                 }
-                config.endFunctions = [];
-                config.nodes = __nodes;
+                solvedConfig.endFunctions = [];
+                solvedConfig.nodes = __nodes;
                 
-                return new Knot(config, clear).render().then(function (n) {
+                return new Knot(solvedConfig, clear).render().then(function (n) {
                     if (name){
                         __renders[name] = n;
                     }

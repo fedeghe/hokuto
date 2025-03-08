@@ -19,65 +19,68 @@
                 })
                 
                 hokuto.render({
-                    target: document.getElementById('target'),
-                    children:[{
-                        tag:'ul',
+                    config: {
+                        target: document.getElementById('target'),
                         children:[{
-                            tag:'li',
+                            tag:'ul',
                             children:[{
-                                tag:'ul',
+                                tag:'li',
                                 children:[{
-                                    tag:'li',
-                                    html:'1.1'
-
-                                },{
-                                    tag:'li',
-                                    html:'1.2'
-                                },{
-                                //     tag:'li',
-                                //     children:[{
-
-                                //         component:'xxx',
-                                //         params:{
-                                //             name:'i18n(hello)'
-                                //         }
-                                //     }]
-                                // },{
-                                //     tag:'li',
-                                //     children:[{
-                                //         component:'xxx',
-                                //         params:{
-                                //             name:' jeff'
-                                //         }
-                                //     }]
-                                // },{
-                                    tag:'li',
+                                    tag:'ul',
                                     children:[{
-                                        component:'yyy',
-                                        params:{
-                                            name:' jack'
-                                        }
+                                        tag:'li',
+                                        html:'1.1'
+
+                                    },{
+                                        tag:'li',
+                                        html:'1.2'
+                                    },{
+                                    //     tag:'li',
+                                    //     children:[{
+
+                                    //         component:'xxx',
+                                    //         params:{
+                                    //             name:'i18n(hello)'
+                                    //         }
+                                    //     }]
+                                    // },{
+                                    //     tag:'li',
+                                    //     children:[{
+                                    //         component:'xxx',
+                                    //         params:{
+                                    //             name:' jeff'
+                                    //         }
+                                    //     }]
+                                    // },{
+                                        tag:'li',
+                                        children:[{
+                                            component:'yyy',
+                                            params:{
+                                                name:' jack'
+                                            }
+                                        }]
+                                    }]
+                                }]
+                            },{
+                                tag:'li',
+                                html :'test'
+                            },{
+                                tag:'li',
+                                children:[{
+                                    tag:'ul',
+                                    children:[{
+                                        tag:'li',
+                                        html:'2.1'
+
+                                    },{
+                                        tag:'li',
+                                        html:'2.2'
                                     }]
                                 }]
                             }]
-                        },{
-                            tag:'li',
-                            html :'test'
-                        },{
-                            tag:'li',
-                            children:[{
-                                tag:'ul',
-                                children:[{
-                                    tag:'li',
-                                    html:'2.1'
-
-                                },{
-                                    tag:'li',
-                                    html:'2.2'
-                                }]
-                            }]
                         }]
-                    }]
+                    },
+                    clear: true
                 });
                 // .then((r, s)=>{
                 //     console.log({r})

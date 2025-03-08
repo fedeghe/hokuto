@@ -3,6 +3,7 @@
 /sample
 /tests
 /demo
+/source/tests/coverage
 /coverage
 .printVersion
 .buildNum.json

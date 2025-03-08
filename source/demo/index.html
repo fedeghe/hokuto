@@ -39,131 +39,142 @@
             //     });
             // },6000)
             hokuto.render({
-                target: target,
-                tag: 'ul',
-                initCheck: () => Promise.resolve(),
-                state: { n: 1 },
-                cb: function() {
-                    var self = this;
-                    self.config.state.n  = self.config.state.n + 1;
-                    
-                    setTimeout(function(){
-                        self.render();
-                    },1e3);
-                    return Promise.resolve();
-                },
-                children: [
-                    // {tag:'p', html:'cazzzo', initCheck: () => Promise.resolve()},
-                    {ref: 'val',html : 50},
-                    {
-                        tag: 'input',
-                        attrs:{type:'range',step:5},
-                        // data:function(){return {xxx:44}},
-                        onInput: function (e) {
-                            var r = this.getByRef('val');
-                            r.node.value = e.target.value;
-                            r.config.html = e.target.value;
-                            
-                            r.render();
-                        }
-                    },
-                    /*{
-                    component: 'xxx',
-                    params:{
-                        name: 'Federico Ghedina K'
-                    },
-                    // html : 'cristiana'
-                },{
-                    component: 'xxx',
-                    html:'test',
-                    style:{
-                        color:'red'
-                    },
-                    data:{hello:'fede'},
-                    state: {name:'fedexxx'},
-                    attrs:{id:'stocazzo'},
-                    onClick:function(e) {
-                        // this.clear();
+                config:{
+                    target: target,
+                    tag: 'ul',
+                    initCheck: () => Promise.resolve(),
+                    state: { n: 0, summer:1 },
+                    cb: function() {
+                        var self = this;
+                        this.setState({
+                            n: self.state.n + self.state.summer
+                        })
                         
-                        // console.log(
-                            // this.getByRef('hei').clear()
-                        // )
-                        this.state.name = 'jeff';
-                        this.unhandle('click');
-                        
-                        this.setHtml(this.state.name);
+                        setTimeout(function(){
+                            self.render();
+                        },1e2);
+                        return Promise.resolve();
                     },
-                    end: function (){
-                        var self = this,
-                            closeOnEscape = function (e) {
-                                // console.log(e.key)
-                                if(e.key === 'Escape') self.clear();
-                            };
-                            document.addEventListener("keydown", closeOnEscape);
-                            return function () {
-                                document.removeEventListener("keydown", closeOnEscape);
-                            };
-                    }
-                },*/{
-                    tag:'li',
-                    html:'0',
-                    cb: function (){
-                        // console.log('child 1')
-                        this.node.innerHTML = this.parentKnot.state.n;
-                        return Promise.resolve();
-                    }
-                },{
-                    tag:'li',
-                    html:'1',
-                    cb: function (){
-                        // console.log('child 2')
-                        this.node.innerHTML = this.parentKnot.state.n * 2;
-                        return Promise.resolve();
-                    }
-                },{
-                    tag:  'li',
-                    children:[{
-                        tag:'p',
-                        html: 'test 1',
-                        ref: 'hei',
-                    },{
-                        tag: 'ul',
-                        children:[{
-                            tag:'li',
-                            html: 'one',
-                            initCheck: function(){
-                                // console.log(this);
-                                // hokuto.dom.setStyle(this.rootKnot.node, {
-                                //     backgroundColor:'blue'
-                                // })
+                    children: [
+                        // {tag:'p', html:'cazzzo', initCheck: () => Promise.resolve()},
+                        {ref: 'val',html : function() {
+                            return this.rootKnot.state.n
+                        }},
+                        {
+                            tag: 'input',
+                            attrs:{type:'range',step:5},
+                            // data:function(){return {xxx:44}},
+                            onInput: function (e) {
+                                var r = this.getByRef('val'),
+                                    value = e.target.value;
+                                r.node.value = value;
+                                r.config.html = value;
                                 
-
-                                return Promise.resolve();
-                            },
-                            // cb: function() {
-                            //     console.log(this);
-                            //     var self = this;
-                            //     return new Promise(res => {
-                            //         setTimeout(() => res(), 3000);
-                            //         setTimeout(() => self.clear(), 6000)
-                            //     })
-                            // },
-                        },{
-                            tag:'li',
-                            html: 'i18n(hello)',
-                            // html: 'cri',
-                            abort: function () {
-                                // console.log({abort: this})
-                                return Promise.resolve();
+                                this.rootKnot.setState({
+                                    summer: parseInt(value, 10)
+                                });
+                                r.render();
                             }
+                        },
+                        /*{
+                        component: 'xxx',
+                        params:{
+                            name: 'Federico Ghedina K'
+                        },
+                        // html : 'cristiana'
+                    },{
+                        component: 'xxx',
+                        html:'test',
+                        style:{
+                            color:'red'
+                        },
+                        data:{hello:'fede'},
+                        state: {name:'fedexxx'},
+                        attrs:{id:'stocazzo'},
+                        onClick:function(e) {
+                            // this.clear();
+                            
+                            // console.log(
+                                // this.getByRef('hei').clear()
+                            // )
+                            this.state.name = 'jeff';
+                            this.unhandle('click');
+                            
+                            this.setHtml(this.state.name);
+                        },
+                        end: function (){
+                            var self = this,
+                                closeOnEscape = function (e) {
+                                    // console.log(e.key)
+                                    if(e.key === 'Escape') self.clear();
+                                };
+                                document.addEventListener("keydown", closeOnEscape);
+                                return function () {
+                                    document.removeEventListener("keydown", closeOnEscape);
+                                };
+                        }
+                    },*/{
+                        tag:'li',
+                        html:'0',
+                        cb: function (){
+                            // console.log('child 1')
+                            this.node.innerHTML = this.parentKnot.state.n;
+                            return Promise.resolve();
+                        }
+                    },{
+                        tag:'li',
+                        html:'1',
+                        cb: function (){
+                            // console.log('child 2')
+                            this.node.innerHTML = this.parentKnot.state.n * 2;
+                            return Promise.resolve();
+                        }
+                    },{
+                        tag:  'li',
+                        children:[{
+                            tag:'p',
+                            html: 'test 1',
+                            ref: 'hei',
+                        },{
+                            tag: 'ul',
+                            children:[{
+                                tag:'li',
+                                html: 'one',
+                                initCheck: function(){
+                                    // console.log(this);
+                                    // hokuto.dom.setStyle(this.rootKnot.node, {
+                                    //     backgroundColor:'blue'
+                                    // })
+                                    
+
+                                    return Promise.resolve();
+                                },
+                                // cb: function() {
+                                //     console.log(this);
+                                //     var self = this;
+                                //     return new Promise(res => {
+                                //         setTimeout(() => res(), 3000);
+                                //         setTimeout(() => self.clear(), 6000)
+                                //     })
+                                // },
+                            },{
+                                tag:'li',
+                                html: 'i18n(hello)',
+                                // html: 'cri',
+                                abort: function () {
+                                    // console.log({abort: this})
+                                    return Promise.resolve();
+                                }
+                            }]
                         }]
+                    },{
+                        tag:  'li',
+                        html: 'test 2',
                     }]
-                },{
-                    tag:  'li',
-                    html: 'test 2',
-                }]
-            },true, 'one').then(r=> {
-                
+                },
+                clear: true,
+                name: 'one'
+            }).then(r=> {    
                 console.log({r})
 
                 

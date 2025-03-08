@@ -19,28 +19,31 @@
         (function () {
             
             hokuto.render({
-                target: document.getElementById('target'),
-                children:[{
-                    tag:'ul',
+                config: {
+                    target: document.getElementById('target'),
                     children:[{
-                        ref:'one',
-                        state:{n:1},
-                        tag:'li',
-                        html: 1
-                    },{
-                        tag:'li',
+                        tag:'ul',
                         children:[{
-                            tag:'button',
-                            text:'add',
-                            onClick:function(){
-                                var n = this.getByRef('one');
-                                n.config.html++;
-                                n.render();
-                            }
+                            ref:'one',
+                            state:{n:1},
+                            tag:'li',
+                            html: 1
+                        },{
+                            tag:'li',
+                            children:[{
+                                tag:'button',
+                                text:'add',
+                                onClick:function(){
+                                    var n = this.getByRef('one');
+                                    n.config.html++;
+                                    n.render();
+                                }
+                            }]
                         }]
                     }]
-                }]
-            },true).then((r, s)=>{
+                },
+                clear: true
+            }).then((r, s)=>{
                 console.log({r})
             });
         })();

@@ -19,14 +19,18 @@
                 })
                 
                 hokuto.render({
-                    target: document.getElementById('target'),
-                    children:[{
-                        component:'xxx',
-                        params:{
-                            name:'i18n(hello)'
-                        }
-                    }]
-                }, true, 'xxx');
+                    config: {
+                        target: document.getElementById('target'),
+                        children:[{
+                            component:'xxx',
+                            params:{
+                                name:'i18n(hello)'
+                            }
+                        }]
+                    },
+                    clear: true,
+                    name: 'xxx'
+                });
             })();
     
         </script>

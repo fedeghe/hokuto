@@ -9,8 +9,11 @@ var hokuto = require('../../dist/index.js'),
 
 describe('all props', () => {
     const basicConfig = {
-            html: 'hello',
-            id:'p'
+            config : {
+                html: 'hello',
+                id:'p'
+            },
+            clear: true
         },
         originalHtml = document.body.innerHTML,
         documentClear = () => {
@@ -31,8 +34,11 @@ describe('all props', () => {
     it('functional state', () => {
         render({
             ...basicConfig,
-            state: function(){
-                return {name: 'Bob'};
+            config: {
+                ...basicConfig.config,
+                state: function(){
+                    return {name: 'Bob'};
+                }
             }
         },true).then((n) => {
             expect(n.state.name).toBe('Bob');
@@ -42,8 +48,11 @@ describe('all props', () => {
     it('functional style', () => {
         render({
             ...basicConfig,
-            style: function(){
-                return {color:'red'};
+            config: {
+                ...basicConfig.config,
+                style: function(){
+                    return {color:'red'};
+                }
             }
         },true).then((n) => {
             expect(n.node.style.color).toBe('red');
@@ -52,11 +61,14 @@ describe('all props', () => {
     it('functional attrs', () => {
         render({
             ...basicConfig,
-            attrs: function(){
-                return {
-                    title: 'just a title',
-                    alt: 'just a alt'
-                };
+            config: {
+                ...basicConfig.config,
+                attrs: function(){
+                    return {
+                        title: 'just a title',
+                        alt: 'just a alt'
+                    };
+                }
             }
         },true).then((n) => {
             expect(n.node.getAttribute('title')).toBe('just a title');
@@ -67,8 +79,11 @@ describe('all props', () => {
     it('functional html', () => {
         render({
             ...basicConfig,
-            html: function(){
-                return '<span id="inside">just a title</span>';
+            config: {
+                ...basicConfig.config,
+                html: function(){
+                    return '<span id="inside">just a title</span>';
+                }
             }
         },true).then(() => {
             expect(selector('#inside')).not.toBeNull();
@@ -77,11 +92,14 @@ describe('all props', () => {
     it('functional data', () => {
         render({
             ...basicConfig,
-            data: function(){
-                return {name: 'Alice'};
-            },
-            html: 'Bob',
-            id:'trg'
+            config: {
+                ...basicConfig.config,
+                data: function(){
+                    return {name: 'Alice'};
+                },
+                html: 'Bob',
+                id:'trg'
+            }
         },true).then(() => {
             var n = selector('#trg');
             expect(n.dataset.name).toBe('Alice');

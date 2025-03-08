@@ -12,17 +12,19 @@ describe('components', () => {
 
     it('render a basic component', done => {
         var config = {
-            engy:{
-                componentsUrl: 'http://127.0.0.1:3333/components',
-            },
-            html: 'some content',
-            children: [{
-                component: 'p',
-                params: {
-                    name: 'hokuto'
+            config : {
+                engy:{
+                    componentsUrl: 'http://127.0.0.1:3333/components',
                 },
-                id:'test'
-            }] 
+                html: 'some content',
+                children: [{
+                    component: 'p',
+                    params: {
+                        name: 'hokuto'
+                    },
+                    id:'test'
+                }] 
+            }
         };
         render(config).then(() => {
             
@@ -34,18 +36,20 @@ describe('components', () => {
 
     it('render a component with subcomponent', done => {
         var config = {
-            engy:{
-                componentsUrl: 'http://127.0.0.1:3333/components',
-            },
-            html: 'some content',
-            id:'sup',
-            children: [{
-                component: 'nest',
-                params: {
-                    name: 'hokuto'
+            config: {
+                engy:{
+                    componentsUrl: 'http://127.0.0.1:3333/components',
                 },
-                id:'sub',
-            }] 
+                html: 'some content',
+                id:'sup',
+                children: [{
+                    component: 'nest',
+                    params: {
+                        name: 'hokuto'
+                    },
+                    id:'sub',
+                }] 
+            }
         };
         render(config).then(() => {
             expect(selector('[id="sup"]')).not.toBeNull();

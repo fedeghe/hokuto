@@ -19,20 +19,22 @@
                 })
                 
                 hokuto.render({
-                    data:{n:0},
-                    children:[{
-                        tag:'p',
-                        html:'test1',
-                        data:{n:1},
-                        onClick:function() {
-                            this.config.html = new Date();
-                            this.render();
-                        }
-                    },{
-                        tag:'p',
-                        html:'test2',
-                        data:{n:2}
-                    }]
+                    config: {
+                        data:{n:0},
+                        children:[{
+                            tag:'p',
+                            html:'test1',
+                            data:{n:1},
+                            onClick:function() {
+                                this.config.html = new Date();
+                                this.render();
+                            }
+                        },{
+                            tag:'p',
+                            html:'test2',
+                            data:{n:2}
+                        }]
+                    }
                 }).then((r, s)=>{
                     console.log({r})
                 });
@@ -49,27 +51,30 @@
                 })
                 
                 hokuto.render({
-                    data:{n:0},
-                    onClick:function() {
-                        this.render();  
+                    config:{
+                        data:{n:0},
+                        onClick:function() {
+                            this.render();  
+                        },
+                        children:[{
+                            tag:'p',
+                            className: function(){
+                                console.log(this);
+                                return 'a,b,c'
+                            },
+                            html:function() { return +new Date},
+                            data:{n:1},
+                            onClick:function(e) {
+                                this.render(); 
+                                e.stopPropagation() 
+                            },
+                        },{
+                            tag:'p',
+                            html:function() { return +new Date},
+                            data:{n:2}
+                        }]
                     },
-                    children:[{
-                        tag:'p',
-                        className: function(){
-                            console.log(this);
-                            return 'a,b,c'
-                        },
-                        html:function() { return +new Date},
-                        data:{n:1},
-                        onClick:function(e) {
-                            this.render(); 
-                            e.stopPropagation() 
-                        },
-                    },{
-                        tag:'p',
-                        html:function() { return +new Date},
-                        data:{n:2}
-                    }]
+                    clear: true
                 }).then((r, s)=>{
                     console.log({r})
                 });
@@ -77,6 +82,50 @@
     
         </script>
     </div>
+
+    
+        <script>
+        hokuto.render({
+            config: {
+                tag: 'form',
+                attrs: {
+                    action: '/admin/addTarget',
+                    method: 'POST'
+                },
+                children: [{
+                    style: { display: 'flex', alignItems: 'center' },
+                    children: [{
+                        tag: 'input',
+                        style: { display: 'flex', width: '100%' },
+                        attrs: {
+                            type: 'text',
+                            placeholder: '[t[add new target]t]',
+                            name: 'target',
+                            autocomplete: 'off'
+                        },
+                        onInput:function(e){
+                            var butt = this.getByRef('butt');
+                            if(e.target.value.length){
+                                butt.node.removeAttribute('disabled')
+                            } else {
+                                butt.node.setAttribute('disabled', 'disabled')
+                            }
+                        }
+                    },{
+                        tag:'button',
+                        style:{display:'flex',marginLeft:'5px',fontWeight:'bold'},
+                        ref:'butt',
+                        attrs:{
+                            type:'submit',
+                            disabled:'disabled'
+                        },
+                        html:'[t[ADD]t]'
+                    }]
+                }]
+            }
+        })
+    </script>
+    
     
 
 </body>
