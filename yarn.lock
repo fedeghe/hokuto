@@ -335,6 +335,11 @@
     "@eslint/core" "^0.12.0"
     levn "^0.4.1"
 
+"@fedeghe/channeljs@^1.2.10":
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/@fedeghe/channeljs/-/channeljs-1.2.10.tgz#86656c2441988a31d9b8fbc808bfb1e085a6f852"
+  integrity sha512-Qu/zh/M5YxNxRlAQDo6JcZaDFRJhdjg1sdA0K/mtW3IM8YuMX3fce3CSE3l03qJEWYJku2/4UOFrVZHryToIwA==
+
 "@humanfs/core@^0.19.1":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@humanfs/core/-/core-0.19.1.tgz#17c55ca7d426733fe3c561906b8173c336b40a77"
@@ -2774,10 +2779,10 @@ resolve@^1.20.0:
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
 
-rexhr@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/rexhr/-/rexhr-0.0.3.tgz#607429b04a9557fce79bbc4e94dfb9c83c93a3e9"
-  integrity sha512-JxsoEHFfoE7AIjYfD7uYTkZHE6uDDWyHZeKeaFCTpuJrT9nExVXnS8Hts/w366gyGAYqXyKK6AdvfRyKGVgjKg==
+rexhr@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/rexhr/-/rexhr-0.0.7.tgz#3ce27f5e6126edb4d810f86cb3f4f406bbb5cd10"
+  integrity sha512-1CdAfIGaccDbMdMVQs8y8k2jOSr9Ldli1+uq8mAl/uILeFg0E41GtQadQOP/lJ5uFkd4v9TKTh7gCjh5W56j/A==
 
 right-align@^0.1.1:
   version "0.1.3"

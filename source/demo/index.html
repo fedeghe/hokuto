@@ -3,189 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>maltaV('PACKAGE.name') maltaV('tit')</title>
     <link rel="stylesheet" href="./style.css">
-    <script>
-    maltaF('../../dist/index.js')
-    </script>
+    <script src="./index.js"></script>
 </head>
 <body>
-    <h1>title here</h1>
-    <div id="target">
-        ...loading
-    </div>
-    
     <script>
-        (function () {
-            hokuto.i18n.load({
-                hello: 'ciao'
-            })
-            var target  = document.getElementById('target');
-            // var r = hokuto.render({
-            //     target,
-            //     tag: 'p',
-            //     html: 'hello there'
-            // });
+       
+        hokuto.render({
+            config: {
+                component: 'home/index',
+                params:{
+                    title: 'Hokuto'
+                }
+            }
+        })
+        .then(r => {
+            
+            var script = hokuto.dom.script({src:'./components/home/loaded.js'});
+            
+            r.addSibling(script);
+            hokuto.fx.fadeIn({
+                // additionalStyles: 'body{color:red}',
+                duration:2e3
+            });
 
-            // setTimeout(function(){
-            //     r.clear();
-            // },3000)
 
-            // setTimeout(function(){
-            //     hokuto.render({
-            //         target,
-            //         tag: 'strong',
-            //         html: 'hello there again'
-            //     });
-            // },6000)
             hokuto.render({
                 config:{
-                    target: target,
-                    tag: 'ul',
-                    initCheck: () => Promise.resolve(),
-                    state: { n: 0, summer:1 },
-                    cb: function() {
-                        var self = this;
-                        this.setState({
-                            n: self.state.n + self.state.summer
-                        })
-                        
-                        setTimeout(function(){
-                            self.render();
-                        },1e2);
-                        return Promise.resolve();
-                    },
-                    children: [
-                        // {tag:'p', html:'cazzzo', initCheck: () => Promise.resolve()},
-                        {ref: 'val',html : function() {
-                            return this.rootKnot.state.n
-                        }},
-                        {
-                            tag: 'input',
-                            attrs:{type:'range',step:5},
-                            // data:function(){return {xxx:44}},
-                            onInput: function (e) {
-                                var r = this.getByRef('val'),
-                                    value = e.target.value;
-                                r.node.value = value;
-                                r.config.html = value;
-                                
-                                this.rootKnot.setState({
-                                    summer: parseInt(value, 10)
-                                });
-                                r.render();
-                            }
-                        },
-                        /*{
-                        component: 'xxx',
-                        params:{
-                            name: 'Federico Ghedina K'
-                        },
-                        // html : 'cristiana'
-                    },{
-                        component: 'xxx',
-                        html:'test',
-                        style:{
-                            color:'red'
-                        },
-                        data:{hello:'fede'},
-                        state: {name:'fedexxx'},
-                        attrs:{id:'stocazzo'},
-                        onClick:function(e) {
-                            // this.clear();
-                            
-                            // console.log(
-                                // this.getByRef('hei').clear()
-                            // )
-                            this.state.name = 'jeff';
-                            this.unhandle('click');
-                            
-                            this.setHtml(this.state.name);
-                        },
-                        end: function (){
-                            var self = this,
-                                closeOnEscape = function (e) {
-                                    // console.log(e.key)
-                                    if(e.key === 'Escape') self.clear();
-                                };
-                                document.addEventListener("keydown", closeOnEscape);
-                                return function () {
-                                    document.removeEventListener("keydown", closeOnEscape);
-                                };
-                        }
-                    },*/{
-                        tag:'li',
-                        html:'0',
-                        cb: function (){
-                            // console.log('child 1')
-                            this.node.innerHTML = this.parentKnot.state.n;
-                            return Promise.resolve();
-                        }
-                    },{
-                        tag:'li',
-                        html:'1',
-                        cb: function (){
-                            // console.log('child 2')
-                            this.node.innerHTML = this.parentKnot.state.n * 2;
-                            return Promise.resolve();
-                        }
-                    },{
-                        tag:  'li',
-                        children:[{
-                            tag:'p',
-                            html: 'test 1',
-                            ref: 'hei',
-                        },{
-                            tag: 'ul',
-                            children:[{
-                                tag:'li',
-                                html: 'one',
-                                initCheck: function(){
-                                    // console.log(this);
-                                    // hokuto.dom.setStyle(this.rootKnot.node, {
-                                    //     backgroundColor:'blue'
-                                    // })
-                                    
-
-                                    return Promise.resolve();
-                                },
-                                // cb: function() {
-                                //     console.log(this);
-                                //     var self = this;
-                                //     return new Promise(res => {
-                                //         setTimeout(() => res(), 3000);
-                                //         setTimeout(() => self.clear(), 6000)
-                                //     })
-                                // },
-                            },{
-                                tag:'li',
-                                html: 'i18n(hello)',
-                                // html: 'cri',
-                                abort: function () {
-                                    // console.log({abort: this})
-                                    return Promise.resolve();
-                                }
-                            }]
-                        }]
-                    },{
-                        tag:  'li',
-                        html: 'test 2',
-                    }]
-                },
-                clear: true,
-                name: 'one'
-            }).then(r=> {    
-                console.log({r})
-
-                
-                // setTimeout(function(){
-                //     r.clear();
-                // },3000)
-                    
-            });
-        })();
-
+                    children:[
+                        {tag:'h1', text:'hokuto'},
+                        {html:'hello from Hokuto'}
+                    ]
+                }
+            })
+        })
+        
     </script>
 </body>
-
 </html>

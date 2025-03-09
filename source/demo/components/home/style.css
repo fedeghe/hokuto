@@ -1,0 +1,7 @@
+body{
+    color:red;
+    /* transition: opacity 1s ease-in; */
+    /* opacity: 1; */
+    transition: filter 1s ease-in;
+    filter: blur(0px)
+}

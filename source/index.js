@@ -6,6 +6,7 @@ var hokuto = (function (_) {
     // can be ignored cause it is 💯 (https://www.npmjs.com/package/searchhash)
     /* istanbul ignore next */
     maltaF('../node_modules/searchhash/dist/index.js');
+    maltaF('../node_modules/@fedeghe/channeljs/dist/index.js');
     
     //hokuto
     maltaF('core.js');
@@ -23,6 +24,7 @@ var hokuto = (function (_) {
     
     maltaF('solve.js');
     maltaF('knot.js');
+    maltaF('fx.js');
     //+++++++++++++++++++++++++++++++++++++++++++++++
 
     var __renders = {},
@@ -73,7 +75,8 @@ var hokuto = (function (_) {
         events: Hok.events,
         utils: Hok.utils,
         cookie: Hok.cookie,
-
+        fx: Hok.fx,
+        ps: Hok.ps,
         render: render,
         get: get,
         getKnotById: function (id) {

@@ -306,6 +306,10 @@ Knot.prototype.render = function(){
     return Promise.resolve(this);
 };
 
+Knot.prototype.addSibling = function(n){
+    this.node.parentNode.appendChild(n);
+    return this;
+};
 Knot.prototype.clear = function(){
     if(this.ender) this.ender();
     this.target.removeChild(this.node);
