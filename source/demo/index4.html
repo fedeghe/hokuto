@@ -8,7 +8,6 @@
     <script src="./index.js"></script>
 </head>
 <body>
-    <h1>sub components</h1>
     <div id="target">
         <script>
             function one(){
@@ -20,6 +19,8 @@
                     config: {
                         target: document.getElementById('target'),
                         children:[{
+                            component: 'menu'
+                        },{
                             tag: 'span',
                             html:'forward',
                             onClick: two,
@@ -31,7 +32,9 @@
                 };
 
                 
-                hokuto.render(config);
+                hokuto.render(config).then(
+                    () => hokuto.fx.fadeIn({ duration:2e3 })
+                );;
                 
             }
 
@@ -55,7 +58,10 @@
                 };
 
                 
-                hokuto.render(config);
+                hokuto.render(config)
+                // .then(
+                //     () => hokuto.fx.fadeIn({ duration:2e3 })
+                // );
                 
             }
             one();

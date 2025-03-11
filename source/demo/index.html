@@ -7,37 +7,47 @@
     <script src="./index.js"></script>
 </head>
 <body>
+    <div>
     <script>
-       
         hokuto.render({
             config: {
-                component: 'home/index',
-                params:{
-                    title: 'Hokuto'
-                }
-            }
+                
+                children:[{
+                    component: 'menu'
+                },{
+                    component: 'home/index',
+                    params:{
+                        title: 'Hokuto'
+                    },
+                }]
+            },
+            vanish: true
         })
         .then(r => {
-            
-            var script = hokuto.dom.script({src:'./components/home/loaded.js'});
-            
+            var script = hokuto.dom.script({src:'./components/home/loaded.js'}, true);
             r.addSibling(script);
-            hokuto.fx.fadeIn({
-                // additionalStyles: 'body{color:red}',
-                duration:2e3
-            });
-
-
-            hokuto.render({
-                config:{
-                    children:[
-                        {tag:'h1', text:'hokuto'},
-                        {html:'hello from Hokuto'}
-                    ]
-                }
-            })
+            // hokuto.fx.fadeIn({
+            //     // additionalStyles: 'body{color:red}',
+            //     duration:2e3
+            // });
         })
+    </script>
+    </div>
+    <div>
+        <script>
+        hokuto.render({
+                config:{
+                    // children:[
+                        // {tag:'h1', text:'hokuto'},
+                        // {
+                            html:'hello from Hokuto'
+                        // }
+                    // ]
+                },
+                vanish: true
+            })
         
     </script>
+    </div>
 </body>
 </html>

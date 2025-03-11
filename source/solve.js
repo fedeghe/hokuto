@@ -115,7 +115,7 @@ Hok.solve = (function() {
             hasStats = false;
         return new Promise(function(resolve){
             (function solve() {
-                var component = searchHash.forKey(
+                var component = Hok.searchHash.forKey(
                         self.content,
                         'component', { limit: 1 }
                     ),

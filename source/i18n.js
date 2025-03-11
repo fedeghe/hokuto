@@ -15,7 +15,7 @@
     ctx.get = function(k, fallback) {return  Hok.ns.check(k, data) || fallback || k+'<sup>&#2417;</sup>';};
     ctx.load = function(dict) { data = dict;};
     ctx.parse = function(obj){
-        var replacing = searchHash.forValue(obj, RX_LANG),
+        var replacing = Hok.searchHash.forValue(obj, RX_LANG),
             l = replacing.length,
             mayP, ref, i = 0, r;
         for (null; i < l; i++) {

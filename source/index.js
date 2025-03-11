@@ -1,15 +1,15 @@
 // eslint-disable-next-line no-unused-vars
 var hokuto = (function (_) {
         
+    // define internal object to publish from
+    // Hok
+    maltaF('core.js');
     //+++++++++++++++++++++++++++++++++++++++++++++++
-    //libz
-    // can be ignored cause it is 💯 (https://www.npmjs.com/package/searchhash)
-    /* istanbul ignore next */
-    maltaF('../node_modules/searchhash/dist/index.js');
-    maltaF('../node_modules/@fedeghe/channeljs/dist/index.js');
+    // libz: add to Hok
+    maltaF('searchhash.js');
+    maltaF('channeljs.js');
     
     //hokuto
-    maltaF('core.js');
     maltaF('utils.js');
     // maltaF('poly.js')
     maltaF('ns.js');
@@ -38,7 +38,9 @@ var hokuto = (function (_) {
         var config = params.config,
             clear = !!params.clear,
             name = params.name,
-            scriptParent = document.currentScript && document.currentScript.parentNode;
+            vanish = params.vanish,
+            currentScript = document.currentScript,
+            scriptParent = currentScript && currentScript.parentNode;
         return Hok.solve(config).then(
             function (solvedConfig){
                 if(!('target' in solvedConfig) && scriptParent){
@@ -52,6 +54,8 @@ var hokuto = (function (_) {
                         __renders[name] = n;
                     }
                     return n;
+                }).finally(function() {
+                    vanish && scriptParent.removeChild(currentScript);
                 });
             }
         );
@@ -85,7 +89,7 @@ var hokuto = (function (_) {
                 : null;
         },
         getElement: function(n) { return n in __renders ? __renders[n] : false; },
-        getElements: function() { return __renders; },
+        getElements: function() { return __renders; }
     };
 })(window);
 (typeof exports === 'object') && (module.exports = hokuto);

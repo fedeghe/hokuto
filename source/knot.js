@@ -185,9 +185,10 @@ Knot.prototype.setText = function(text) {
 };
 
 Knot.prototype.setHtml = function(html) {
-    var nextHtml = functionize(this, this.config.html || ''),
-        nextPassedHtml= functionize(this, html || ''),
-        whole = nextPassedHtml || nextHtml || '';
+    if(typeof html !== 'undefined') html = '';
+    var nextHtml = functionize(this, 'html' in this.config ? this.config.html : ''),
+        nextPassedHtml= functionize(this, html),
+        whole = nextPassedHtml || nextHtml;
         whole && Hok.dom.setHtml(this.node, whole);
     return this;
 };

@@ -18,5 +18,4 @@ var Hok = {
     i18n:{},
     io: {},
     utils: {},
-    ps : Channeljs
 };

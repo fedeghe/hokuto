@@ -67,11 +67,16 @@
     ctx.setHtml = function(node, html) {
         node.innerHTML = ctx.filterHtml(html);
     };
-    ctx.script = function(params) {
+    ctx.script = function(params, autoVanish) {
         var script = document.createElement('script'),
             attrs = params && params.attrs;
         
         if (attrs) ctx.setAttrs(script, attrs);
+        if(autoVanish){
+            script.onload = function() {
+                script.parentNode.removeChild(script);
+            };
+        }
         if(params.content) {
             script.innerHTML = params.content;
         } else if(params.src){

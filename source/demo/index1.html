@@ -8,7 +8,6 @@
     <script src="./index.js"></script>
 </head>
 <body>
-    <h1>title here</h1>
     <div id="target">
         ...loading
     </div>
@@ -20,6 +19,8 @@
                 config: {
                     target: document.getElementById('target'),
                     children:[{
+                        component: 'menu'
+                    },{
                         tag:'ul',
                         children:[{
                             ref:'one',
@@ -40,10 +41,12 @@
                         }]
                     }]
                 },
+                vanish: true,
                 clear: true
-            }).then((r, s)=>{
-                console.log({r})
-            });
+            })
+            // .then((r, s)=>{
+            //     hokuto.fx.fadeIn({ duration:2e3 });
+            // });
         })();
 
     </script>

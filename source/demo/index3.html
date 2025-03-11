@@ -8,18 +8,18 @@
     <script src="./index.js"></script>
 </head>
 <body>
-    <h1>sub components</h1>
     <div id="target">
         <script>
             (function () {
                 hokuto.i18n.load({
                     hello: 'ciao'
                 })
-                
                 hokuto.render({
                     config: {
                         target: document.getElementById('target'),
                         children:[{
+                            component: 'menu'
+                        },{
                             component:'xxx',
                             params:{
                                 name:'i18n(hello)'
@@ -27,8 +27,10 @@
                         }]
                     },
                     clear: true,
-                    name: 'xxx'
-                });
+                    name: 'xxx',
+                    vanish: true
+                })
+                // .then(()=>hokuto.fx.fadeIn({ duration:2e3 }));
             })();
     
         </script>
