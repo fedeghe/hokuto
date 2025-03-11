@@ -1,4 +1,4 @@
-var hokuto = require('../dist/index.js');
+var hokuto = require('../../dist/index.js');
 var render = (conf ,clear , label) => {
     return hokuto.render({
         target: document.getElementById('target'),

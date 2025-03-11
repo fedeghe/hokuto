@@ -12,15 +12,17 @@
         "start": "malta source/buildev.json",
         "startmin": "malta source/buildevmin.json",
         "build": "malta source/build.json",
-        "test": "jest --config ./jest.config.js --verbose $PWD/tests",
-        "watch": "jest --config ./jest.config.js --watch $PWD/tests",
-        "cover": "jest --config ./jest.config.js $PWD/tests",
-        "coveralls": "jest --config ./jest.config.js $PWD/tests && cat ./coverage/lcov.info | coveralls",
+        "srv": "malta source/startsrv.json",
+        "test": "jest --config ./jest.config.js --verbose --rootDir=$PWD/source/tests",
+        "watch": "jest --config ./jest.config.js --watch --rootDir=$PWD/source/tests",
+        "cover": "jest --config ./jest.config.js --rootDir=$PWD/source/tests",
+        "coveralls": "jest --config ./jest.config.js --rootDir=$PWD/source/tests && cat ./coverage/lcov.info | coveralls",
         "lint": "eslint src",
         "lintfix": "eslint src --fix"
     },
     "devDependencies": {
         "@eslint/js": "^9.21.0",
+        "@fedeghe/channeljs": "^1.2.10",
         "coveralls": "^3.1.1",
         "eslint": "^9.21.0",
         "jest": "^29.7.0",
@@ -28,10 +30,13 @@
         "jest-environment-jsdom": "^29.7.0",
         "malta": "^4.1.41",
         "malta-browser-refresh": "^1.2.16",
-        "malta-dev-srv": "^1.1.8",
+        "malta-dev-srv": "^1.1.9",
         "malta-header-comment": "^1.0.12",
         "malta-js-uglify": "^1.0.13",
         "searchhash": "^1.2.12",
         "web-page-monitor": "^0.0.26"
+    },
+    "dependencies": {
+        "rexhr": "^0.0.7"
     }
 }

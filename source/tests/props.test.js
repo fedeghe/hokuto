@@ -2,17 +2,19 @@
  * @jest-environment jsdom
  */
 // eslint-disable-next-line no-unused-vars
-var hokuto = require('../dist/index.js'),
+var hokuto = require('../../dist/index.js'),
     utils = require('./utils.js'),
     render = utils.render,
     selector = utils.selector;
 
 describe('all props', () => {
     const basicConfig = {
-            children:[{
-                tag:'p',
-                html:'test'
-            }]
+            config: {
+                children:[{
+                    tag:'p',
+                    html:'test'
+                }]
+            }
         },
         originalHtml = document.body.innerHTML,
         documentClear = () => {
@@ -32,15 +34,19 @@ describe('all props', () => {
     
     it('cb expected', () => {
         render({
-            ...basicConfig,
-            cb
+            config:{
+                ...basicConfig.config,
+                cb
+            }
         }).then(() => expect(cb).toBeCalled());
     });
 
     it('cb resolving', done => {
         render({
-            ...basicConfig,
-            cb: cbResolving
+            config: {
+                ...basicConfig.config,
+                cb: cbResolving
+            }
         }).then(() => {
             expect(cbResolving).toBeCalled();
             expect(selector('p').innerHTML).toBe('test');
@@ -50,8 +56,10 @@ describe('all props', () => {
 
     it('cb rejecting', done => {
         render({
-            ...basicConfig,
-            cb: cbRejecting
+            config: {
+                ...basicConfig.config,
+                cb: cbRejecting
+            }
         }).then(() => {
             expect(cbRejecting).toBeCalled();
             expect(selector('p')).toBeNull();
@@ -61,8 +69,10 @@ describe('all props', () => {
 
     it('initCheck truthy expected', done => {
         render({
-            ...basicConfig,
-            initCheck: initTrue
+            config:{
+                ...basicConfig.config,
+                initCheck: initTrue
+            }
         }).then(() => {
             expect(selector('p').innerHTML).toBe('test');
             expect(initTrue).toBeCalled();
@@ -72,8 +82,10 @@ describe('all props', () => {
 
     it('initCheck falsy expected', done => {
         render({
-            ...basicConfig,
-            initCheck: initFalse
+            config: {
+                ...basicConfig.config,
+                initCheck: initFalse
+            }
         }).then(()=>{
             expect(selector('p')).toBeNull();
             expect(initFalse).toBeCalled();
@@ -83,19 +95,24 @@ describe('all props', () => {
     
     it('abort expected', () => {
         render({
-            ...basicConfig,
-            abort: cbRejecting
-        },true).then(() => {
+            config: {
+                ...basicConfig.config,
+                abort: cbRejecting
+            },
+            clear: true
+        }).then(() => {
             expect(selector('div[data-testid="visible"]').innerHTML).toBe('loading');
         });
     });
 
     it('state settter expected', () => {
         render({
-            ...basicConfig,
-            state: {
-                s:'test string',
-                n: 4
+            config: {
+                ...basicConfig.config,
+                state: {
+                    s:'test string',
+                    n: 4
+                }
             }
         }).then(r => 
             expect(r.state).toMatchObject({
@@ -107,15 +124,17 @@ describe('all props', () => {
 
     it('ref setter expected', done => {
         render({
-            children:[{
-                tag:'p',
-                ref: 'one',
-                html:'testOne'
-            },{
-                tag:'p',
-                ref: 'two',
-                html:'testTwo'
-            }]
+            config: {
+                children:[{
+                    tag:'p',
+                    ref: 'one',
+                    html:'testOne'
+                },{
+                    tag:'p',
+                    ref: 'two',
+                    html:'testTwo'
+                }]
+            }
         }).then(r=>{
             var one = r.getByRef('one'),
                 two = r.getByRef('two');
@@ -127,16 +146,19 @@ describe('all props', () => {
 
     it('text setter expected', done => {
         render({
-            children:[{
-                tag:'p',
-                id:'u1',
-                text:'testOne'
-            },{
-                tag:'p',
-                id:'u2',
-                text:'testTwo'
-            }]
-        },true).then(() => {
+            config: {
+                children:[{
+                    tag:'p',
+                    id:'u1',
+                    text:'testOne'
+                },{
+                    tag:'p',
+                    id:'u2',
+                    text:'testTwo'
+                }]
+            },
+            clear: true
+        }).then(() => {
             var n = selector('#u1');
             // https://stackoverflow.com/questions/47902335/innertext-is-undefined-in-jest-test
             expect(n.textContent).toBe('testOne');         
@@ -146,15 +168,17 @@ describe('all props', () => {
 
     it('style setter expected', done => {
         render({
-            children:[{
-                tag:'p',
-                id:'u1',
-                html:'testOne',
-                style:{
-                    color:'red',
-                    backgroundColor:'blue'
-                }
-            }]
+            config: {
+                children:[{
+                    tag:'p',
+                    id:'u1',
+                    html:'testOne',
+                    style:{
+                        color:'red',
+                        backgroundColor:'blue'
+                    }
+                }]
+            }
         }).then(() => {
             var n = selector('#u1');
             expect(n.innerHTML).toBe('testOne');         
@@ -165,18 +189,20 @@ describe('all props', () => {
     });
     it('attrs setter expected', done => {
         render({
-            children:[{
-                tag:'input',
-                id:'u1',
-                attrs:{
-                    title:'just a title',
-                    type:'range',
-                    value: 35,
-                    min: -100,
-                    max: 100,
-                    step: 5
-                }
-            }]
+            config:{
+                children:[{
+                    tag:'input',
+                    id:'u1',
+                    attrs:{
+                        title:'just a title',
+                        type:'range',
+                        value: 35,
+                        min: -100,
+                        max: 100,
+                        step: 5
+                    }
+                }]
+            }
         }).then(() => {
             var n = selector('#u1');
             expect(n.title).toBe('just a title');
@@ -191,11 +217,13 @@ describe('all props', () => {
 
     it('className setter expected', done => {
         render({
-            children:[{
-                tag:'input',
-                ref:'u1',
-                className:'a,b,c'
-            }]
+            config:{
+                children:[{
+                    tag:'input',
+                    ref:'u1',
+                    className:'a,b,c'
+                }]
+            }
         }).then(r => {
             var n = r.getByRef('u1').node;
             expect(n.classList.contains('a')).toBe(true);
@@ -208,8 +236,10 @@ describe('all props', () => {
 
     it('ender expected', done => {
         render({
-            ...basicConfig,
-            end: ender
+            config: {
+                ...basicConfig.config,
+                end: ender
+            }
         }).then(r => {
             expect(selector('p').innerHTML).toBe('test');
             expect(ender).toBeCalled();

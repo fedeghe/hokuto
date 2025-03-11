@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maltaV('PACKAGE.name') maltaV('tit')</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./index.js"></script>
+</head>
+<body>
+    <div id="target">
+        ...loading
+    </div>
+    
+    <script>
+        (function () {
+            hokuto.i18n.load({
+                hello: 'ciao'
+            })
+            var target  = document.getElementById('target');
+            // var r = hokuto.render({
+            //     target,
+            //     tag: 'p',
+            //     html: 'hello there'
+            // });
+
+            // setTimeout(function(){
+            //     r.clear();
+            // },3000)
+
+            // setTimeout(function(){
+            //     hokuto.render({
+            //         target,
+            //         tag: 'strong',
+            //         html: 'hello there again'
+            //     });
+            // },6000)
+
+            var getGaugeStyle = () => ({
+                    width:'100%',
+                    margin:0,
+                    padding:0,
+                    height:'30px',
+                    border:'none',
+                }),
+                max = 1e6
+            hokuto.render({
+                config:{
+                    target: target,
+                    
+                    //initCheck: () => Promise.resolve(),
+                    children:[
+                        {
+                            component: 'menu'
+                        },
+                        {
+                            state: { n: 0, summer:1 },
+                            cb: function() {
+                                var self = this;
+                                
+                                this.setState({
+                                    n: self.state.n + self.state.summer
+                                });
+                                setTimeout(function(){
+                                    self.render();
+                                },1e2);
+                                return Promise.resolve();
+                            },
+                            children: [{
+                                ref: 'val',
+                                html: function() {
+                                    return this.parentKnot.state.summer;
+                                }
+                            }, {
+                                tag: 'input',
+                                attrs:function() {
+                                    return {
+                                        type: 'range',
+                                        step: 1,
+                                        value: 1,
+                                        max: max
+                                    };
+                                },
+                                style:getGaugeStyle(),
+                                onInput: function (e) {
+                                    var r = this.getByRef('val'),
+                                        pro = this.getByRef('pro'),
+                                        value = e.target.value;
+                                    r.node.value = value;
+                                    r.config.html = value;
+                                    pro.setAttrs({value: value});
+
+                                    this.parentKnot.setState({
+                                        summer: parseInt(value, 10)
+                                    });
+                                    r.render();
+                                }
+                            },
+                            {tag:'br'},
+                            {
+                                tag:'progress',
+                                ref:'pro',
+                                attrs:{
+                                    max:max
+                                },
+                                style:getGaugeStyle(),
+                                initCheck: function(){
+                                    var v = this.parentKnot.state.summer;
+                                    this.setAttrs({
+                                        value: v
+                                    });
+                                    return Promise.resolve();
+                                }
+                            },{
+                                html:'0',
+                                cb: function (){
+                                    this.node.innerHTML = '1x = ' + this.parentKnot.state.n;
+                                    return Promise.resolve();
+                                }
+                            },{
+                                html:'1',
+                                cb: function (){
+                                    this.node.innerHTML = '2x = ' + this.parentKnot.state.n * 2;
+                                    return Promise.resolve();
+                                }
+                            }]
+                        }
+                    ]
+                    
+                },
+                clear: true,
+                name: 'one',
+                vanish: true
+            })
+            // .then(() => {    
+            //     hokuto.fx.fadeIn({ duration: 2e3 });                    
+            // });
+        })();
+
+    </script>
+</body>
+
+</html>

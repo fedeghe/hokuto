@@ -21,7 +21,7 @@
 
 hokuto v. 0.1.0
 
-with ~49.2KB of ❤️
+with ~54.5KB of ❤️
 
 Federico Ghedina <fedeghe@gmail.com>
 
@@ -29,16 +29,8 @@ Federico Ghedina <fedeghe@gmail.com>
 // eslint-disable-next-line no-unused-vars
 var hokuto = (function (_) {
         
-    //+++++++++++++++++++++++++++++++++++++++++++++++
-    //libz
-    'use strict';
-    /*
-    SEARCHHASH v1.2.12
-    ~2.01KB
-    */
-    var searchHash=function(){function n(n,t){return JSON.stringify(n)===JSON.stringify(t)&&!e(t)}function t(n){return"string"==typeof n||n instanceof String}function e(n){return n instanceof RegExp}function r(n){var t=String(n)!==n,e=n===Object(n),r="function"!=typeof n,i={}.toString.call(n).match(/\[object\sObject\]/);return t&&e&&r&&!(!i||!i.length)}function i(n){var t={}.toString.call(n).match(/\[object\sArray\]/);return String(n)!==n&&!(!t||!t.length)}function o(n){return n&&"object"==typeof n&&void 0!==n.nodeType&&1===n.nodeType&&"string"==typeof n.nodeName}function u(u,a,f,c){if(!r(a)&&!i(a))throw new Error("BAD PARAM: must search into an object or an array");var l,m=0,y=function(r,i){return t(r)&&e(i)?r.match(i):n(r,i)},s={key:function(n,t,e){return"function"==typeof e?e(n):y(n,e)},value:function(n,t,e){return"function"==typeof e?e(t):y(t,e)},keyvalue:function(n,t,e){return("function"==typeof e.key&&e.key(n)||y(n,e.key))&&("function"==typeof e.value&&e.value(t)||y(t,e.value))}}[u],p=[],g=function(n,t,e,r,i){var o=[].concat.call(n,[t]),u=s(t,r[t],e),f=c.min<=i&&i<=c.max,l=o.length;f&&u&&(p.push({obj:r,value:r[t],key:o[l-1],parentKey:o[l-2],path:o.join("/"),getter:function(){return o.reduce(function(n,t){return n[t]},a)},container:o.slice(0,l-1).join("/"),parentContainer:o.slice(0,l-2).join("/"),regexp:u,level:i}),m++),v(r[t],e,o,i+1)},v=function(n,t,e,r){if(!o(n)){var i,u;if(n instanceof Array)for(i=0,u=n.length;i<u&&(g(e,i,t,n,r),c.limit!==m);i++);else if("object"==typeof n)for(i in n)if(g(e,i,t,n,r),c.limit===m)break}};return c.limit="limit"in c?~~c.limit:1/0,c.min="min"in c?~~c.min:0,c.max="max"in c?~~c.max:1/0,0===c.limit?p:(c.min=c.min<0?0:c.min,c.max<c.min&&(l=c.min,c.min=c.max,c.max=l),v(a,f,[],0),c.sorter?p.sort(c.sorter):p)}return{forKey:function(n,t,e){return u("key",n,t,e||{})},forValue:function(n,t,e){return u("value",n,t,e||{})},forKeyValue:function(n,t,e){return u("keyvalue",n,t,e||{})}}}();"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=searchHash);;
-    
-    //hokuto
+    // define internal object to publish from
+    // Hok
     // eslint-disable-next-line no-unused-vars
     var Hok = {
         W: _,
@@ -61,12 +53,61 @@ var hokuto = (function (_) {
         utils: {},
     };
     ;
+    //+++++++++++++++++++++++++++++++++++++++++++++++
+    // libz: add to Hok
+    
+    (function (ctx){
+    
+        'use strict';
+        /*
+        SEARCHHASH v1.2.12
+        ~2.01KB
+        */
+        var searchHash=function(){function n(n,t){return JSON.stringify(n)===JSON.stringify(t)&&!e(t)}function t(n){return"string"==typeof n||n instanceof String}function e(n){return n instanceof RegExp}function r(n){var t=String(n)!==n,e=n===Object(n),r="function"!=typeof n,i={}.toString.call(n).match(/\[object\sObject\]/);return t&&e&&r&&!(!i||!i.length)}function i(n){var t={}.toString.call(n).match(/\[object\sArray\]/);return String(n)!==n&&!(!t||!t.length)}function o(n){return n&&"object"==typeof n&&void 0!==n.nodeType&&1===n.nodeType&&"string"==typeof n.nodeName}function u(u,a,f,c){if(!r(a)&&!i(a))throw new Error("BAD PARAM: must search into an object or an array");var l,m=0,y=function(r,i){return t(r)&&e(i)?r.match(i):n(r,i)},s={key:function(n,t,e){return"function"==typeof e?e(n):y(n,e)},value:function(n,t,e){return"function"==typeof e?e(t):y(t,e)},keyvalue:function(n,t,e){return("function"==typeof e.key&&e.key(n)||y(n,e.key))&&("function"==typeof e.value&&e.value(t)||y(t,e.value))}}[u],p=[],g=function(n,t,e,r,i){var o=[].concat.call(n,[t]),u=s(t,r[t],e),f=c.min<=i&&i<=c.max,l=o.length;f&&u&&(p.push({obj:r,value:r[t],key:o[l-1],parentKey:o[l-2],path:o.join("/"),getter:function(){return o.reduce(function(n,t){return n[t]},a)},container:o.slice(0,l-1).join("/"),parentContainer:o.slice(0,l-2).join("/"),regexp:u,level:i}),m++),v(r[t],e,o,i+1)},v=function(n,t,e,r){if(!o(n)){var i,u;if(n instanceof Array)for(i=0,u=n.length;i<u&&(g(e,i,t,n,r),c.limit!==m);i++);else if("object"==typeof n)for(i in n)if(g(e,i,t,n,r),c.limit===m)break}};return c.limit="limit"in c?~~c.limit:1/0,c.min="min"in c?~~c.min:0,c.max="max"in c?~~c.max:1/0,0===c.limit?p:(c.min=c.min<0?0:c.min,c.max<c.min&&(l=c.min,c.min=c.max,c.max=l),v(a,f,[],0),c.sorter?p.sort(c.sorter):p)}return{forKey:function(n,t,e){return u("key",n,t,e||{})},forValue:function(n,t,e){return u("value",n,t,e||{})},forKeyValue:function(n,t,e){return u("keyvalue",n,t,e||{})}}}();"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=searchHash);;
+    
+        ctx.searchHash = searchHash;
+    
+    })(Hok);
+    ;
+    
+    (function (ctx){
+    
+        'use strict';
+        /*
+        
+        C H A N N E L J S  v.1.2.10
+        
+        Date: 21/1/2024
+        Size: ~1.94KB
+        Author: Federico Ghedina <federico.ghedina@gmail.com>
+        */
+        var Channeljs=function(){"use strict";var t={},i=function(t,i){return t.indexOf(i)},s=function(){this.topic2cbs={},this.lateTopics={},this.enabled=!0},e=function(t,i){var s=t.enabled
+        ;return t.enabled=i,s!==t.enabled},n=s.prototype;return n.enable=function(){return e(this,!0)},n.disable=function(){return e(this,!1)},n.pub=function(t,i){var s,e=0,n=[]
+        ;if(i instanceof Array||(i=[i]),!(t in this.topic2cbs&&this.enabled))return t in this.lateTopics?this.lateTopics[t].push({args:i}):this.lateTopics[t]=[{args:i}],null;if("*"in this.topic2cbs)for(e=0,
+        s=this.topic2cbs["*"].length;e<s;e+=1)n.push(this.topic2cbs["*"][e].apply(null,i));for(e=0,s=this.topic2cbs[t].length;e<s;e+=1)n.push(this.topic2cbs[t][e].apply(null,i));return n},
+        n.sub=function(t,i,s){var e,n=0,c=[];if(t in this.topic2cbs&&this.enabled||(this.topic2cbs[t]=[]),this.topic2cbs[t].push(i),s&&t in this.lateTopics){for(n=0,
+        e=this.lateTopics[t].length;n<e;n++)c.push(i.apply(null,this.lateTopics[t][n].args));return c}},n.unsub=function(t,s){var e=0
+        ;return t in this.topic2cbs&&(e=i(this.topic2cbs[t],s))>=0&&this.topic2cbs[t].splice(e,1)&&0===this.topic2cbs[t].length&&delete this.topic2cbs[t],t in this.lateTopics&&delete this.lateTopics[t],this},
+        n.once=function(t,i,s){function e(){return n.unsub(t,e),i.apply(null,Array.prototype.slice.call(arguments,0))}var n=this;return this.sub(t,e,s)},n.reset=function(){
+        var t=Array.prototype.slice.call(arguments,0),i=t.length,s=0;if(!i)return this.topic2cbs={},this.lateTopics={},this;for(null;s<i;s+=1)t[s]in this.topic2cbs&&delete this.topic2cbs[t[s]],
+        t[s]in this.lateTopics&&delete this.lateTopics[t[s]];return this},{getChannels:function(i){var s,e={};if("boolean"==typeof i)for(s in t)t[s].enabled===i&&(e[s]=t[s]);else e=t;return e},
+        get:function(i){return i in t||(t[i]=new s),t[i]}}}();"object"==typeof exports&&(module.exports=Channeljs);;
+    
+        ctx.channeljs = Channeljs;
+    
+    })(Hok);
+    ;
+    
+    //hokuto
     (function(ctx){
     
         ctx.type = {};
         
         ctx.type.isFunction = function (ƒ){
-            return typeof ƒ === 'function';
+            return typeof ƒ === Hok.TYPES.F;
+        };
+        ctx.type.isDefined = function (ƒ){
+            return typeof ƒ !== Hok.TYPES.U;
         };
     
         ctx.type.isObject = function(o) {
@@ -176,7 +217,7 @@ var hokuto = (function (_) {
         AUTHOR: "Federico Ghedina",
         LANG: 'en',
         ENGY: {
-            STATS: true,
+            STATS: false,
             MODES: [
                 "PRE",
                 "LIVE"
@@ -427,10 +468,9 @@ var hokuto = (function (_) {
         }
     };;
     (function(ctx){
+    
         ctx.noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
         ctx.setStyle = function(node, styles) {
-            if (typeof styles === Hok.TYPES.U)
-                throw new Error('ERR: styles needed');
             for (var tmp in styles) {
                 if (tmp === 'float') {
                     node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
@@ -466,8 +506,8 @@ var hokuto = (function (_) {
             }
         };
     
-        ctx.setClass = function(node, data) {
-            data.split(',').forEach(function (cls){
+        ctx.setClass = function(node, clss) {
+            clss.split(',').forEach(function (cls){
                 node.classList.add(cls);
             });
         };
@@ -496,87 +536,92 @@ var hokuto = (function (_) {
         ctx.setHtml = function(node, html) {
             node.innerHTML = ctx.filterHtml(html);
         };
+        ctx.script = function(params, autoVanish) {
+            var script = document.createElement('script'),
+                attrs = params && params.attrs;
+            
+            if (attrs) ctx.setAttrs(script, attrs);
+            if(autoVanish){
+                script.onload = function() {
+                    script.parentNode.removeChild(script);
+                };
+            }
+            if(params.content) {
+                script.innerHTML = params.content;
+            } else if(params.src){
+                script.setAttribute('src', params.src);
+            }
+            return script;
+        };
+        ctx.style = function(params) {
+            var type = params.content
+                    ? { tag: 'style', attrs: {}}
+                    : { tag: 'link', attrs: {
+                        rel: 'stylesheet',
+                        href: params.href
+                    }},
+                tag = document.createElement(type.tag),
+                attrs = Object.assign(
+                    type.attrs,
+                    params && params.attrs || {}
+                );
+            ctx.setAttrs(tag, attrs);
+            if (params.content) {
+                tag.innerHTML = params.content;
+            }
+            return tag;
+        };
+        ctx.head = document.getElementsByTagName('head')[0];
     
     })(Hok.dom);
     
     ;
+    
     (function (ctx){
     
-        ctx.get = function(uri, onSuccess, onError){
-            return fetch(uri)
-                .then(function (response){
-                    if(!response.ok){
-                        onError();
-                        return Promise.reject();
-                    }
-                    return response;
-                })
-                .then(function(v){
-                    return v.text();
-                })
-                .then(onSuccess);
-        };
-        ctx.post = function(uri, data, onSuccess, onError){
-            return fetch(uri,{
-                    method: 'POST',
-                    headers: {
-                        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-                    },
-                    body: new URLSearchParams(data)
-                })
-                .then(function (response){
-                    if(!response.ok){
-                        onError();
-                        return Promise.reject();
-                    }
-                    return response;
-                })
-                .then(function (r){ return r.json();})
-                .then(onSuccess);
-        };
+        'use strict';
+        /*
+                              .__           
+        _______   ____ ___  __|  |_________ 
+        \_  __ \_/ __ \\  \/  /  |  \_  __ \
+         |  | \/\  ___/ >    <|   Y  \  | \/
+         |__|    \___  >__/\_ \___|  /__|   
+                     \/      \/    \/
+        
+        v. 0.0.7  
+        
+        Federico Ghedina <fedeghe@gmail.com>  
+        
+        ~1.94KB of ❤️‍🔥   
+        
+        
+        */
+        var rexhr={};!function(e,t){var n=function(){},o=function(e,t){var n=Object.assign({},e);for(var o in t)t.hasOwnProperty(o)&&(n[o]=t[o]);return n},r=function(e){
+        var r=e.url,a=e.timeout||0,s=e.user||null,i=e.password||null,d=e.responseType,p=e.contentType,u=e.body||null,c=e.method,l=e.onCompleted||n,T=e.onLoad||n,m=e.onError||n,E=e.onAbort||n,f=e.onProgress||n,L=e.onLoadend||n,h=e.onLoadstart||n,v=e.onTimeout||n,y=e.headers||{},w=!!e.withCredentials,x=new XMLHttpRequest,C=!1
+        ;x.responseType=d,x.withCredentials=w,x.timeout=a||null,x.addEventListener("load",T),x.addEventListener("progress",f),x.addEventListener("error",m),x.addEventListener("timeout",v),
+        x.addEventListener("abort",E),x.addEventListener("loadend",function(){L(x)}),x.addEventListener("loadstart",function(){h(x)}),x.onreadystatechange=function(){if(x.readyState===XMLHttpRequest.DONE){
+        var e=x.status;(0===e||e>=200&&e<400)&&(!C&&l(x),C=!0)}},"application/xml"===p&&x.overrideMimeType("text/xml"),u&&(y=o(y,{"X-Requested-With":"XMLHttpRequest"}),
+        t.FormData&&u instanceof t.FormData||(y=o(y,{"Content-Type":"application/x-www-form-urlencoded; charset=UTF-8"})),u=new URLSearchParams(u)),x.open(c,r,!0,s,i);for(var O in y)x.setRequestHeader(O,y[O])
+        ;return x.send(u),x};e.getJson=function(e){return r(o(e,{method:"GET",responseType:"json",contentType:"application/json"}))},e.getXML=function(e){return r(o(e,{method:"GET",responseType:"document",
+        contentType:"application/xml"}))},"GET POST PUT PATCH DELETE HEAD OPTIONS TRACE CONNECT".split(/\s/).forEach(function(t){e[t.toLowerCase()]=function(e){return r(o({method:t,responseType:"text"},e))}})
+        }(rexhr,window),"object"==typeof exports&&(module.exports=rexhr);;
     
-        ctx.getJson = function(uri, onSuccess, onError) {
-            return fetch(uri)
-                .then(function (response) {
-                    if(!response.ok){
-                        onError();
-                        return Promise.reject();
-                    }
-                    return response;
-                })
-                .then(function(j){
-                    return j.json();
-                })
-                .then(onSuccess)
-                .catch(onError);
-        };
+        ctx.get = rexhr.get;
+        ctx.getJson = rexhr.getJson;
+        ctx.getXML = rexhr.getXML;
+        ctx.post = rexhr.post;
     
-        ctx.getXML = function(uri, onSuccess, onError) {
-            //'https://codetogo.io/api/users.xml'
-            return fetch(uri)
-                .then(function(response) {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(function(xmlText){
-                    var parser = new DOMParser();
-                    return parser.parseFromString(xmlText,'text/xml');
-                })
-                .then(onSuccess)
-                .catch(onError); 
-        };
-    })(Hok.io);;
+    })(Hok.io);
+    ;
     (function(ctx) {
         ctx._ = {
             events: {
                 getElementDeterminant: function(el) {
-                    const tname = el.tagName;
+                    var tname = el.tagName;
                     return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
                 },
                 getElementEvent: function(el) {
-                    const tname = el.tagName;
+                    var tname = el.tagName;
                     return (tname.match(/input|textarea/i)) ? 'input' : 'change';
                 }
             },
@@ -692,7 +737,7 @@ var hokuto = (function (_) {
                             cb[i].call(this);
                         }
                     }
-                }, 10),
+                }, 100),
                 cb = [],
                 i, l;
                 
@@ -764,7 +809,7 @@ var hokuto = (function (_) {
         ctx.get = function(k, fallback) {return  Hok.ns.check(k, data) || fallback || k+'<sup>&#2417;</sup>';};
         ctx.load = function(dict) { data = dict;};
         ctx.parse = function(obj){
-            var replacing = searchHash.forValue(obj, RX_LANG),
+            var replacing = Hok.searchHash.forValue(obj, RX_LANG),
                 l = replacing.length,
                 mayP, ref, i = 0, r;
             for (null; i < l; i++) {
@@ -781,24 +826,12 @@ var hokuto = (function (_) {
     ;
     
     Hok.solve = (function() {
-        var _clone = function(obj){
-                if (obj == null || typeof obj !== 'object') {
-                    return obj;
-                }
-                var copy = obj.constructor(),
-                    attr;
-                for (attr in obj) {
-                    if (obj.hasOwn(attr)) copy[attr] = _clone(obj[attr]);
-                }
-                return copy;
-            },
-            _overwrite = function(destObj, path, obj){
+        var  _overwrite = function(destObj, path, obj){
                 // path can be
                 // str1
                 // str1/str2[/str3[...]] (or str1.str2[.str3])
                 //
                 // in any case we need the elements of it
-                //
                 var pathEls = path.split(/\.|\//),
                     l = pathEls.length,
                     i = 0;
@@ -822,7 +855,6 @@ var hokuto = (function (_) {
                     i;
             
                 // copy everything but 'component' & 'params', overriding
-                //
                 for (i in componentPH) {
                     !(i.match(/component|params/)) && (merged[i] = componentPH[i]);
                 }
@@ -832,8 +864,6 @@ var hokuto = (function (_) {
                     _overwrite(ns, path, merged);
                 }
             };
-        
-        
         
         var components = {},
             preloadedComponents = {},
@@ -851,7 +881,6 @@ var hokuto = (function (_) {
                     protected: true
                 });
             };
-        
         
         function Processor(content) {
             this.content = content;
@@ -873,7 +902,6 @@ var hokuto = (function (_) {
             };
         }
     
-        
         Processor.prototype.getFileName = function (n) {
             var els = n.split(/\/|\|/),
                 res = n,
@@ -898,6 +926,10 @@ var hokuto = (function (_) {
                 xhrTot: 0
             };
         };
+        Processor.prototype.evalTextFunctionWithParams = function(scriptContent, params){
+            var evaluator = eval('(function (){return '+scriptContent+';})()');
+            return evaluator(params);
+        };
         Processor.prototype.parse = function () {
             var self = this,
                 langFunc = Hok.i18n.parse,
@@ -910,7 +942,7 @@ var hokuto = (function (_) {
                 hasStats = false;
             return new Promise(function(resolve){
                 (function solve() {
-                    var component = searchHash.forKey(
+                    var component = Hok.searchHash.forKey(
                             self.content,
                             'component', { limit: 1 }
                         ),
@@ -944,7 +976,8 @@ var hokuto = (function (_) {
                         cached = componentName in components;
                         preLoaded = componentName in preloadedComponents;
         
-                        cback = function(cntORobj){
+                        cback = function(xhr){
+                            var cntORobj = xhr.responseText;
                             xhrEnd = +new Date();
                             xhrTot += xhrEnd - xhrStart;
                             var params = Hok.ns.check(component.container + '/params', self.content),
@@ -952,14 +985,18 @@ var hokuto = (function (_) {
                                 evaluator;
                                 
                             if (preLoaded) {
-                                obj = _clone(cntORobj);
+                                // clone as string
+                                obj = String(cntORobj);
                             } else {
                                 if (!cached) {
-                                    components[componentName] = _clone(cntORobj);
+                                    // components[componentName] = _clone(cntORobj);
+                                    components[componentName] = String(cntORobj);
                                 }
                                 try {
                                     evaluator = eval('(function (){return '+cntORobj+';})()');
                                     obj = evaluator(params);
+                                    // obj = self.evalTextFunctionWithParams(cntORobj, params);
+    
                                  } catch(e) {
                                     console.error("Error evaluating component '"+componentName+"'");
                                     console.error(e);
@@ -986,16 +1023,17 @@ var hokuto = (function (_) {
                         xhrStart = +new Date();
                         // cached?
                         if (preLoaded) {
-                            cback(preloadedComponents[componentName]);
+                            cback({responseText: preloadedComponents[componentName]});
                         } else if (cached) {
-                            cback(components[componentName]);
+                            cback({responseText:components[componentName]});
                         } else {
-                            Hok.io.get(
-                                componentName,
-                                cback,
-                                function() {
+                            Hok.io.get({
+                                url: componentName,
+                                onCompleted: cback,
+                                onError: function() {
                                     cback(cmp404(componentName));
-                                });
+                                }
+                            });
                         }
                     }
                 })();
@@ -1037,10 +1075,10 @@ var hokuto = (function (_) {
     var resolutive = function () {
             return Promise.resolve();
         },
-        isDefined = function (x){return typeof x !== Hok.TYPES.U;},
-        isFunction = function (f){return typeof f === Hok.TYPES.F;},
+        // isDefined = function (x){return typeof x !== Hok.TYPES.U;},
+        // isFunction = function (f){return typeof f === Hok.TYPES.F;},
         functionize = function (instance, what){
-            return isFunction(what)
+            return Hok.utils.type.isFunction(what)
                 ? what.call(instance)
                 : what;
         };
@@ -1106,20 +1144,16 @@ var hokuto = (function (_) {
      * @param {*} state 
      */
     Knot.prototype.setState = function(state) {
-        if (isDefined(state)){
-            for (var i in state) {
-                if (state.hasOwnProperty(i)) this.state[i] = state[i];
-            }
-        } else {
-            var statePassed = 'state' in this.config,
-                state = statePassed ? this.config.state : {};
-            this.state = functionize(this, state);
-        }
+        var nextState = functionize( this, this.config.state || {}),
+            nextPassedState = functionize( this, state || {}),
+            whole = Object.assign({}, nextState, this.state, nextPassedState );
+        // debugger
+        this.state = whole;
         return this;
     };
     
     Knot.prototype.setId = function(id) {
-        var fromConf = isDefined(this.config[Knot.identifier]),
+        var fromConf = Hok.utils.type.isDefined(this.config[Knot.identifier]),
             val,
             attrs = {};
         if (fromConf || id) {
@@ -1164,75 +1198,73 @@ var hokuto = (function (_) {
         if (ref) {
             (ctx || this).nodes[ref] = ctx || this;
                 // or incase is in the config, just set it
-        } else if (isDefined(this.config.ref)) {
+        } else if (Hok.utils.type.isDefined(this.config.ref)) {
             this.nodes[this.config.ref] = this;
         }
     };
     
-    Knot.prototype.setClassname = function() {
-        this.config.className && Hok.dom.setClass(this.node, this.config.className);
+    Knot.prototype.setClassname = function(classes) {
+        var nextClassnames = functionize(this, this.config.className || ''),
+            nextPassedClassnames = functionize(this, classes || ''),
+            whole = [nextClassnames, nextPassedClassnames]
+                .filter(Boolean)
+                .join(',');
+        whole && Hok.dom.setClass(this.node, whole);
+        return this;
     };
     
     Knot.prototype.setStyle = function(style) {
-        var self = this;
-        this.config.style = functionize(this, this.config.style || {});
-        if (style) {
-            this.config.style = Object.assign(
-                {},
-                self.config.style,
-                functionize(self, style)
+        var nextStyle = functionize(this, this.config.style || {}),
+            nextPassedStyle = functionize(this, style || {}),
+            whole = Object.assign(
+                {}, nextStyle, nextPassedStyle
             );
-        }
-        this.config.style && Hok.dom.setStyle(this.node, this.config.style);
+        Hok.dom.setStyle(this.node, whole);
+        return this;
     };
     
+    
     Knot.prototype.setAttrs = function(attrs) {
-        var self = this;
-        this.config.attrs = functionize(this, this.config.attrs || {});
-        if (attrs) {
-            this.config.attrs = Object.assign(
-                {},
-                self.config.attrs,
-                functionize(self, attrs)
-            );
-        }
-        this.config.attrs && Hok.dom.setAttrs(this.node, this.config.attrs);
+        var nextAttrs = functionize(this, this.config.attrs || {}),
+            nextPassedAttrs = functionize(this, attrs || {}),
+            whole = Object.assign({}, nextAttrs, nextPassedAttrs);
+        Hok.dom.setAttrs( this.node, whole);
+        return this;
     };
     
     Knot.prototype.unsetAttrs = function(attrs) {
         attrs && Hok.dom.unsetAttrs(this.node, attrs);
+        return this;
     };
     
     Knot.prototype.setData = function(data) {
-        if (data) {
-            this.config.data = Object.assign({}, this.config.data, data);
-        }
-        if (this.config.data) {
-            this.data = this.config.data;
-            Hok.dom.setData(this.node, this.data);
-        }
+        var nextData = functionize( this, this.config.data || {}),
+            nextPassedData = functionize( this, data || {}),
+            whole = Object.assign({}, nextData, nextPassedData);
+        whole && Hok.dom.setData(this.node, whole);
+        return this;
     };
     
     Knot.prototype.unsetData = function(data) {
         data && Hok.dom.unsetData(this.node, data);
+        return this;
     };
     
     Knot.prototype.setText = function(text) {
-        if (isDefined(text)) this.config.text = text;
-        isDefined(this.config.text)
-            && Hok.dom.setText(this.node, this.config.text);
+        var nextText = functionize(this, this.config.text || ''),
+            nextPassedText= functionize(this, text || ''),
+            whole = nextPassedText || nextText || '';
+        Hok.dom.setText(this.node, whole);
+        return this;
     };
     
     Knot.prototype.setHtml = function(html) {
-        if (isDefined(html)) this.config.html = html;
-        if (isDefined(this.config.html)) {
-            
-            if (isFunction(this.config.html)) {
-                Hok.dom.setHtml(this.node, this.config.html.call(this));
-            } else {
-                Hok.dom.setHtml(this.node, this.config.html);
-            }
-        }
+        if(typeof html !== 'undefined') html = '';
+        var nextHtml = functionize(this, 'html' in this.config ? this.config.html : ''),
+            nextPassedHtml= functionize(this, html),
+            whole = nextPassedHtml || nextHtml;
+            whole && Hok.dom.setHtml(this.node, whole);
+        return this;
     };
     
     Knot.prototype.setMethods = function() {
@@ -1295,7 +1327,7 @@ var hokuto = (function (_) {
     
     Knot.prototype.setEnd = function() {
         var self = this;
-        if (!this.rendered && 'end' in this.config && isFunction(this.config.end)) {
+        if (!this.rendered && 'end' in this.config && Hok.utils.type.isFunction(this.config.end)) {
             this.ender = self.config.end.call(self);
         }
         return this;
@@ -1303,6 +1335,7 @@ var hokuto = (function (_) {
     
     Knot.prototype.render = function(){
         var self = this;
+        // debugger
         if (this.rendered) {
             this.initRerender();
         } else {
@@ -1348,10 +1381,15 @@ var hokuto = (function (_) {
         return Promise.resolve(this);
     };
     
+    Knot.prototype.addSibling = function(n){
+        this.node.parentNode.appendChild(n);
+        return this;
+    };
     Knot.prototype.clear = function(){
         if(this.ender) this.ender();
         this.target.removeChild(this.node);
         this.unhandleEvents();
+        // this.rendered = false;
     };
     Knot.prototype.solve = function(){
         if(this.debt > 0){
@@ -1370,27 +1408,55 @@ var hokuto = (function (_) {
     
     Knot.isknot = function(n){return n instanceof Knot;};
     Knot.identifier = 'id';
-    Knot.byIdIdentifier = 'ref';;
+    Knot.byIdIdentifier = 'ref';
+    ;
+    Hok.fx = (function(){
+    
+        function fadeIn(params){
+            params = params || {};
+            var t = ((params.duration || 500) / 1e3).toFixed(1),
+                additionalStyles = params.additionalStyles || '',
+                style = hokuto.dom.style({
+                    content: 'body{transition:opacity '+t+'s ease-in-out; opacity: 1;}'+additionalStyles
+                });
+            document.body.appendChild(style);
+        }
+    
+        return {
+            fadeIn: fadeIn
+        };
+    })();;
     //+++++++++++++++++++++++++++++++++++++++++++++++
 
     var __renders = {},
         __nodes = {};
 
-    function render(cnf, clear, name) {
-        var scriptParent = document.currentScript && document.currentScript.parentNode;
-        return Hok.solve(cnf).then(
-            function (config){
-                if(!('target' in config) && scriptParent){
-                    config.target = scriptParent;
+    //function render(cnf, clear, name) {
+    function render(params) {
+        if(!Hok.utils.type.isDefined(params) || !Hok.utils.type.isDefined(params.config)){
+            throw "Nothing to render";
+        }
+        var config = params.config,
+            clear = !!params.clear,
+            name = params.name,
+            vanish = params.vanish,
+            currentScript = document.currentScript,
+            scriptParent = currentScript && currentScript.parentNode;
+        return Hok.solve(config).then(
+            function (solvedConfig){
+                if(!('target' in solvedConfig) && scriptParent){
+                    solvedConfig.target = scriptParent;
                 }
-                config.endFunctions = [];
-                config.nodes = __nodes;
+                solvedConfig.endFunctions = [];
+                solvedConfig.nodes = __nodes;
                 
-                return new Knot(config, clear).render().then(function (n) {
+                return new Knot(solvedConfig, clear).render().then(function (n) {
                     if (name){
                         __renders[name] = n;
                     }
                     return n;
+                }).finally(function() {
+                    vanish && scriptParent.removeChild(currentScript);
                 });
             }
         );
@@ -1414,7 +1480,8 @@ var hokuto = (function (_) {
         events: Hok.events,
         utils: Hok.utils,
         cookie: Hok.cookie,
-
+        fx: Hok.fx,
+        ps: Hok.ps,
         render: render,
         get: get,
         getKnotById: function (id) {
@@ -1423,7 +1490,7 @@ var hokuto = (function (_) {
                 : null;
         },
         getElement: function(n) { return n in __renders ? __renders[n] : false; },
-        getElements: function() { return __renders; },
+        getElements: function() { return __renders; }
     };
 })(window);
 (typeof exports === 'object') && (module.exports = hokuto);

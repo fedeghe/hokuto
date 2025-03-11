@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>maltaV('PACKAGE.name') maltaV('tit')</title>
-    <style>*{font-family: Verdana, Geneva, Tahoma, sans-serif;}</style>
-    <script>
-        maltaF('../../dist/index.js')
-        </script>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./index.js"></script>
 </head>
 <body>
-    <h1>title here</h1>
+    
     <div>
         <script>
             (function () {
@@ -19,24 +17,30 @@
                 })
                 
                 hokuto.render({
-                    data:{n:0},
-                    children:[{
-                        tag:'p',
-                        html:'test1',
-                        data:{n:1},
-                        onClick:function() {
-                            this.config.html = new Date();
-                            this.render();
-                            
-                        }
-                    },{
-                        tag:'p',
-                        html:'test2',
-                        data:{n:2}
-                    }]
-                }).then((r, s)=>{
-                    console.log({r})
-                });
+                    config: {
+                        data:{n:0},
+                        children:[{
+                            component: 'menu'
+                        },{
+                            tag:'p',
+                            html:'test1',
+                            data:{n:1},
+                            onClick:function() {
+                                this.config.html = new Date();
+                                this.render();
+                            }
+                        },{
+                            tag:'p',
+                            html:'test2',
+                            data:{n:2}
+                        }]
+                    },
+                    vanish: true
+                })
+                // .then((r, s)=>{
+                //     hokuto.fx.fadeIn({ duration:2e3 });
+                //     console.log({r})
+                // });
             })();
     
         </script>
@@ -50,31 +54,38 @@
                 })
                 
                 hokuto.render({
-                    data:{n:0},
-                    onClick:function() {
-                        this.render();  
-                    },
-                    children:[{
-                        tag:'p',
-                        html:function() { return +new Date},
-                        data:{n:1},
-                        onClick:function(e) {
-                            this.render(); 
-                            e.stopPropagation() 
+                    config:{
+                        data:{n:0},
+                        onClick:function() {
+                            this.render();  
                         },
-                    },{
-                        tag:'p',
-                        html:function() { return +new Date},
-                        data:{n:2}
-                    }]
+                        children:[{
+                            tag:'p',
+                            className: function(){
+                                console.log(this);
+                                return 'a,b,c'
+                            },
+                            html:function() { return +new Date},
+                            data:{n:1},
+                            onClick:function(e) {
+                                this.render(); 
+                                e.stopPropagation() 
+                            },
+                        },{
+                            tag:'p',
+                            html:function() { return +new Date},
+                            data:{n:2}
+                        }]
+                    },
+                    clear: true
                 }).then((r, s)=>{
+                    hokuto.fx.fadeIn({ duration:2e3 });
                     console.log({r})
                 });
             })();
     
         </script>
     </div>
-    
 
 </body>
 

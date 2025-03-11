@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>maltaV('PACKAGE.name') maltaV('tit')</title>
-    <style>*{font-family: Verdana, Geneva, Tahoma, sans-serif;}</style>
-    <script>
-        maltaF('../../dist/index.js')
-        </script>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./index.js"></script>
 </head>
 <body>
-    <h1>title here</h1>
     <div id="target">
         ...loading
     </div>
@@ -19,30 +16,37 @@
         (function () {
             
             hokuto.render({
-                target: document.getElementById('target'),
-                children:[{
-                    tag:'ul',
+                config: {
+                    target: document.getElementById('target'),
                     children:[{
-                        ref:'one',
-                        state:{n:1},
-                        tag:'li',
-                        html: 1
+                        component: 'menu'
                     },{
-                        tag:'li',
+                        tag:'ul',
                         children:[{
-                            tag:'button',
-                            text:'add',
-                            onClick:function(){
-                                var n = this.getByRef('one');
-                                n.config.html++;
-                                n.render();
-                            }
+                            ref:'one',
+                            state:{n:1},
+                            tag:'li',
+                            html: 1
+                        },{
+                            tag:'li',
+                            children:[{
+                                tag:'button',
+                                text:'add',
+                                onClick:function(){
+                                    var n = this.getByRef('one');
+                                    n.config.html++;
+                                    n.render();
+                                }
+                            }]
                         }]
                     }]
-                }]
-            }).then((r, s)=>{
-                console.log({r})
-            });
+                },
+                vanish: true,
+                clear: true
+            })
+            // .then((r, s)=>{
+            //     hokuto.fx.fadeIn({ duration:2e3 });
+            // });
         })();
 
     </script>

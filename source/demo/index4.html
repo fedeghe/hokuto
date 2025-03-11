@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maltaV('PACKAGE.name') maltaV('tit')</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./index.js"></script>
+</head>
+<body>
+    <div id="target">
+        <script>
+            function one(){
+                var now = +new Date
+                
+
+                
+                var config = {
+                    config: {
+                        target: document.getElementById('target'),
+                        children:[{
+                            component: 'menu'
+                        },{
+                            tag: 'span',
+                            html:'forward',
+                            onClick: two,
+                            style:{cursor:'pointer'},
+                            attrs:{title:'go forward'}
+                        }]
+                    },
+                    clear:true
+                };
+
+                
+                hokuto.render(config).then(
+                    () => hokuto.fx.fadeIn({ duration:2e3 })
+                );;
+                
+            }
+
+            function two(){
+                var now = +new Date
+                
+
+                
+                var config = {
+                    config: {
+                        target: document.getElementById('target'),
+                        children:[{
+                            tag: 'span',
+                            html:'backward',
+                            onClick: one,
+                            style:{cursor:'pointer'},
+                            attrs:{title:'go backward'}
+                        }]
+                    },
+                    clear:true
+                };
+
+                
+                hokuto.render(config)
+                // .then(
+                //     () => hokuto.fx.fadeIn({ duration:2e3 })
+                // );
+                
+            }
+            one();
+    
+        </script>
+    </div>
+</body>
+
+</html>

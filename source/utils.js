@@ -3,7 +3,10 @@
     ctx.type = {};
     
     ctx.type.isFunction = function (ƒ){
-        return typeof ƒ === 'function';
+        return typeof ƒ === Hok.TYPES.F;
+    };
+    ctx.type.isDefined = function (ƒ){
+        return typeof ƒ !== Hok.TYPES.U;
     };
 
     ctx.type.isObject = function(o) {

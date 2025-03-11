@@ -2,7 +2,7 @@ Hok.CONFIG = {
     AUTHOR: "Federico Ghedina",
     LANG: 'en',
     ENGY: {
-        STATS: true,
+        STATS: false,
         MODES: [
             "PRE",
             "LIVE"

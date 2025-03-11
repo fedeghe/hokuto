@@ -335,6 +335,11 @@
     "@eslint/core" "^0.12.0"
     levn "^0.4.1"
 
+"@fedeghe/channeljs@^1.2.10":
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/@fedeghe/channeljs/-/channeljs-1.2.10.tgz#86656c2441988a31d9b8fbc808bfb1e085a6f852"
+  integrity sha512-Qu/zh/M5YxNxRlAQDo6JcZaDFRJhdjg1sdA0K/mtW3IM8YuMX3fce3CSE3l03qJEWYJku2/4UOFrVZHryToIwA==
+
 "@humanfs/core@^0.19.1":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@humanfs/core/-/core-0.19.1.tgz#17c55ca7d426733fe3c561906b8173c336b40a77"
@@ -2412,10 +2417,10 @@ malta-browser-refresh@^1.2.16:
   dependencies:
     ws "^7.4.2"
 
-malta-dev-srv@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/malta-dev-srv/-/malta-dev-srv-1.1.8.tgz#61d833a12e351510bab5511f624fbb4703aca02e"
-  integrity sha512-6/mJuQKcsFrxFJFyNCINrzXzvdteBe4JYX4tWuVVr1Jjx8GNdQyRwAaP3qXMF8Fx719iQERj64lHZETH+k++JQ==
+malta-dev-srv@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/malta-dev-srv/-/malta-dev-srv-1.1.9.tgz#acba7d9e33fb327565a65164c18c81b1dea0da41"
+  integrity sha512-wSZ1wFzpqpF+5Dy+mlEKw1mAVMo+To5Tb3z5ZVZlignnGV2323TkdqZoTbq+JxqMsfG+hmo3YRWj4t50bpjZhg==
 
 malta-header-comment@^1.0.12:
   version "1.0.12"
@@ -2773,6 +2778,11 @@ resolve@^1.20.0:
     is-core-module "^2.16.0"
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
+
+rexhr@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/rexhr/-/rexhr-0.0.7.tgz#3ce27f5e6126edb4d810f86cb3f4f406bbb5cd10"
+  integrity sha512-1CdAfIGaccDbMdMVQs8y8k2jOSr9Ldli1+uq8mAl/uILeFg0E41GtQadQOP/lJ5uFkd4v9TKTh7gCjh5W56j/A==
 
 right-align@^0.1.1:
   version "0.1.3"

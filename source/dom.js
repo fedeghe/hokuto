@@ -1,8 +1,7 @@
 (function(ctx){
+
     ctx.noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
     ctx.setStyle = function(node, styles) {
-        if (typeof styles === Hok.TYPES.U)
-            throw new Error('ERR: styles needed');
         for (var tmp in styles) {
             if (tmp === 'float') {
                 node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
@@ -38,8 +37,8 @@
         }
     };
 
-    ctx.setClass = function(node, data) {
-        data.split(',').forEach(function (cls){
+    ctx.setClass = function(node, clss) {
+        clss.split(',').forEach(function (cls){
             node.classList.add(cls);
         });
     };
@@ -68,6 +67,42 @@
     ctx.setHtml = function(node, html) {
         node.innerHTML = ctx.filterHtml(html);
     };
+    ctx.script = function(params, autoVanish) {
+        var script = document.createElement('script'),
+            attrs = params && params.attrs;
+        
+        if (attrs) ctx.setAttrs(script, attrs);
+        if(autoVanish){
+            script.onload = function() {
+                script.parentNode.removeChild(script);
+            };
+        }
+        if(params.content) {
+            script.innerHTML = params.content;
+        } else if(params.src){
+            script.setAttribute('src', params.src);
+        }
+        return script;
+    };
+    ctx.style = function(params) {
+        var type = params.content
+                ? { tag: 'style', attrs: {}}
+                : { tag: 'link', attrs: {
+                    rel: 'stylesheet',
+                    href: params.href
+                }},
+            tag = document.createElement(type.tag),
+            attrs = Object.assign(
+                type.attrs,
+                params && params.attrs || {}
+            );
+        ctx.setAttrs(tag, attrs);
+        if (params.content) {
+            tag.innerHTML = params.content;
+        }
+        return tag;
+    };
+    ctx.head = document.getElementsByTagName('head')[0];
 
 })(Hok.dom);
 

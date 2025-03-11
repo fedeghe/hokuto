@@ -3,7 +3,7 @@
 /sample
 /tests
 /demo
-/coverage
+/source/tests/coverage
 .printVersion
 .buildNum.json
 .DS_Store

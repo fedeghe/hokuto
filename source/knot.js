@@ -1,10 +1,10 @@
 var resolutive = function () {
         return Promise.resolve();
     },
-    isDefined = function (x){return typeof x !== Hok.TYPES.U;},
-    isFunction = function (f){return typeof f === Hok.TYPES.F;},
+    // isDefined = function (x){return typeof x !== Hok.TYPES.U;},
+    // isFunction = function (f){return typeof f === Hok.TYPES.F;},
     functionize = function (instance, what){
-        return isFunction(what)
+        return Hok.utils.type.isFunction(what)
             ? what.call(instance)
             : what;
     };
@@ -70,20 +70,16 @@ Knot.prototype.initRerender = function(){
  * @param {*} state 
  */
 Knot.prototype.setState = function(state) {
-    if (isDefined(state)){
-        for (var i in state) {
-            if (state.hasOwnProperty(i)) this.state[i] = state[i];
-        }
-    } else {
-        var statePassed = 'state' in this.config,
-            state = statePassed ? this.config.state : {};
-        this.state = functionize(this, state);
-    }
+    var nextState = functionize( this, this.config.state || {}),
+        nextPassedState = functionize( this, state || {}),
+        whole = Object.assign({}, nextState, this.state, nextPassedState );
+    // debugger
+    this.state = whole;
     return this;
 };
 
 Knot.prototype.setId = function(id) {
-    var fromConf = isDefined(this.config[Knot.identifier]),
+    var fromConf = Hok.utils.type.isDefined(this.config[Knot.identifier]),
         val,
         attrs = {};
     if (fromConf || id) {
@@ -128,75 +124,73 @@ Knot.prototype.setRef = function(ref, ctx) {
     if (ref) {
         (ctx || this).nodes[ref] = ctx || this;
             // or incase is in the config, just set it
-    } else if (isDefined(this.config.ref)) {
+    } else if (Hok.utils.type.isDefined(this.config.ref)) {
         this.nodes[this.config.ref] = this;
     }
 };
 
-Knot.prototype.setClassname = function() {
-    this.config.className && Hok.dom.setClass(this.node, this.config.className);
+Knot.prototype.setClassname = function(classes) {
+    var nextClassnames = functionize(this, this.config.className || ''),
+        nextPassedClassnames = functionize(this, classes || ''),
+        whole = [nextClassnames, nextPassedClassnames]
+            .filter(Boolean)
+            .join(',');
+    whole && Hok.dom.setClass(this.node, whole);
+    return this;
 };
 
 Knot.prototype.setStyle = function(style) {
-    var self = this;
-    this.config.style = functionize(this, this.config.style || {});
-    if (style) {
-        this.config.style = Object.assign(
-            {},
-            self.config.style,
-            functionize(self, style)
+    var nextStyle = functionize(this, this.config.style || {}),
+        nextPassedStyle = functionize(this, style || {}),
+        whole = Object.assign(
+            {}, nextStyle, nextPassedStyle
         );
-    }
-    this.config.style && Hok.dom.setStyle(this.node, this.config.style);
+    Hok.dom.setStyle(this.node, whole);
+    return this;
 };
 
+
 Knot.prototype.setAttrs = function(attrs) {
-    var self = this;
-    this.config.attrs = functionize(this, this.config.attrs || {});
-    if (attrs) {
-        this.config.attrs = Object.assign(
-            {},
-            self.config.attrs,
-            functionize(self, attrs)
-        );
-    }
-    this.config.attrs && Hok.dom.setAttrs(this.node, this.config.attrs);
+    var nextAttrs = functionize(this, this.config.attrs || {}),
+        nextPassedAttrs = functionize(this, attrs || {}),
+        whole = Object.assign({}, nextAttrs, nextPassedAttrs);
+    Hok.dom.setAttrs( this.node, whole);
+    return this;
 };
 
 Knot.prototype.unsetAttrs = function(attrs) {
     attrs && Hok.dom.unsetAttrs(this.node, attrs);
+    return this;
 };
 
 Knot.prototype.setData = function(data) {
-    if (data) {
-        this.config.data = Object.assign({}, this.config.data, data);
-    }
-    if (this.config.data) {
-        this.data = this.config.data;
-        Hok.dom.setData(this.node, this.data);
-    }
+    var nextData = functionize( this, this.config.data || {}),
+        nextPassedData = functionize( this, data || {}),
+        whole = Object.assign({}, nextData, nextPassedData);
+    whole && Hok.dom.setData(this.node, whole);
+    return this;
 };
 
 Knot.prototype.unsetData = function(data) {
     data && Hok.dom.unsetData(this.node, data);
+    return this;
 };
 
 Knot.prototype.setText = function(text) {
-    if (isDefined(text)) this.config.text = text;
-    isDefined(this.config.text)
-        && Hok.dom.setText(this.node, this.config.text);
+    var nextText = functionize(this, this.config.text || ''),
+        nextPassedText= functionize(this, text || ''),
+        whole = nextPassedText || nextText || '';
+    Hok.dom.setText(this.node, whole);
+    return this;
 };
 
 Knot.prototype.setHtml = function(html) {
-    if (isDefined(html)) this.config.html = html;
-    if (isDefined(this.config.html)) {
-        
-        if (isFunction(this.config.html)) {
-            Hok.dom.setHtml(this.node, this.config.html.call(this));
-        } else {
-            Hok.dom.setHtml(this.node, this.config.html);
-        }
-    }
+    if(typeof html !== 'undefined') html = '';
+    var nextHtml = functionize(this, 'html' in this.config ? this.config.html : ''),
+        nextPassedHtml= functionize(this, html),
+        whole = nextPassedHtml || nextHtml;
+        whole && Hok.dom.setHtml(this.node, whole);
+    return this;
 };
 
 Knot.prototype.setMethods = function() {
@@ -259,7 +253,7 @@ Knot.prototype.unhandle = function(eventType){
 
 Knot.prototype.setEnd = function() {
     var self = this;
-    if (!this.rendered && 'end' in this.config && isFunction(this.config.end)) {
+    if (!this.rendered && 'end' in this.config && Hok.utils.type.isFunction(this.config.end)) {
         this.ender = self.config.end.call(self);
     }
     return this;
@@ -267,6 +261,7 @@ Knot.prototype.setEnd = function() {
 
 Knot.prototype.render = function(){
     var self = this;
+    // debugger
     if (this.rendered) {
         this.initRerender();
     } else {
@@ -312,10 +307,15 @@ Knot.prototype.render = function(){
     return Promise.resolve(this);
 };
 
+Knot.prototype.addSibling = function(n){
+    this.node.parentNode.appendChild(n);
+    return this;
+};
 Knot.prototype.clear = function(){
     if(this.ender) this.ender();
     this.target.removeChild(this.node);
     this.unhandleEvents();
+    // this.rendered = false;
 };
 Knot.prototype.solve = function(){
     if(this.debt > 0){

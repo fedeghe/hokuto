@@ -1,8 +1,12 @@
 {
     "EXE": [
         "rm -rf demo/components",
-        "mkdir -p demo/components"
+        "mkdir -p demo/components/home"
     ],
-    "source/demo/*.html": "demo  -plugins=malta-browser-refresh...malta-dev-srv[folder:\"demo\"] -options=placeholderMode:'func' -options=placeholderMode:'func',verbose:2,showPath:false -vars=source/vars.json",
-    "source/demo/components/*.js": "demo/components"
+    "source/index.js": "demo -plugins=malta-header-comment[name:\"source/header.txt\"] -options=placeholderMode:'func',verbose:2,showPath:false -vars=vars.json",
+    "source/demo/*.html": "demo  -plugins=malta-browser-refresh...malta-dev-srv[folder:\"demo\",browser:false] -options=placeholderMode:'func' -options=placeholderMode:'func',verbose:2,showPath:false -vars=source/vars.json",
+    "source/demo/*.css": "demo  -plugins=malta-browser-refresh...malta-dev-srv[folder:\"demo\",browser:false] -options=placeholderMode:'func' -options=placeholderMode:'func',verbose:2,showPath:false -vars=source/vars.json",
+    "source/demo/components/*.js": "demo/components",
+    "source/demo/components/home/*.js": "demo/components/home",
+    "source/demo/components/home/*.css": "demo/components/home"
 }
