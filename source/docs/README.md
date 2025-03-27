@@ -1,7 +1,9 @@
 ![hokuto](hokuto.png)
 ![track](https://click.jmvc.org/p/fEtBzv7O/1)
 
-<small>Experimental dom engine</small>
+
+[![Coverage Status](https://coveralls.io/repos/github/fedeghe/hokuto/badge.svg?branch=master)](https://coveralls.io/github/fedeghe/hokuto?branch=master)
+### Experimental dom engine
 
 
 ``` js
