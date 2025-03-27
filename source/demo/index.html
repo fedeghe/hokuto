@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maltaV('PACKAGE.name') maltaV('tit')</title>
     <link rel="stylesheet" href="./style.css">
     <script src="./index.js"></script>
 </head>
@@ -24,9 +25,9 @@
             vanish: true
         })
         .then(r => {
-            var script = hokuto.dom.script({src:'./components/home/loaded.js'}, true);
+            var script = hokuto._.dom.script({src:'./components/home/loaded.js'}, true);
             r.addSibling(script);
-            // hokuto.fx.fadeIn({
+            // hokuto._.fx.fadeIn({
             //     // additionalStyles: 'body{color:red}',
             //     duration:2e3
             // });

@@ -14,7 +14,7 @@
     
     <script>
         (function () {
-            hokuto.i18n.load({
+            hokuto._.i18n.load({
                 hello: 'ciao'
             })
             var target  = document.getElementById('target');
@@ -37,11 +37,11 @@
             // },6000)
 
             var getGaugeStyle = () => ({
-                    width:'100%',
-                    margin:0,
-                    padding:0,
-                    height:'30px',
-                    border:'none',
+                    width: '100%',
+                    margin: 0,
+                    padding: 0,
+                    height: '30px',
+                    border: 'none',
                 }),
                 max = 1e6
             hokuto.render({
@@ -54,7 +54,10 @@
                             component: 'menu'
                         },
                         {
-                            state: { n: 0, summer:1 },
+                            state: {
+                                n: 0,
+                                summer: 1
+                            },
                             cb: function() {
                                 var self = this;
                                 
@@ -81,7 +84,7 @@
                                         max: max
                                     };
                                 },
-                                style:getGaugeStyle(),
+                                style: getGaugeStyle(),
                                 onInput: function (e) {
                                     var r = this.getByRef('val'),
                                         pro = this.getByRef('pro'),
@@ -98,12 +101,12 @@
                             },
                             {tag:'br'},
                             {
-                                tag:'progress',
-                                ref:'pro',
-                                attrs:{
-                                    max:max
+                                tag: 'progress',
+                                ref: 'pro',
+                                attrs: {
+                                    max: max
                                 },
-                                style:getGaugeStyle(),
+                                style: getGaugeStyle(),
                                 initCheck: function(){
                                     var v = this.parentKnot.state.summer;
                                     this.setAttrs({
@@ -111,14 +114,14 @@
                                     });
                                     return Promise.resolve();
                                 }
-                            },{
-                                html:'0',
+                            }, {
+                                html: '0',
                                 cb: function (){
                                     this.node.innerHTML = '1x = ' + this.parentKnot.state.n;
                                     return Promise.resolve();
                                 }
-                            },{
-                                html:'1',
+                            }, {
+                                html: '1',
                                 cb: function (){
                                     this.node.innerHTML = '2x = ' + this.parentKnot.state.n * 2;
                                     return Promise.resolve();
@@ -133,7 +136,7 @@
                 vanish: true
             })
             // .then(() => {    
-            //     hokuto.fx.fadeIn({ duration: 2e3 });                    
+            //     hokuto._.fx.fadeIn({ duration: 2e3 });                    
             // });
         })();
 

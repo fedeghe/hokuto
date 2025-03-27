@@ -5,9 +5,11 @@ var hokuto = (function (_) {
     // Hok
     maltaF('core.js');
     //+++++++++++++++++++++++++++++++++++++++++++++++
-    // libz: add to Hok
+    // libz start
     maltaF('searchhash.js');
     maltaF('channeljs.js');
+    maltaF('io.js');
+    // libz end
     
     //hokuto
     maltaF('utils.js');
@@ -17,7 +19,6 @@ var hokuto = (function (_) {
     // maltaF('object.js')
     maltaF('cookie.js');
     maltaF('dom.js');
-    maltaF('io.js');
     maltaF('events.js');
     // maltaF('history.js')
     maltaF('i18n.js');
@@ -73,14 +74,7 @@ var hokuto = (function (_) {
     }
 
     return {
-        io: Hok.io,
-        i18n: Hok.i18n,
-        dom: Hok.dom,
-        events: Hok.events,
-        utils: Hok.utils,
-        cookie: Hok.cookie,
-        fx: Hok.fx,
-        ps: Hok.ps,
+        _: Hok,
         render: render,
         get: get,
         getKnotById: function (id) {

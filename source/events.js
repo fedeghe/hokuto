@@ -1,15 +1,5 @@
 (function(ctx) {
     ctx._ = {
-        events: {
-            getElementDeterminant: function(el) {
-                var tname = el.tagName;
-                return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
-            },
-            getElementEvent: function(el) {
-                var tname = el.tagName;
-                return (tname.match(/input|textarea/i)) ? 'input' : 'change';
-            }
-        },
         unhandlers: {},
         bindErr: function(v) {return 'No straight way to '+(v ? '' : 'un')+'}bind an event';}
     };

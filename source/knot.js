@@ -130,9 +130,9 @@ Knot.prototype.setRef = function(ref, ctx) {
 };
 
 Knot.prototype.setClassname = function(classes) {
-    var nextClassnames = functionize(this, this.config.className || ''),
-        nextPassedClassnames = functionize(this, classes || ''),
-        whole = [nextClassnames, nextPassedClassnames]
+    var next = functionize(this, this.config.className || ''),
+        nextPassed = functionize(this, classes || ''),
+        whole = [next, nextPassed]
             .filter(Boolean)
             .join(',');
     whole && Hok.dom.setClass(this.node, whole);
@@ -140,10 +140,10 @@ Knot.prototype.setClassname = function(classes) {
 };
 
 Knot.prototype.setStyle = function(style) {
-    var nextStyle = functionize(this, this.config.style || {}),
-        nextPassedStyle = functionize(this, style || {}),
+    var next = functionize(this, this.config.style || {}),
+        nextPassed = functionize(this, style || {}),
         whole = Object.assign(
-            {}, nextStyle, nextPassedStyle
+            {}, next, nextPassed
         );
     Hok.dom.setStyle(this.node, whole);
     return this;
@@ -151,9 +151,9 @@ Knot.prototype.setStyle = function(style) {
 
 
 Knot.prototype.setAttrs = function(attrs) {
-    var nextAttrs = functionize(this, this.config.attrs || {}),
-        nextPassedAttrs = functionize(this, attrs || {}),
-        whole = Object.assign({}, nextAttrs, nextPassedAttrs);
+    var next = functionize(this, this.config.attrs || {}),
+        nextPassed = functionize(this, attrs || {}),
+        whole = Object.assign({}, next, nextPassed);
     Hok.dom.setAttrs( this.node, whole);
     return this;
 };
@@ -164,9 +164,9 @@ Knot.prototype.unsetAttrs = function(attrs) {
 };
 
 Knot.prototype.setData = function(data) {
-    var nextData = functionize( this, this.config.data || {}),
-        nextPassedData = functionize( this, data || {}),
-        whole = Object.assign({}, nextData, nextPassedData);
+    var next = functionize( this, this.config.data || {}),
+        nextPassed = functionize( this, data || {}),
+        whole = Object.assign({}, next, nextPassed);
     whole && Hok.dom.setData(this.node, whole);
     return this;
 };
@@ -177,18 +177,18 @@ Knot.prototype.unsetData = function(data) {
 };
 
 Knot.prototype.setText = function(text) {
-    var nextText = functionize(this, this.config.text || ''),
-        nextPassedText= functionize(this, text || ''),
-        whole = nextPassedText || nextText || '';
+    var next = functionize(this, this.config.text || ''),
+        nextPassed= functionize(this, text || ''),
+        whole = nextPassed || next;
     Hok.dom.setText(this.node, whole);
     return this;
 };
 
 Knot.prototype.setHtml = function(html) {
-    if(typeof html !== 'undefined') html = '';
-    var nextHtml = functionize(this, 'html' in this.config ? this.config.html : ''),
-        nextPassedHtml= functionize(this, html),
-        whole = nextPassedHtml || nextHtml;
+    if(!Hok.utils.type.isDefined(html)) html = '';
+    var next = functionize(this, 'html' in this.config ? this.config.html : ''),
+        nextPassed= functionize(this, html),
+        whole = nextPassed || next;
         whole && Hok.dom.setHtml(this.node, whole);
     return this;
 };
@@ -261,23 +261,23 @@ Knot.prototype.setEnd = function() {
 
 Knot.prototype.render = function(){
     var self = this;
-    // debugger
     if (this.rendered) {
         this.initRerender();
     } else {
         this.frag.appendChild(this.node);
         if (this.debt) {
             return this.children.reduce(function (p, children) {
-                var c = Object.assign(
-                        {rendered: self.rendered},
+                var newChild = new Knot(
+                    Object.assign(
+                        { rendered: self.rendered },
                         children,
                         {
                             target: self.node,
                             parentKnot: self,
                             rootKnot: self.rootKnot,
                         }
-                    ),
-                    newChild = new Knot(c);
+                    )
+                );
                 self.childrenKnots.push(newChild);
                 return p.then(function () { return newChild.render();});
             }, Promise.resolve()).then(function(){return self;});

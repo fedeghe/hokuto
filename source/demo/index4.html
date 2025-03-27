@@ -10,17 +10,25 @@
 <body>
     <div id="target">
         <script>
+            hokuto.render({
+                config: {
+                    target: document.getElementById('target'),
+                    children:[{
+                        component: 'menu'
+                    },{
+                        id:'trg'
+                    }]
+                },
+                clear:true
+            }).then(() => {
+                one();
+            })
             function one(){
                 var now = +new Date
-                
-
-                
                 var config = {
                     config: {
-                        target: document.getElementById('target'),
+                        target: document.getElementById('trg'),
                         children:[{
-                            component: 'menu'
-                        },{
                             tag: 'span',
                             html:'forward',
                             onClick: two,
@@ -32,9 +40,10 @@
                 };
 
                 
-                hokuto.render(config).then(
-                    () => hokuto.fx.fadeIn({ duration:2e3 })
-                );;
+                hokuto.render(config)
+                // .then(
+                //     () => hokuto._.fx.fadeIn({ duration:2e3 })
+                // );
                 
             }
 
@@ -45,7 +54,7 @@
                 
                 var config = {
                     config: {
-                        target: document.getElementById('target'),
+                        target: document.getElementById('trg'),
                         children:[{
                             tag: 'span',
                             html:'backward',
@@ -64,7 +73,7 @@
                 // );
                 
             }
-            one();
+            
     
         </script>
     </div>
