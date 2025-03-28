@@ -16,7 +16,7 @@
         "test": "jest --config ./jest.config.js --verbose --rootDir=$PWD/source/tests",
         "watch": "jest --config ./jest.config.js --watch --rootDir=$PWD/source/tests",
         "cover": "jest --config ./jest.config.js --rootDir=$PWD/source/tests",
-        "coveralls": "jest --config ./jest.config.js --rootDir=$PWD/source/tests && cat ./coverage/lcov.info | coveralls",
+        "coveralls": "jest --config ./jest.config.js --rootDir=$PWD/source/tests && cat ./source/tests/coverage/lcov.info | coveralls",
         "lint": "eslint src",
         "lintfix": "eslint src --fix"
     },
