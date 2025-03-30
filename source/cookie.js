@@ -25,6 +25,7 @@ Hok.cookie = {
         var ret = false;
 
         if (Hok.cookie.get(name)) {
+            console.log({name});
             Hok.WD.cookie = [
                 name, '=',
                 (path ? ';path=' + path : ''),
@@ -49,13 +50,11 @@ Hok.cookie = {
         for (null; i < l; i += 1) {
             tempCookie = allCookies[i].split('=');
             cookieName = tempCookie[0].replace(/^\s+|\s+$/g, '');
-
             if (cookieName === checkName) {
                 cookieFound = true;
                 tempCookie.length > 1 && (cookieValue = Hok.W.unescape(tempCookie[1].replace(/^\s+|\s+$/g, '')));
                 return cookieValue;
             }
-
             tempCookie = null;
             cookieName = '';
         }
@@ -65,11 +64,13 @@ Hok.cookie = {
         if (!Hok.cookie.enabled) return false;
         var thecookie = Hok.WD.cookie.split(/;/),
             l = thecookie.length,
-            i = 0,
-            name;
+            i = 0;
+        console.log(thecookie);
         for (null; i < l; i += 1) {
-            name = thecookie[i].split(/=/);
-            Hok.cookie.del(name[0], false, false);
+            var vs = thecookie[i].split(/=/);
+            console.log({vs});
+            // console.log({name: name[0]});
+            Hok.cookie.del(vs[0]);
         }
         Hok.cookie.cookie_nocookiesaround = true;
         return true;

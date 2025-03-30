@@ -54,4 +54,18 @@ describe('hokuto._.dom.script', () => {
         script.onload();
         expect(spy).toHaveBeenCalledWith(script);
     });
+
+
+    it('throws as expected', () => {
+        try {
+            hokuto._.dom.script();
+        } catch (e) {
+            expect(e.message).toBe("Missing script params");
+        }
+        try {
+            hokuto._.dom.script({something:1});
+        } catch (e) {
+            expect(e.message).toBe("Missing script params");
+        }
+    });
 });

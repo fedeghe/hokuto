@@ -17,7 +17,7 @@ var hokuto = (function (_) {
     maltaF('ns.js');
     maltaF('config.js');
     // maltaF('object.js')
-    maltaF('cookie.js');
+    // maltaF('cookie.js');
     maltaF('dom.js');
     maltaF('events.js');
     // maltaF('history.js')

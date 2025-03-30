@@ -2,6 +2,8 @@
 
     ctx.noAttrs = ['innerHTML', 'style', 'dataset', 'className'];
     ctx.setStyle = function(node, styles) {
+        if (typeof styles === Hok.TYPES.U)
+            throw new Error('ERR: styles needed');
         for (var tmp in styles) {
             if (tmp === 'float') {
                 node.style[tmp.replace(/^float$/i, 'cssFloat')] = styles[tmp];
@@ -15,18 +17,18 @@
         if (typeof attrs === Hok.TYPES.U)
             throw new Error('ERR: attrs needed');
         for (var tmp in attrs) {
-            if (ctx.noAttrs.indexOf(tmp) < 0)
-                node.setAttribute(tmp, attrs[tmp]);
+            ctx.noAttrs.indexOf(tmp) < 0
+            && node.setAttribute(tmp, attrs[tmp]);
         }
     };
 
     ctx.unsetAttrs = function(node, attrs) {
         if (typeof attrs === Hok.TYPES.U)
             throw new Error('ERR: attrs needed');
-        for (var tmp in attrs) {
-            ctx.noAttrs.indexOf(tmp) < 0
-            && node.removeAttribute(tmp, attrs[tmp]);
-        }
+        attrs.forEach(function (attr) {
+            ctx.noAttrs.indexOf(attr) < 0
+            && node.removeAttribute(attr);
+        });
     };
 
     ctx.setData = function(node, data) {
@@ -46,9 +48,9 @@
     ctx.unsetData = function(node, data) {
         if (typeof data === Hok.TYPES.U)
             throw new Error('ERR: data needed');
-        for (var tmp in data) {
-            delete node.dataset[tmp];
-        }
+        data.forEach(function(d){
+            delete node.dataset[d];
+        });
     };
 
     ctx.remove = function(el) {
@@ -68,6 +70,17 @@
         node.innerHTML = ctx.filterHtml(html);
     };
     ctx.script = function(params, autoVanish) {
+        if (
+            typeof params === Hok.TYPES.U
+            || (
+                !('content' in params)
+                && !('src' in params)
+            )
+        ){
+            throw new Error('Missing script params');
+        }
+
+
         var script = document.createElement('script'),
             attrs = params && params.attrs;
         
@@ -85,6 +98,15 @@
         return script;
     };
     ctx.style = function(params) {
+        if (
+            typeof params === Hok.TYPES.U
+            || (
+                !('content' in params)
+                && !('href' in params)
+            )
+        ){
+            throw new Error('Missing style params');
+        }
         var type = params.content
                 ? { tag: 'style', attrs: {}}
                 : { tag: 'link', attrs: {

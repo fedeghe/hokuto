@@ -16,45 +16,20 @@
         ctx._.unhandlers = [];
     };
     
-    ctx.on = (function() {
-        function unhandle(el, evnt, cb) {
-            ctx.saveUnhandler(el, function() {
-                ctx.off(el, evnt, cb);
-            });
-        }
-        if ('addEventListener' in Hok.W) {
-            return function(el, evnt, cb, capture) {
-                capture = capture || false;
-                el.addEventListener.apply(el, [evnt, cb, capture]);
-                unhandle(el, evnt, cb);
-            };
-        } else if ('attachEvent' in Hok.W) {
-            return function(el, evnt, cb) {
-                el.attachEvent.apply(el, ['on' + evnt, cb]);
-                unhandle(el, evnt, cb);
-            };
-        } else {
-            return function() {
-                throw new Error(ctx._.bindErr(1));
-            };
-        }
-    })();
+    function unhandle(el, evnt, cb) {
+        ctx.saveUnhandler(el, function() {
+            ctx.off(el, evnt, cb);
+        });
+    }
+    ctx.on = function(el, evnt, cb, capture) {
+        capture = capture || false;
+        el.addEventListener.apply(el, [evnt, cb, capture]);
+        unhandle(el, evnt, cb);
+    };
     
-    ctx.off = (function() {
-        if ('removeEventListener' in Hok.W) {
-            return function(el, evnt, cb) {
-                el.removeEventListener(evnt, cb);
-            };
-        } else if ('detachEvent' in Hok.W) {
-            return function(el, evnt, cb) {
-                el.detachEvent.apply(el, ['on' + evnt, cb]);
-            };
-        } else {
-            return function() {
-                throw new Error(ctx._.bindErr(0));
-            };
-        }
-    })();
+    ctx.off = function(el, evnt, cb) {
+        el.removeEventListener(evnt, cb);
+    };
     
     ctx.kill = function(e) {
         if (!e) {

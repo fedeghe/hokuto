@@ -13,7 +13,8 @@ var Hok = {
     ns: {},
     dom: {},
     events:{},
-    cookie:{},
+    // cookie:{},
+
     history:{},
     i18n:{},
     io: {},

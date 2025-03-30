@@ -1,4 +1,4 @@
-/*
+
 Hok.ns.make = function(str, obj, ctx) {
     str = str.replace(/^\//, '');
     var els = str.split(/\.|\//),
@@ -20,7 +20,7 @@ Hok.ns.make = function(str, obj, ctx) {
     ret = ctx[els[0]];
     return (l > 1) ? Hok.ns.make(els.slice(1).join('.'), obj, ctx[els[0]]) : ret;
 };
-*/
+
 Hok.ns.check = function (ns, ctx) {
     // remove stating slash
     ns = ns.replace(/^\//, '');
@@ -45,16 +45,13 @@ Hok.ns.check = function (ns, ctx) {
     }
     return ctx;
 };
-/*
 Hok.ns.extend = function (ns, objfn) {
     var obj = typeof objfn === 'function' ? objfn() : objfn,
         i;
-
     for (i in obj) {
-        if (typeof ns[i] === _U_) {
+        if (typeof ns[i] === Hok._U_) {
             ns[i] = obj[i];
         }
     }
+    return ns;
 };
-
-*/
