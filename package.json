@@ -1,6 +1,6 @@
 {
     "name": "hokuto",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "main": "dist/index.js",
     "author": "Federico Ghedina <fedeghe@gmail.com>",
     "license": "MIT",
