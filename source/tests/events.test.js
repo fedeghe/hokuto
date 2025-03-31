@@ -230,6 +230,57 @@ describe('raw events - hokuto', () => {
                 node.click();
             });
         });
+        it('on text node', done => {
+            var cnf = {
+                config:{
+                    tag:'span',
+                    text: 'hello',
+                    id:'n0',
+                    ref:'ref',
+                    onClick:  () => {
+                        var trg = hokuto._.events.eventTarget();
+                        expect(trg.id).toBe('n0');
+                        done();
+                    }
+                },
+                clear: true
+            };
+            
+            render(cnf).then(r => {
+                var node = r.getByRef('ref').node;
+                node.click();
+            });
+        });
     });
+    describe('raw ready', () => {
+        it('with event passed', done => {
+            var cnf = getBasicConfig();
+            hokuto._.events.ready(() => {
+                render(cnf).then(() => {
+                    done();
+                });
+            });
+        });
+    });
+
+    // describe('raw noEvents', () => {
+    //     it('works as expected', done => {
+    //         render({
+    //             config:{
+    //                 html:'hello',
+    //                 ref: 'ref',
+    //                 onClick:one
+    //             }
+    //         }).then(r => {
+    //             var node = r.getByRef('ref').node;
+    //             hokuto._.events.noEvents(node, e => {
+    //                 expect(e.eventTarget).toBe(node);             
+    //                 done();
+    //             }, 1000);
+    //             node.click();
+    //         });
+    //     });
+    // });
+
 });
 

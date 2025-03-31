@@ -18,9 +18,7 @@ describe('hokuto._.dom.script', () => {
     it('with href', () => {
         var src = 'http://jmvc.org/index.js',
             script = hokuto._.dom.script({
-                src,
-                attrs:{
-                    defer: true}
+                attrs: { defer: true, src }
             });
         expect(script.tagName).toBe('SCRIPT');
         expect(script.src).toBe(src);
@@ -29,6 +27,7 @@ describe('hokuto._.dom.script', () => {
     it('autovanish', () => {
         var src = 'http://jmvc.org/index.js',
             attrs = {
+                src,
                 defer: 'defer',
                 async: 'async',
                 integrity:'xxx-yyy-zzz',
@@ -37,10 +36,7 @@ describe('hokuto._.dom.script', () => {
                 referrerpolicy: 'no-referrer',
                 type: 'text/javascript'
             },
-            script = hokuto._.dom.script({
-                src,
-                attrs,
-            }, true),
+            script = hokuto._.dom.script({ attrs }, true),
             parent = document.createElement('div'),
             spy = jest.spyOn(parent, 'removeChild');
         parent.appendChild(script);
@@ -63,7 +59,7 @@ describe('hokuto._.dom.script', () => {
             expect(e.message).toBe("Missing script params");
         }
         try {
-            hokuto._.dom.script({something:1});
+            hokuto._.dom.script({ something: 1 });
         } catch (e) {
             expect(e.message).toBe("Missing script params");
         }

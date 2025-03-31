@@ -154,21 +154,17 @@ Hok.solve = (function() {
                         xhrEnd = +new Date();
                         xhrTot += xhrEnd - xhrStart;
                         var params = Hok.ns.check(component.container + '/params', self.content),
-                            obj,
-                            evaluator;
+                            obj;
                             
                         if (preLoaded) {
                             // clone as string
                             obj = String(cntORobj);
                         } else {
                             if (!cached) {
-                                // components[componentName] = _clone(cntORobj);
                                 components[componentName] = String(cntORobj);
                             }
                             try {
-                                evaluator = eval('(function (){return '+cntORobj+';})()');
-                                obj = evaluator(params);
-                                // obj = self.evalTextFunctionWithParams(cntORobj, params);
+                                obj = self.evalTextFunctionWithParams(cntORobj, params);
 
                              } catch(e) {
                                 console.error("Error evaluating component '"+componentName+"'");

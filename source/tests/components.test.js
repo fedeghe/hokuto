@@ -57,4 +57,27 @@ describe('components', () => {
             done();
         });
     });
+    it('render a component with protectec subcomponent', done => {
+        var config = {
+            config: {
+                engy:{
+                    componentsUrl: 'http://127.0.0.1:3333/components',
+                },
+                html: 'some content',
+                id:'sup',
+                children: [{
+                    component: 'nestProtected',
+                    params: {
+                        name: 'hokuto'
+                    },
+                    id:'sub',
+                }] 
+            }
+        };
+        render(config).then(() => {
+            expect(selector('[id="sup"]')).not.toBeNull();
+            expect(selector('[id="nest"]')).not.toBeNull();
+            done();
+        });
+    });
 });

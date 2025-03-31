@@ -65,7 +65,6 @@
     
     ctx.noEvents = function (el, fn, t) {
         t = t || 3000;
-        fn = fn || function(){};
         var to;
         function inner (e) {
             to && window.clearTimeout(to);

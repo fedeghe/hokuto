@@ -74,12 +74,14 @@
             typeof params === Hok.TYPES.U
             || (
                 !('content' in params)
-                && !('src' in params)
+                && (
+                    !('attrs' in params)
+                    || !('src' in params.attrs)
+                )
             )
         ){
             throw new Error('Missing script params');
         }
-
 
         var script = document.createElement('script'),
             attrs = params && params.attrs;
@@ -92,9 +94,10 @@
         }
         if(params.content) {
             script.innerHTML = params.content;
-        } else if(params.src){
-            script.setAttribute('src', params.src);
         }
+        //  else if(params.src){
+        //     script.setAttribute('src', params.src);
+        // }
         return script;
     };
     ctx.style = function(params) {

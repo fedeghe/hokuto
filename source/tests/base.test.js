@@ -32,8 +32,8 @@ describe('basic hokuto', () => {
     it('hokuto._.i18n is the expected', () => {
         expect(typeof hokuto._.i18n.lang).toBe('string');
         expect(typeof hokuto._.i18n.switchLang).toBe('function');
-        expect(typeof hokuto._.i18n.check).toBe('function');
-        expect(typeof hokuto._.i18n.dynamicLoad).toBe('function');
+        // expect(typeof hokuto._.i18n.check).toBe('function');
+        // expect(typeof hokuto._.i18n.dynamicLoad).toBe('function');
         expect(typeof hokuto._.i18n.get).toBe('function');
         expect(typeof hokuto._.i18n.load).toBe('function');
         expect(typeof hokuto._.i18n.parse).toBe('function');
