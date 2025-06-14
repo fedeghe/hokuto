@@ -57,7 +57,7 @@ describe('basic hokuto', () => {
         expect(typeof hokuto._.events.kill).toBe('function');
         expect(typeof hokuto._.events.once).toBe('function');
         expect(typeof hokuto._.events.eventTarget).toBe('function');
-        expect(typeof hokuto._.events.noEvents).toBe('function');
+        // expect(typeof hokuto._.events.noEvents).toBe('function');
         expect(typeof hokuto._.events.ready).toBe('function');
     });
     it('hokuto._.utils is the expected', () => {

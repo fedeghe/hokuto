@@ -4,7 +4,7 @@ body{
     color:white;
     margin:0px;
     /* opacity: 0; */
-    /* filter: blur(50px) */
+    /* filter: blur(50px); */
     margin:10px;
 }
 nav {
@@ -40,4 +40,10 @@ nav a.selected {
 }
 nav a:not(.selected):hover{
     color:dodgerblue;
+}
+.a{
+    color:red
+}
+.b{
+    font-weight: bolder;
 }

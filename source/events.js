@@ -50,7 +50,7 @@
     };
     
     ctx.eventTarget = function(e) {
-        e = e || Hok.W.event;
+        e = e || Hok.W.event || {};
         var targetElement =
             e.currentTarget
             || (typeof e.target !== Hok.TYPES.U) ? e.target : e.srcElement;
@@ -63,19 +63,6 @@
         return targetElement;
     };
     
-    ctx.noEvents = function (el, fn, t) {
-        t = t || 3000;
-        var to;
-        function inner (e) {
-            to && window.clearTimeout(to);
-            to = window.setTimeout(function () {
-                fn(e);
-            }, t);
-        }
-        ctx.on(el, 'mousemove', inner);
-        ctx.on(el, 'click', inner);
-        ctx.on(el, 'touchstart', inner);
-    };
     
     ctx.ready = (function() {
         var comp = 'complete',

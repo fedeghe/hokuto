@@ -12,7 +12,6 @@
     <script>
         hokuto.render({
             config: {
-                
                 children:[{
                     component: 'menu'
                 },{
@@ -27,27 +26,33 @@
         .then(r => {
             var script = hokuto._.dom.script({src:'./components/home/loaded.js'}, true);
             r.addSibling(script);
-            // hokuto._.fx.fadeIn({
-            //     // additionalStyles: 'body{color:red}',
-            //     duration:2e3
-            // });
+            hokuto._.fx.fadeIn({
+                // additionalStyles: 'body{color:red}',
+                duration:2e3
+            });
         })
     </script>
     </div>
     <div>
         <script>
         hokuto.render({
-                config:{
-                    // children:[
-                        // {tag:'h1', text:'hokuto'},
-                        // {
-                            html:'hello from Hokuto'
-                        // }
-                    // ]
-                },
-                vanish: true
-            })
-        
+            config:{
+                children:[
+                    // {tag:'h1', text:'hokuto'},
+                    {
+                        html:'hello from Hokuto'
+                    },{
+                        tag:'a',
+                        text: 'check runge-kutta',
+                        className:'a',
+                        attrs:{
+                            href:'rk.html'
+                        }
+                    }
+                ]
+            },
+            vanish: true
+        }) 
     </script>
     </div>
 </body>

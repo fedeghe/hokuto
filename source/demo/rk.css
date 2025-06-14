@@ -1,0 +1,31 @@
+:root{
+    --panel-width: 200px;
+}
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #333;
+    color: white;
+    margin: 0px;
+}
+select{border:none}
+option{
+    border:none;
+}
+/* .container{ } */
+.panelContainer{
+    position: absolute;
+    width: var(--panel-width);
+    height: 100vh;
+    background-color: #444;
+    box-shadow: 5px 0px 5px black;
+}
+.panel{
+    margin:5px;
+}
+.canvasContainer{
+    margin-left: var(--panel-width);
+}
+.canvas{
+    background-color: red;
+    height: 100vh
+}

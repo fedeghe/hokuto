@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>maltaV('PACKAGE.name') maltaV('tit')</title>
+    <link rel="stylesheet" href="./rk.css">
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <script>
+        (function () {
+            hokuto.render({
+                config: {
+                    className: 'container',
+                    children: [{
+                        component: 'rk/panel',
+                    }, {
+                        className: 'canvasContainer',
+                        children: [{
+                            className: 'canvas',
+                            html: 'canvas'
+                        }]
+                    }]
+                }
+            })
+        })()
+    </script>
+</body>
+
+</html>

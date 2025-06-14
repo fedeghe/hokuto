@@ -42,6 +42,7 @@
                     padding: 0,
                     height: '30px',
                     border: 'none',
+                    
                 }),
                 max = 1e6
             hokuto.render({
@@ -84,7 +85,11 @@
                                         max: max
                                     };
                                 },
-                                style: getGaugeStyle(),
+                                style: {
+                                    ...getGaugeStyle(),
+                                    opacity:0.01,
+                                    cursor:'pointer'
+                                },
                                 onInput: function (e) {
                                     var r = this.getByRef('val'),
                                         pro = this.getByRef('pro'),
@@ -106,7 +111,14 @@
                                 attrs: {
                                     max: max
                                 },
-                                style: getGaugeStyle(),
+                                style: {
+                                    ...getGaugeStyle(),
+                                    position:'relative',
+                                    top: '-30px',
+                                    userSelect: 'none',
+                                    pointerEvents: 'none',
+                                    
+                                },
                                 initCheck: function(){
                                     var v = this.parentKnot.state.summer;
                                     this.setAttrs({

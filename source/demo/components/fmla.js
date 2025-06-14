@@ -1,0 +1,42 @@
+function (){
+    return {
+        tag:'div',
+        style:{color:'white'},
+        html: `<math display="block">
+        <mrow>
+            <mi>x</mi>
+            <mo>=</mo>
+            <mfrac>
+            <mrow>
+                <mrow>
+                    <mo>−</mo>
+                    <mi>b</mi>
+                </mrow>
+                <mo>±</mo>
+                <msqrt>
+                <mrow>
+                    <msup>
+                    <mi>b</mi>
+                    <mn>2</mn>
+                    </msup>
+                    <mo>−</mo>
+                    <mrow>
+                    <mn>4</mn>
+                    <mo>⁢</mo>
+                    <mi>a</mi>
+                    <mo>⁢</mo>
+                    <mi>c</mi>
+                    </mrow>
+                </mrow>
+                </msqrt>
+            </mrow>
+            <mrow>
+                <mn>2</mn>
+                <mo>⁢</mo>
+                <mi>a</mi>
+            </mrow>
+            </mfrac>
+        </mrow>
+        </math>`
+    };
+}

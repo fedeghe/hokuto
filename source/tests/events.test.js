@@ -139,7 +139,7 @@ describe('events - hokuto', () => {
                 onClick: one,
                 children:[{
                     ref:'x',
-                    onClick: e => {
+                    onClick: () => {
                         x();
                         return hokuto._.events.kill();//no event passed here
                     },
@@ -230,6 +230,10 @@ describe('raw events - hokuto', () => {
                 node.click();
             });
         });
+        it('no target', () => {
+            var trg = hokuto._.events.eventTarget();
+            expect(trg).toBeFalsy();
+        });
         it('on text node', done => {
             var cnf = {
                 config:{
@@ -257,30 +261,11 @@ describe('raw events - hokuto', () => {
             var cnf = getBasicConfig();
             hokuto._.events.ready(() => {
                 render(cnf).then(() => {
-                    done();
+                    hokuto._.events.ready(() => done());
                 });
             });
         });
     });
-
-    // describe('raw noEvents', () => {
-    //     it('works as expected', done => {
-    //         render({
-    //             config:{
-    //                 html:'hello',
-    //                 ref: 'ref',
-    //                 onClick:one
-    //             }
-    //         }).then(r => {
-    //             var node = r.getByRef('ref').node;
-    //             hokuto._.events.noEvents(node, e => {
-    //                 expect(e.eventTarget).toBe(node);             
-    //                 done();
-    //             }, 1000);
-    //             node.click();
-    //         });
-    //     });
-    // });
 
 });
 
