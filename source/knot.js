@@ -73,7 +73,6 @@ Knot.prototype.setState = function(state) {
     var nextState = functionize( this, this.config.state || {}),
         nextPassedState = functionize( this, state || {}),
         whole = Object.assign({}, nextState, this.state, nextPassedState );
-    // debugger
     this.state = whole;
     return this;
 };
@@ -127,6 +126,7 @@ Knot.prototype.setRef = function(ref, ctx) {
     } else if (Hok.utils.type.isDefined(this.config.ref)) {
         this.nodes[this.config.ref] = this;
     }
+    return this;
 };
 
 Knot.prototype.setClassname = function(classes) {
@@ -148,7 +148,6 @@ Knot.prototype.setStyle = function(style) {
     Hok.dom.setStyle(this.node, whole);
     return this;
 };
-
 
 Knot.prototype.setAttrs = function(attrs) {
     var next = functionize(this, this.config.attrs || {}),
@@ -207,6 +206,7 @@ Knot.prototype.setMethods = function() {
             }
         }
     });
+    return this;
 };
 
 Knot.prototype.setEvents = function() {
@@ -249,6 +249,7 @@ Knot.prototype.unhandle = function(eventType){
         }
         return acc;
     }, {});
+    return this;
 };
 
 Knot.prototype.setEnd = function() {
@@ -303,7 +304,6 @@ Knot.prototype.render = function(){
             });
         }
     }
-    
     return Promise.resolve(this);
 };
 

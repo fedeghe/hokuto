@@ -11,32 +11,36 @@
     <div id="target">
         ...loading
     </div>
+    <!-- <style>
+        progress {
+            color: darkmagenta;
+            /* Firefox: Unfilled portion of the progress bar */
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Firefox: Filled portion of the progress bar */
+        progress::-moz-progress-bar {
+            background: currentColor;
+        }
+
+        /* Chrome & Safari: Unfilled portion of the progress bar */
+        progress::-webkit-progress-bar {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Chrome & Safari: Filled portion of the progress bar */
+        progress::-webkit-progress-value {
+            background: currentColor;
+        }
+    </style> -->
     
     <script>
         (function () {
             hokuto._.i18n.load({
                 hello: 'ciao'
             })
-            var target  = document.getElementById('target');
-            // var r = hokuto.render({
-            //     target,
-            //     tag: 'p',
-            //     html: 'hello there'
-            // });
-
-            // setTimeout(function(){
-            //     r.clear();
-            // },3000)
-
-            // setTimeout(function(){
-            //     hokuto.render({
-            //         target,
-            //         tag: 'strong',
-            //         html: 'hello there again'
-            //     });
-            // },6000)
-
-            var getGaugeStyle = () => ({
+            var target  = document.getElementById('target'),
+                getGaugeStyle = () => ({
                     width: '100%',
                     margin: 0,
                     padding: 0,
@@ -44,112 +48,38 @@
                     border: 'none',
                     
                 }),
-                max = 1e6
+                startValue = 4e4,
+                step = 1,
+                max = 1e5,
+                min = -max,
+                steps = (max-min)/step,
+                getValue = v =>  ~~(steps * (parseInt(v, 10)-min)/(max-min));
+
             hokuto.render({
                 config:{
                     target: target,
-                    
-                    //initCheck: () => Promise.resolve(),
-                    children:[
+                    children: [
                         {
                             component: 'menu'
                         },
                         {
-                            state: {
-                                n: 0,
-                                summer: 1
-                            },
-                            cb: function() {
-                                var self = this;
-                                
-                                this.setState({
-                                    n: self.state.n + self.state.summer
-                                });
-                                setTimeout(function(){
-                                    self.render();
-                                },1e2);
-                                return Promise.resolve();
-                            },
-                            children: [{
-                                ref: 'val',
-                                html: function() {
-                                    return this.parentKnot.state.summer;
-                                }
-                            }, {
-                                tag: 'input',
-                                attrs:function() {
-                                    return {
-                                        type: 'range',
-                                        step: 1,
-                                        value: 1,
-                                        max: max
-                                    };
+                            component: 'gauge',
+                            params:{
+                                min: 10, 
+                                max: 1200,
+                                step: 10,
+                                value: 300,
+                                ƒ: function (v) {
+                                    console.log({v})
                                 },
-                                style: {
-                                    ...getGaugeStyle(),
-                                    opacity:0.01,
-                                    cursor:'pointer'
-                                },
-                                onInput: function (e) {
-                                    var r = this.getByRef('val'),
-                                        pro = this.getByRef('pro'),
-                                        value = e.target.value;
-                                    r.node.value = value;
-                                    r.config.html = value;
-                                    pro.setAttrs({value: value});
-
-                                    this.parentKnot.setState({
-                                        summer: parseInt(value, 10)
-                                    });
-                                    r.render();
-                                }
-                            },
-                            {tag:'br'},
-                            {
-                                tag: 'progress',
-                                ref: 'pro',
-                                attrs: {
-                                    max: max
-                                },
-                                style: {
-                                    ...getGaugeStyle(),
-                                    position:'relative',
-                                    top: '-30px',
-                                    userSelect: 'none',
-                                    pointerEvents: 'none',
-                                    
-                                },
-                                initCheck: function(){
-                                    var v = this.parentKnot.state.summer;
-                                    this.setAttrs({
-                                        value: v
-                                    });
-                                    return Promise.resolve();
-                                }
-                            }, {
-                                html: '0',
-                                cb: function (){
-                                    this.node.innerHTML = '1x = ' + this.parentKnot.state.n;
-                                    return Promise.resolve();
-                                }
-                            }, {
-                                html: '1',
-                                cb: function (){
-                                    this.node.innerHTML = '2x = ' + this.parentKnot.state.n * 2;
-                                    return Promise.resolve();
-                                }
-                            }]
+                            }
                         }
                     ]
-                    
                 },
                 clear: true,
                 name: 'one',
                 vanish: true
             })
-            // .then(() => {    
-            //     hokuto._.fx.fadeIn({ duration: 2e3 });                    
-            // });
         })();
 
     </script>
