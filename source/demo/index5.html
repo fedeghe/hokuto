@@ -62,13 +62,15 @@
                         {
                             component: 'menu'
                         },
+                        {tag: 'br'},
+
                         {
                             component: 'gauge',
                             params:{
-                                min: 10, 
-                                max: 1200,
-                                step: 10,
-                                value: 300,
+                                min: -1e6, 
+                                max: 1e6,
+                                step: 1,
+                                value: 3e5,
                                 ƒ: function (v) {
                                     console.log({v})
                                 },

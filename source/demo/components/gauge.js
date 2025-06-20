@@ -6,7 +6,6 @@ function _(o){
             padding: 0,
             height: '30px',
             border: 'none',
-            
         }),
         startValue = o.value,
         step = o.step || 1,
@@ -19,16 +18,10 @@ function _(o){
             n: 0,
             summer: startValue
         },
-        // cb: function() {
-        //     var self = this;
-        //     this.setState({
-        //         n: self.state.n + self.state.summer
-        //     });
-        //     // setTimeout(function(){
-        //     //     self.render();
-        //     // },1e2);
-        //     return Promise.resolve();
-        // },
+        style:{
+            position:'relative',
+            height:'30px'
+        },
         children: [
             {
                 tag: 'style',
@@ -39,12 +32,7 @@ function _(o){
                     progress::-webkit-progress-value { background: currentColor;}
                 `
             },
-            {
-                ref: 'val',
-                html: function() {
-                    return this.parentKnot.state.summer;
-                }
-            },
+            
             {
                 tag: 'input',
                 attrs:function() {
@@ -75,9 +63,10 @@ function _(o){
                     });
                     o?.ƒ(~~value);
                     r.render();
-                }
+                },
+                
             },
-            {tag:'br'},
+            // {tag:'br'},
             {
                 tag: 'progress',
                 ref: 'pro',
@@ -86,13 +75,15 @@ function _(o){
                 },
                 style: {
                     ...getGaugeStyle(),
-                    position:'relative',
-                    top: '-30px',
+                    // position:'relative',
+                    // top: '-33px',
+                    position:'absolute',
+                    top:0,
+                    left:0,
                     userSelect: 'none',
                     pointerEvents: 'none',
-                    // border:'10px solid #555',
-                    // borderRadius: '20px',
-                    color:'orange',
+                    color:'#fede76',
+                    // color: '-webkit-linear-gradient(#eee, #333)'
                 },
                 initCheck: function(){
                     var v = this.parentKnot.state.summer;
@@ -102,6 +93,27 @@ function _(o){
                     return Promise.resolve();
                 }
             },
+            {
+                ref: 'val',
+                style:{
+                    position: 'absolute',
+                    top:0,
+                    width:'100%',
+                    textAlign: 'center',
+                    lineHeight: '30px',
+                    height: '30px',
+                    userSelect: 'none',
+                    pointerEvents: 'none',
+                    color:'white',
+                    textShadow: '0 0 5px #000',
+                    margin:0,
+                    paddinig:0
+                },
+                html: function() {
+                    return this.parentKnot.state.summer;
+                }
+            },
+            /*
             {
                 children: [
                     {
@@ -131,6 +143,7 @@ function _(o){
                     return Promise.resolve();
                 },
             }
+            */
         ]
     };
 }
