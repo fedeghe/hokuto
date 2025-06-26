@@ -1,5 +1,4 @@
-function _(o){
-
+function _(o = {}){
     var getGaugeStyle = () => ({
             width: '100%',
             margin: 0,
@@ -7,12 +6,14 @@ function _(o){
             height: '30px',
             border: 'none',
         }),
-        startValue = o.value,
+        ƒ = o.ƒ || function(){},
+        startValue = o.value || 50,
         step = o.step || 1,
-        min = o.min,
-        max = o.max,
+        min = o.min || 0,
+        max = o.max || 100,
+        colorBar = o.colorBar || 'green',   
         steps = (max - min) / step,
-        getValue = v =>  ~~(steps * (parseInt(v, 10) - min) / (max - min));
+        getValue = v => ~~(steps * (parseInt(v, 10) - min) / (max - min));
     return {
         state: {
             n: 0,
@@ -32,22 +33,21 @@ function _(o){
                     progress::-webkit-progress-value { background: currentColor;}
                 `
             },
-            
             {
                 tag: 'input',
                 attrs:function() {
                     return {
                         type: 'range',
                         step,
-                        value: 0,
+                        value: startValue,
                         min: min,
                         max: max
                     };
                 },
                 style: {
                     ...getGaugeStyle(),
-                    opacity:0.01,
-                    cursor:'pointer'
+                    opacity: 0.01,
+                    cursor: 'pointer'
                 },
                 onInput: function (e) {
                     var r = this.getByRef('val'),
@@ -61,12 +61,29 @@ function _(o){
                     this.parentKnot.setState({
                         summer: parseInt(value, 10)
                     });
-                    o?.ƒ(~~value);
+                    ƒ(~~value);
                     r.render();
                 },
-                
+                onKeydown: function (e) {
+                    // if shift then set temporary the step X10
+                    if (e.shiftKey) {
+                        //if also ctrl the X100
+                        if (e.ctrlKey) {
+                            this.setAttrs({
+                                step: step * 100
+                            });
+                        } else {
+                            // just X10
+                            this.setAttrs({
+                                step: step * 10
+                            });
+                        }
+                    }
+                },
+                onKeyup: function () {
+                    this.setAttrs({step});
+                }  
             },
-            // {tag:'br'},
             {
                 tag: 'progress',
                 ref: 'pro',
@@ -75,15 +92,12 @@ function _(o){
                 },
                 style: {
                     ...getGaugeStyle(),
-                    // position:'relative',
-                    // top: '-33px',
                     position:'absolute',
                     top:0,
                     left:0,
                     userSelect: 'none',
                     pointerEvents: 'none',
-                    color:'#fede76',
-                    // color: '-webkit-linear-gradient(#eee, #333)'
+                    color:colorBar,
                 },
                 initCheck: function(){
                     var v = this.parentKnot.state.summer;
@@ -113,37 +127,6 @@ function _(o){
                     return this.parentKnot.state.summer;
                 }
             },
-            /*
-            {
-                children: [
-                    {
-                        html: '0',
-                        cb: function (){
-                            this.node.innerHTML = '1x = ' + this.parentKnot.parentKnot.state.n;
-                            return Promise.resolve();
-                        }
-                    },
-                    {
-                        html: '1',
-                        cb: function (){
-                            this.node.innerHTML = '2x = ' + this.parentKnot.parentKnot.state.n * 2;
-                            return Promise.resolve();
-                        }
-                    }
-                ],
-                 cb: function() {
-                    var p = this.parentKnot,
-                        self = this;
-                    p.setState({
-                        n: p.state.n + p.state.summer
-                    });
-                    setTimeout(function(){
-                        self.render();
-                    },1e2);
-                    return Promise.resolve();
-                },
-            }
-            */
         ]
     };
 }
