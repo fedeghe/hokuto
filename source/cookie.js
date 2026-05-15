@@ -10,11 +10,10 @@ Hok.cookie = {
         Hok.cookie.cookie_nocookiesaround = false;
         var today = new Date(),
             expiresDate = new Date(today.getTime() + expires);
-        // expires && (expires = expires * 1000 * 60 * 60 * 24);
         Hok.WD.cookie = [
             name, '=', Hok.W.escape(value),
             (expires ? ';expires=' + expiresDate.toGMTString() : ''),
-            (copath ? ';path=' + (copath || '/') : ''),
+            (copath ? ';path=' + copath : ''),
             (domain ? ';domain=' + domain : ''),
             (secure ? ';secure' : '')
         ].join(' ');
@@ -25,11 +24,10 @@ Hok.cookie = {
         var ret = false;
 
         if (Hok.cookie.get(name)) {
-            console.log({name});
             Hok.WD.cookie = [
                 name, '=',
-                (path ? ';path=' + path : ''),
-                (domain ? ';domain=' + domain : ''),
+                (path ? (';path=' + (path || '/')) : ''),
+                (domain ? (';domain=' + domain) : ''),
                 ';expires=Thu, 01-Jan-1970 00:00:01 GMT'
             ].join('');
             ret = true;
@@ -65,11 +63,8 @@ Hok.cookie = {
         var thecookie = Hok.WD.cookie.split(/;/),
             l = thecookie.length,
             i = 0;
-        console.log(thecookie);
         for (null; i < l; i += 1) {
             var vs = thecookie[i].split(/=/);
-            console.log({vs});
-            // console.log({name: name[0]});
             Hok.cookie.del(vs[0]);
         }
         Hok.cookie.cookie_nocookiesaround = true;
