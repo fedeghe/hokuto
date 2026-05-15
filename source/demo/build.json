@@ -2,6 +2,7 @@
     "EXE": [
         "rm -rf demo/components",
         "mkdir -p demo/components/home",
+        "mkdir -p demo/components/uoullet",
         "mkdir -p demo/components/rk/panel",
         "mkdir -p demo/components/rk/fmlas"
     ],
@@ -11,6 +12,7 @@
     "source/demo/components/*.js": "demo/components",
     "source/demo/components/home/*.js": "demo/components/home",
     "source/demo/components/rk/*.js": "demo/components/rk",
+    "source/demo/components/uoullet/*.js": "demo/components/uoullet",
     "source/demo/components/rk/fmlas/*.js": "demo/components/rk/fmlas",
     "source/demo/components/home/*.css": "demo/components/home"
 }

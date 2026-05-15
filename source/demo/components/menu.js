@@ -39,6 +39,9 @@ function _(){
             },{
                 label:'six',
                 href:'index5.html'
+            },{
+                label:'uoullet',
+                href:'uoullet.html'
             }
         ])
     };

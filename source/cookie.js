@@ -14,7 +14,7 @@ Hok.cookie = {
         Hok.WD.cookie = [
             name, '=', Hok.W.escape(value),
             (expires ? ';expires=' + expiresDate.toGMTString() : ''),
-            (copath ? ';path=' + copath : ''),
+            (copath ? ';path=' + (copath || '/') : ''),
             (domain ? ';domain=' + domain : ''),
             (secure ? ';secure' : '')
         ].join(' ');
