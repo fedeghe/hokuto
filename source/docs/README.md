@@ -1,5 +1,5 @@
 ![hokuto](hokuto.png)
-![track](https://click.jmvc.org/p/fEtBzv7O/1)
+![track](https://click.jmvc.org/p/1/fEtBzv7O)
 
 
 [![Coverage Status](https://coveralls.io/repos/github/fedeghe/hokuto/badge.svg?branch=master)](https://coveralls.io/github/fedeghe/hokuto?branch=master)

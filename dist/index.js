@@ -19,7 +19,7 @@
 
 北斗
 
-hokuto v. 0.0.22
+hokuto v. 0.0.23
 
 with ~22.14KB of ❤️
 
@@ -73,7 +73,7 @@ t=t.replace(/^\//,"");var o,i=t.split(/\.|\//),r=i.length;return typeof n===Hok.
 r>1?Hok.ns.make(i.slice(1).join("."),e,n[i[0]]):o},Hok.ns.check=function(t,e){t=t.replace(/^\//,"");var n=t.split(/\.|\//),o=n.length,i=0;if(e=typeof e!==Hok._U_?e:Hok.W,!t)return e
 ;for(null;i<o;i+=1){if(typeof e[n[i]]===Hok._U_)return;e=e[n[i]]}return e},Hok.ns.extend=function(t,e){var n,o="function"==typeof e?e():e;for(n in o)typeof t[n]===Hok._U_&&(t[n]=o[n]);return t},
 Hok.CONFIG={AUTHOR:"Federico Ghedina",LANG:"en",ENGY:{STATS:!1,MODES:["PRE","LIVE"],MODE:0,COMPONENTS:{EXT:".js",URL:"/components/",NAME_PREPEND:"",PATH_SEPARATOR:"/"}},NS:"hokuto",NAME:"hokuto",
-VERSION:"0.0.22"},Hok.cookie={enabled:!0,cookie_nocookiesaround:!1,initCheck:function(){return Hok.W.navigator.cookieEnabled},set:function(t,e,n,o,i,r){if(!Hok.cookie.enabled)return!1
+VERSION:"0.0.23"},Hok.cookie={enabled:!0,cookie_nocookiesaround:!1,initCheck:function(){return Hok.W.navigator.cookieEnabled},set:function(t,e,n,o,i,r){if(!Hok.cookie.enabled)return!1
 ;Hok.cookie.cookie_nocookiesaround=!1;var s=new Date,c=new Date(s.getTime()+n)
 ;return Hok.WD.cookie=[t,"=",Hok.W.escape(e),n?";expires="+c.toGMTString():"",o?";path="+o:"",i?";domain="+i:"",r?";secure":""].join(" "),!0},del:function(t,e,n){if(!Hok.cookie.enabled)return!1
 ;var o=!1;return Hok.cookie.get(t)&&(Hok.WD.cookie=[t,"=",e?";path="+(e||"/"):"",n?";domain="+n:"",";expires=Thu, 01-Jan-1970 00:00:01 GMT"].join(""),o=!0),o},get:function(t){
