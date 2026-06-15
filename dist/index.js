@@ -19,7 +19,7 @@
 
 北斗
 
-hokuto v. 0.0.23
+hokuto v. 0.0.25
 
 with ~21.98KB of ❤️
 
@@ -71,7 +71,7 @@ if(Array.isArray&&Array.isArray(t))return!0;var e=String(t)!==t,n={}.toString.ca
 ;var o,r=t.split(/\.|\//),s=r.length;return typeof n===i._U_&&(n=i.W),typeof e===i._U_&&(e={}),"function"==typeof e&&(e=e()),n[r[0]]||(n[r[0]]=1===s?e:{}),o=n[r[0]],
 s>1?i.ns.make(r.slice(1).join("."),e,n[r[0]]):o},i.ns.check=function(t,e){t=t.replace(/^\//,"");var n=t.split(/\.|\//),o=n.length,r=0;if(e=typeof e!==i._U_?e:i.W,!t)return e;for(null;r<o;r+=1){
 if(typeof e[n[r]]===i._U_)return;e=e[n[r]]}return e},i.ns.extend=function(t,e){var n,o="function"==typeof e?e():e;for(n in o)typeof t[n]===i._U_&&(t[n]=o[n]);return t},i.CONFIG={
-AUTHOR:"Federico Ghedina",LANG:"en",ENGY:{STATS:!1,MODES:["PRE","LIVE"],MODE:0,COMPONENTS:{EXT:".js",URL:"/components/",NAME_PREPEND:"",PATH_SEPARATOR:"/"}},NS:"hokuto",NAME:"hokuto",VERSION:"0.0.23"
+AUTHOR:"Federico Ghedina",LANG:"en",ENGY:{STATS:!1,MODES:["PRE","LIVE"],MODE:0,COMPONENTS:{EXT:".js",URL:"/components/",NAME_PREPEND:"",PATH_SEPARATOR:"/"}},NS:"hokuto",NAME:"hokuto",VERSION:"0.0.25"
 },i.cookie={enabled:!0,cookie_nocookiesaround:!1,initCheck:function(){return i.W.navigator.cookieEnabled},set:function(t,e,n,o,r,s){if(!i.cookie.enabled)return!1;i.cookie.cookie_nocookiesaround=!1
 ;var a=new Date,c=new Date(a.getTime()+n);return i.WD.cookie=[t,"=",i.W.escape(e),n?";expires="+c.toGMTString():"",o?";path="+o:"",r?";domain="+r:"",s?";secure":""].join(" "),!0},del:function(t,e,n){
 if(!i.cookie.enabled)return!1;var o=!1;return i.cookie.get(t)&&(i.WD.cookie=[t,"=",e?";path="+(e||"/"):"",n?";domain="+n:"",";expires=Thu, 01-Jan-1970 00:00:01 GMT"].join(""),o=!0),o},get:function(t){
