@@ -100,8 +100,64 @@ Hok.solve = (function() {
         };
     };
     Processor.prototype.evalTextFunctionWithParams = function(scriptContent, params){
-        var evaluator = eval('(function (){return '+scriptContent+';})()');
-        return evaluator(params);
+        if (typeof scriptContent !== 'string') {
+            console.error('evalTextFunctionWithParams: expected string, got', typeof scriptContent);
+            return {};
+        }
+
+        var src = scriptContent.trim();
+        // Rimuovi BOM (Byte Order Mark)
+        if (src.charCodeAt(0) === 0xFEFF) {
+            src = src.slice(1);
+        }
+        if (!src) {
+            console.error('evalTextFunctionWithParams: script is empty');
+            return {};
+        }
+
+        var fn;
+
+        // Tentativo 1: il contenuto e' una singola funzione/espressione.
+        // Wrappandola in parentesi, una function declaration diventa expression.
+        try {
+            fn = new Function('return (' + src + ')')();
+            if (typeof fn === 'function') {
+                return fn(params);
+            }
+        } catch (e) {
+            // Non e' una singola espressione valida, passa al tentativo 2
+        }
+
+        // Tentativo 2: esegui lo script come blocco e cerca l'ultima funzione dichiarata.
+        // Estrai tutti i nomi delle function declaration.
+        var funcNames = [];
+        var regex = /(?:^|;|\s|})function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/gm;
+        var match;
+        while ((match = regex.exec(src)) !== null) {
+            funcNames.push(match[1]);
+        }
+
+        for (var i = funcNames.length - 1; i >= 0; i--) {
+            try {
+                fn = new Function([
+                    'return (function(){\n',
+                    src,
+                    '\nreturn typeof ',
+                    funcNames[i],
+                    ' !== "undefined" ? ',
+                    funcNames[i],
+                    ' : undefined;\n})();'
+                ].join(''))();
+                if (typeof fn === 'function') {
+                    return fn(params);
+                }
+            } catch (e) {
+                // Prova con la funzione precedente
+            }
+        }
+
+        console.error('evalTextFunctionWithParams: script did not resolve to a function');
+        return {};
     };
     Processor.prototype.parse = function () {
         var self = this,
@@ -165,11 +221,13 @@ Hok.solve = (function() {
                             }
                             try {
                                 obj = self.evalTextFunctionWithParams(cntORobj, params);
-
-                             } catch(e) {
+                            } catch(e) {
                                 console.error("Error evaluating component '"+componentName+"'");
                                 console.error(e);
-                             }
+                            }
+                            if (!obj) {
+                                obj = cmp404(componentName);
+                            }
                         }
                         if (component.container) {
                             _mergeComponent(self.content, component.container, obj);

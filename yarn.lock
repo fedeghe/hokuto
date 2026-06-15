@@ -2218,7 +2218,7 @@ __metadata:
     jest: "npm:^29.7.0"
     jest-dom: "npm:^4.0.0"
     jest-environment-jsdom: "npm:^29.7.0"
-    malta: "npm:^4.1.41"
+    malta: "npm:^4.2.7"
     malta-browser-refresh: "npm:^1.2.16"
     malta-dev-srv: "npm:^1.1.9"
     malta-header-comment: "npm:^1.0.12"
@@ -3291,12 +3291,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"malta@npm:^4.1.41":
-  version: 4.1.41
-  resolution: "malta@npm:4.1.41"
+"malta@npm:^4.2.7":
+  version: 4.2.7
+  resolution: "malta@npm:4.2.7"
   bin:
     malta: src/bin.js
-  checksum: 10c0/8647a1681f4e326133b38a39a0ce644375df70b941ce2d3768f75acd53852567b2eaa1abf0a5614963d8ea0dcff11957e8de712147555fcfd2f958d00a543d0d
+  checksum: 10c0/d2e006d748fe8faa7337da5cedfa265584ccdb7a954f2c420989d719269327ab06322e3f70fd28cfbfce821b98596a9fbeadc25a15ed5e99a519f550ecb89c37
   languageName: node
   linkType: hard
 

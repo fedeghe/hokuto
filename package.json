@@ -28,7 +28,7 @@
         "jest": "^29.7.0",
         "jest-dom": "^4.0.0",
         "jest-environment-jsdom": "^29.7.0",
-        "malta": "^4.1.41",
+        "malta": "^4.2.7",
         "malta-browser-refresh": "^1.2.16",
         "malta-dev-srv": "^1.1.9",
         "malta-header-comment": "^1.0.12",
